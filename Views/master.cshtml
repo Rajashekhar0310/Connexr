@@ -1,0 +1,108 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+
+@{
+	Layout = null;
+  var mediaFolder = Umbraco.MediaAtRoot()
+        .FirstOrDefault(x => x.Name == "favicon");
+
+    var favicon = mediaFolder?.Children()?.FirstOrDefault();
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+   
+  <title>@Model.Value("metaTitle")</title>
+   <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+  
+@if (favicon != null)
+{
+<link rel="icon" href="@favicon.Url()" type="image/x-icon" />
+}
+    <meta name="description" content="@Model.Value("metaDescription")" />
+       
+<link rel="stylesheet" href="/css/site.css" /> 
+<link rel="stylesheet" href="/css/hero-banner.css" />
+<link rel="stylesheet" href="/css/Header.css"/>
+<link rel="stylesheet" href="/css/featureTabsSection.css"/>
+<link rel="stylesheet" href="/css/Footer.css"/>
+<link rel="stylesheet" href="/css/cardListSection.css"/>
+<link rel="stylesheet" href="/css/faqSection.css"/>
+<link rel="stylesheet" href="/css/partners.css"/>
+<link rel="stylesheet" href="/css/industries.css"/>
+<link rel="stylesheet" href="/css/impact.css"/>
+<link rel="stylesheet" href="/css/Home/whyConnexr.css"/>
+<link rel="stylesheet" href="/css/Home/insights.css"/>
+<link rel="stylesheet" href="/css/Home/videobanner.css"/>
+<link rel="stylesheet" href="/css/Home/services.css"/>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+ 
+
+  
+ @await Html.PartialAsync("Header")
+  @await Html.PartialAsync("Breadcrumb")
+    <main>
+        @RenderBody()
+        
+    </main>
+
+    @await Html.PartialAsync("Footer")
+
+
+
+  
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const slider = document.querySelector(".aboutCardsSwiper");
+
+    if (slider) {
+
+        new Swiper(".aboutCardsSwiper", {
+            slidesPerView: 2,
+            spaceBetween: 24,
+
+            navigation: {
+                nextEl: ".custom-next",
+                prevEl: ".custom-prev"
+            },
+
+            breakpoints: {
+                0: {
+                    slidesPerView: 1
+                },
+                992: {
+                    slidesPerView: 2
+                }
+            }
+        });
+
+    }
+});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="/scripts/ai-video-banner.js"></script>
+<script src="/scripts/Home/Header.js"></script>
+<script src="/scripts/Home/service.js"></script>
+
+
+
+  
+
+</body>
+</html>

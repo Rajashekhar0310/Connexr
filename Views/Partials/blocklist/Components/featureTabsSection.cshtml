@@ -1,0 +1,99 @@
+﻿@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var sectionHeading = content.Value<string>("tabTitle");
+    var sectionDescription = content.Value<string>("tabContent");
+    var tabs = content.Value<BlockListModel>("tabs");
+    var sectionId = $"feature-tabs-{content.Key:N}";
+}
+
+<section class="feature-tabs-section" id="@sectionId">
+    <div class="container">
+        @if (!string.IsNullOrWhiteSpace(sectionHeading))
+        {
+            <div class="feature-tabs-header">
+                <h2>@sectionHeading</h2>
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(sectionDescription))
+        {
+            <div class="feature-tabs-description">
+                <p>@sectionDescription</p>
+            </div>
+        }
+
+        @if (tabs != null && tabs.Any())
+        {
+            <div class="tabs-wrapper" data-tabs-wrapper>
+                <div class="tab-buttons" role="tablist" aria-label="@sectionHeading">
+                    @{
+                        var index = 0;
+                    }
+
+                    @foreach (var tab in tabs)
+                    {
+                        var tabTitle = tab.Content?.Value<string>("tabTitle");
+                        var tabTargetId = $"{sectionId}-tab-{index}";
+
+                        <button type="button"
+                                class="tab-btn @(index == 0 ? "active" : "")"
+                                data-tab-target="@tabTargetId"
+                                aria-controls="@tabTargetId"
+                                aria-selected="@(index == 0 ? "true" : "false")"
+                                role="tab">
+                            @(string.IsNullOrWhiteSpace(tabTitle) ? $"Tab {index + 1}" : tabTitle)
+                        </button>
+
+                        index++;
+                    }
+                </div>
+
+                <div class="tab-content-wrapper">
+                    @{
+                        var contentIndex = 0;
+                    }
+
+                    @foreach (var tab in tabs)
+                    {
+                        var tabHeading = tab.Content?.Value<string>("tabHeading");
+                        var tabContent = tab.Content?.Value<string>("tabContent");
+                        var tabImage = tab.Content?.Value<IPublishedContent>("tabImage");
+                        var tabTargetId = $"{sectionId}-tab-{contentIndex}";
+
+                        <div class="tab-content @(contentIndex == 0 ? "active" : "")"
+                             id="@tabTargetId"
+                             role="tabpanel"
+                             aria-hidden="@(contentIndex == 0 ? "false" : "true")">
+
+                            <div class="tab-text">
+                                @if (!string.IsNullOrWhiteSpace(tabHeading))
+                                {
+                                    <h3>@tabHeading</h3>
+                                }
+
+                                @if (!string.IsNullOrWhiteSpace(tabContent))
+                                {
+                                    @Html.Raw(tabContent)
+                                }
+                            </div>
+
+                            @if (tabImage != null)
+                            {
+                                <div class="tab-image">
+                                    <img src="@tabImage.Url()" alt="@tabHeading" />
+                                </div>
+                            }
+                        </div>
+
+                        contentIndex++;
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</section>

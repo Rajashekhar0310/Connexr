@@ -1,0 +1,356 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var cards = Model.Content.Value<BlockListModel>("cards");
+    var layoutStyle = Model.Content.Value<string>("layoutStyle") ?? "Style1";
+
+    var smallLabel = Model.Content.Value<string>("smallLabel");
+    var heading = Model.Content.Value<string>("heading");
+    var highlightWord = Model.Content.Value<string>("highlightWord");
+    var description = Model.Content.Value<string>("description");
+       
+   
+   var cardVideo = Model.Content.Value<IPublishedContent>("cardVideo");
+
+
+    var certifications = Model.Content.Value<IEnumerable<IPublishedContent>>("certifications");
+
+    if (!string.IsNullOrWhiteSpace(highlightWord) &&
+        !string.IsNullOrWhiteSpace(heading))
+    {
+        heading = heading.Replace(
+            highlightWord,
+            $"<span>{highlightWord}</span>"
+        );
+    }
+}
+
+<section class="about-cards-section @layoutStyle">
+
+    <div class="container">
+
+       <div class="section-header">
+
+    @if (!string.IsNullOrWhiteSpace(smallLabel))
+    {
+        <span class="section-label">
+            @smallLabel
+        </span>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(heading))
+    {
+        <h2>
+            @Html.Raw(
+                heading.Replace(Environment.NewLine, "<br/>")
+            )
+        </h2>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(description))
+    {
+        <p>@description</p>
+    }
+
+</div>
+
+        @* =========================
+           STYLE 2 - SWIPER
+        ========================== *@
+
+       @if (layoutStyle == "Style2")
+{
+   <div class="about-cards-section Style2">
+
+    <div class="slider-nav">
+        <div class="swiper-button-prev custom-prev"></div>
+        <div class="slider-line"></div>
+        <div class="swiper-button-next custom-next"></div>
+    </div>
+
+    <div class="swiper aboutCardsSwiper">
+        <div class="swiper-wrapper">
+
+            @if (cards != null)
+            {
+                foreach (var card in cards)
+                {
+                    var content = card.Content;
+
+                    var image = content.Value<IPublishedContent>("image");
+                    var video = content.Value<IPublishedContent>("cardVideo"); // ✅ renamed to avoid conflict
+                    var buttonText = content.Value<string>("buttonText");
+                    var buttonLink = content.Value<Umbraco.Cms.Core.Models.Link>("buttonLink");
+
+                    <div class="swiper-slide">
+                        <div class="card-item">
+
+                           @if (video != null && !string.IsNullOrEmpty(video.Url()))
+                                {
+                                    <video autoplay muted loop playsinline>
+                                        <source src="@video.Url()" type="video/mp4" />
+                                    </video>
+                                }
+                                else if (image != null)
+                                {
+                                    <img src="@image.Url()" alt="@image.Name" />
+                                }
+                            <div class="card-overlay">
+                                <div class="card-content">
+
+                                    <h3>@content.Value("title")</h3>
+                                    <p>@content.Value("description")</p>
+
+                                    @if (buttonLink != null)
+                                    {
+                                        <a href="@buttonLink.Url"
+                                           target="@buttonLink.Target"
+                                           class="card-btn">
+                                            @(string.IsNullOrWhiteSpace(buttonText)
+                                                ? buttonLink.Name
+                                                : buttonText)
+                                        </a>
+                                    }
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+            }
+
+        </div>
+    </div>
+
+</div>
+
+}
+else if (layoutStyle == "Style3")
+{
+    <div class="card-grid">
+
+        @if (cards != null)
+        {
+            foreach (var card in cards)
+            {
+                var image = card.Content.Value<IPublishedContent>("image");
+
+                <div class="card-item">
+
+                 @if (cardVideo != null)
+                    {
+                        <video autoplay muted loop playsinline>
+                            <source src="@cardVideo.Url()" type="video/mp4" />
+                        </video>
+                    }
+                    else if (image != null)
+                    {
+                        <img src="@image.Url()" alt="@image.Name"  />
+                    }
+
+                    <div class="card-overlay">
+
+                        <div class="card-content">
+
+                            <h3>@card.Content.Value("title")</h3>
+
+                            <p>@card.Content.Value("description")</p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+        }
+
+    </div>
+
+    @if (certifications != null && certifications.Any())
+    {
+        <div class="certification-row">
+
+            @foreach (var cert in certifications)
+            {
+                <div class="certification-item">
+                    <img src="@cert.Url()" alt="@cert.Name" />
+                </div>
+            }
+
+        </div>
+    }
+
+    <div class="bottom-line"></div>
+}
+
+else if (layoutStyle == "Style4")
+{
+    <div class="card-grid style4-grid">
+
+        @if (cards != null)
+        {
+            foreach (var card in cards)
+            {
+                <!-- var cardDescription = card.Content.Value<BlockListModel>("description"); -->
+                var image = card.Content.Value<IPublishedContent>("image");
+
+                <div class="card-item">
+
+                    @if (cardVideo != null)
+                    {
+                        <video autoplay muted loop playsinline>
+                            <source src="@cardVideo.Url()" type="video/mp4" />
+                        </video>
+                    }
+                    else if (image != null)
+                    {
+                        <img src="@image.Url()" alt="@image.Name" />
+                    }
+
+                    <div class="card-overlay">
+
+                        <div class="card-title-wrap">
+
+                            <div class="stat-text">
+                                @card.Content.Value("statText")
+                            </div>
+
+                        </div>
+
+                        <div class="card-bottom">
+
+                            @if (!string.IsNullOrWhiteSpace(card.Content.Value<string>("statSubText")))
+                            {
+                                <div class="card-label">
+                                    @card.Content.Value("statSubText")
+                                </div>
+                            }
+
+                            <h3>
+                                @card.Content.Value("title")
+                            </h3>
+                            
+                                    @{
+                                            var cardDescription = card.Content.Value<BlockListModel>("description");
+                                        }
+
+                                        @if (cardDescription != null)
+                                        {
+                                            @await Html.GetBlockListHtmlAsync(cardDescription)
+                                        }                         
+                           
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+        }
+
+    </div>
+}
+
+else
+{
+<div class="section-header-wrap">
+
+        <div class="section-header">
+
+            <div class="top-dots">
+                <span></span>
+                <span></span>
+            </div>
+
+            
+
+        </div>
+
+        <a href="#" class="view-more-btn">
+            View More
+
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M5 12H19M19 12L13 6M19 12L13 18"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round" />
+            </svg>
+        </a>
+
+    </div>
+
+    <div class="card-grid">
+
+    @if (cards != null)
+    {
+        foreach (var card in cards)
+        {
+            var image = card.Content.Value<IPublishedContent>("image");
+       
+
+            var statText = card.Content.Value<string>("statText");
+            var statSubText = card.Content.Value<string>("statSubText");
+
+            <div class="card-item">
+
+                @if (cardVideo != null)
+                {
+                    <video autoplay muted loop playsinline>
+                        <source src="@cardVideo.Url()" type="video/mp4" />
+                    </video>
+                }
+                else if (image != null)
+                {
+                    <img src="@image.Url()" alt="@image.Name" />
+                }
+
+                <div class="card-overlay">
+
+                    <div class="card-top">
+
+                        @if (!string.IsNullOrWhiteSpace(statSubText))
+                        {
+                            <div class="stat-sub">
+                                @statSubText
+                            </div>
+                        }
+
+                        <div class="stat-text">
+                            @statText
+                        </div>
+
+                    </div>
+
+                    <div class="card-bottom">
+
+                        <h3>
+                            @card.Content.Value("title")
+                        </h3>
+
+                        <p>
+                            @card.Content.Value("description")
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+    }
+
+</div>
+
+
+ }
+        
+
+    </div>
+
+
+</section>

@@ -1,0 +1,95 @@
+﻿@using Umbraco.Cms.Core.Models.Blocks
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var smallLabel = Model.Content.Value<string>("smallLabel");
+    var heading = Model.Content.Value<string>("heading");
+    var description = Model.Content.Value<string>("description");
+    var highlightWord = Model.Content.Value<string>("highlightWord");
+
+    var items = Model.Content.Value<BlockListModel>("accordions");
+
+    if (!string.IsNullOrWhiteSpace(highlightWord) &&
+        !string.IsNullOrWhiteSpace(heading))
+    {
+        heading = heading.Replace(
+            highlightWord,
+            $"<span class='highlight'>{highlightWord}</span>"
+        );
+    }
+}
+
+<section class="faq-section">
+
+    <div class="faq-layout">
+
+        <div class="faq-left">
+
+            @if (!string.IsNullOrWhiteSpace(smallLabel))
+            {
+                <span class="faq-label">@smallLabel</span>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(heading))
+            {
+                <h2>
+                    @Html.Raw(heading?.Replace("|", "<br />"))
+                </h2>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(description))
+            {
+                <p>
+                    @Html.Raw(description?.Replace(Environment.NewLine, "<br />"))
+                </p>
+            }
+
+            <div class="faq-dots">
+                <span></span>
+                <span></span>
+            </div>
+
+        </div>
+
+        <div class="faq-right">
+
+            @if (items != null)
+            {
+                int count = 1;
+
+                foreach (var item in items)
+                {
+                    var question = item.Content.Value<string>("question");
+                    var answer = item.Content.Value<string>("answer");
+
+                    <details class="faq-item" @(count == 1 ? "open" : "")>
+
+                        <summary>
+
+                            <span class="faq-number">
+                                @count.ToString("D2")
+                            </span>
+
+                            <span class="faq-question">
+                                @question
+                            </span>
+
+                            <span class="faq-icon"></span>
+
+                        </summary>
+
+                        <div class="faq-answer">
+                            @Html.Raw(answer)
+                        </div>
+
+                    </details>
+
+                    count++;
+                }
+            }
+
+        </div>
+
+    </div>
+
+</section>

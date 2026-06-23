@@ -1,0 +1,48 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Web.Common.PublishedModels
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.AboutUs>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels
+
+@{
+    Layout = "master.cshtml";
+
+    var blocks = Model.Value<BlockListModel>("content");
+}
+
+<div class="page-content">
+
+    @if (blocks != null)
+    {
+        @foreach (var block in blocks)
+        {
+            var image = block.Content.Value<IPublishedContent>("image");
+
+            <section class="content-block image-content">
+
+                <div class="image-content-wrapper">
+
+                    <div class="image-section">
+
+                        @if (image != null)
+                        {
+                            <img src="@image.Url()" alt="@image.Name" />
+                        }
+
+                    </div>
+
+                    <div class="text-section">
+
+                        <h2>@Model.Value("title")</h2>
+
+                        @Html.Raw(block.Content.Value<string>("content"))
+
+                    </div>
+
+                </div>
+
+            </section>
+        }
+    }
+
+</div>

@@ -1,5 +1,14 @@
-
+using Microsoft.AspNetCore.Http.Features;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 524288000; // 500 MB
+});
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.Limits.MaxRequestBodySize = 524288000; // 500 MB
+});
 
 builder.CreateUmbracoBuilder()
     .AddBackOffice()

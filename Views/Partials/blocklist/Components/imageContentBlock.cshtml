@@ -1,0 +1,80 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Extensions
+
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    // Get all content values with proper null handling
+    string title = Model.Content.Value<string>("title") ?? "";
+    string description = Model.Content.Value<string>("content") ?? "";
+    string buttonText = Model.Content.Value<string>("buttonText") ?? "";
+    Link buttonLink = Model.Content.Value<Link>("buttonLink");
+    IPublishedContent image = Model.Content.Value<IPublishedContent>("ctaImage");
+    string imagePosition = Model.Content.Value<string>("imagePosition") ?? "left";
+    
+    // Normalize image position
+    bool isReverse = imagePosition.Equals("right", StringComparison.OrdinalIgnoreCase);
+}
+
+<section class="cta-section">
+    <div class="container">
+
+        <div class="cta-wrapper @(isReverse ? "cta-wrapper--reverse" : "")">
+
+            @* ── IMAGE SECTION ── *@
+            <div class="cta-image">
+
+              
+                @if (image != null)
+                {
+                    <img src="@image.Url()"
+                         alt="@(image.Value<string>("umbracoAltText") ?? title ?? "CTA Image")"
+                         loading="lazy"
+                         width="650"
+                         height="auto" />
+                }
+                else
+                {
+                    <div class="cta-image-placeholder">
+                        <p>Image not set</p>
+                    </div>
+                }
+
+            </div>
+
+            @* ── CONTENT SECTION ── *@
+            <div class="cta-content">
+
+                <div class="cta-content-dots">
+                    <span></span>
+                    <span></span>
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(title))
+                {
+                    <h2>@Html.Raw(title)</h2>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(description))
+                {
+                    <p>@description</p>
+                }
+
+                @if (buttonLink != null)
+                {
+                    <a href="@buttonLink.Url"
+                       target="@(string.IsNullOrWhiteSpace(buttonLink.Target) ? "_self" : buttonLink.Target)"
+                       class="cta-btn"
+                       aria-label="@(string.IsNullOrWhiteSpace(buttonText) ? buttonLink.Name : buttonText)">
+                        @(string.IsNullOrWhiteSpace(buttonText) ? buttonLink.Name : buttonText)
+                    </a>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+</section>

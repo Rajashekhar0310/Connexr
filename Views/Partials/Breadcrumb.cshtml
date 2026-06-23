@@ -1,0 +1,23 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+
+@{
+    var theme = Model.Value<string>("breadcrumbTheme");
+}
+
+@if (Model.Level > 1)
+{
+    <nav class="breadcrumb breadcrumb--@(theme?.ToLower())">
+
+        <a href="@Model.Root().Url()">@Model.Root().Name</a>
+
+        @foreach (var ancestor in Model.Ancestors().Where(x => x.Level > 1).Reverse())
+        {
+            <span>/</span>
+            <a href="@ancestor.Url()">@ancestor.Name</a>
+        }
+
+        <span>/</span>
+        <span>@Model.Name</span>
+
+    </nav>
+}

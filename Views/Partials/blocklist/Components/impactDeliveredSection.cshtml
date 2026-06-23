@@ -1,0 +1,98 @@
+﻿@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var title = content.Value<string>("title");
+    var highlightText = content.Value<string>("highlightText");
+
+    var videos = content.Value<IEnumerable<IPublishedContent>>("backgroundVideo");
+    var video = videos?.FirstOrDefault();
+
+    var stats = content.Value<BlockListModel>("statistics");
+}
+
+<section class="impact-section">
+
+    @if (video != null)
+    {
+        <video autoplay muted loop playsinline class="impact-video">
+            <source src="@video.Url()" type="video/mp4">
+        </video>
+    }
+
+    <div class="impact-overlay"></div>
+
+    <div class="impact-content">
+
+        <h2 class="impact-title">
+            @title <span>@highlightText</span>
+        </h2>
+
+        @if (stats != null && stats.Any())
+        {
+            <div class="impact-cards">
+
+                @foreach (var item in stats)
+                    {
+                        var stat = item.Content;
+
+                        var number = stat.Value<string>("number");
+                        var heading = stat.Value<string>("heading");
+                        var description = stat.Value<string>("description");
+                        var bgColor = stat.Value<string>("backgroundColor");
+
+                        var numericValue = new string((number ?? "").Where(char.IsDigit).ToArray());
+                        var suffix = (number ?? "").Replace(numericValue, "");
+
+                        <div class="impact-card" style="background:@bgColor;">
+
+                            <div class="impact-number">
+                                <span class="counter" data-target="@numericValue">0</span>@suffix
+                            </div>
+
+                            <div class="impact-info">
+                                <h3>@heading</h3>
+                                <p>@description</p>
+                            </div>
+
+                        </div>
+                    }
+
+            </div>
+        }
+
+    </div>
+
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    const counters = document.querySelectorAll(".counter");
+
+    counters.forEach(counter => {
+
+        const target = parseInt(counter.dataset.target) || 0;
+        let current = 0;
+        const duration = 2000;
+        const stepTime = 16;
+        const increment = target / (duration / stepTime);
+
+        function update() {
+            current += increment;
+
+            if (current < target) {
+                counter.textContent = Math.floor(current);
+                requestAnimationFrame(update);
+            } else {
+                counter.textContent = target;
+            }
+        }
+
+        update();
+    });
+
+});
+</script>

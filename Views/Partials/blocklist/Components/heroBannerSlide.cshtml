@@ -1,0 +1,115 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.HomePage>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+
+
+@{
+    var heroBannerSlider = Model.Value<BlockListModel>("heroBannerSlider");
+        
+  
+      
+}
+
+@if (heroBannerSlider != null && heroBannerSlider.Any())
+{
+    <section class="hero-slider">
+
+        @foreach (var slide in heroBannerSlider)
+        {
+            var heading = slide.Content.Value<string>("heroTitle");
+            var subHeading = slide.Content.Value<string>("heroSubtitle");
+            var description = slide.Content.Value<string>("description");
+
+            var backgroundVideo = slide.Content.Value<IPublishedContent>("backgroundVideo");
+            var backgroundImage = slide.Content.Value<IPublishedContent>("backgroundImage");
+
+            var imageWidth = slide.Content.Value<int?>("backgroundImageWidth") ?? 1920;
+            var imageHeight = slide.Content.Value<int?>("backgroundImageHeight") ?? 1080;
+
+            var videoWidth = slide.Content.Value<int?>("backgroundVideoWidth") ?? 1920;
+            var videoHeight = slide.Content.Value<int?>("backgroundVideoHeight") ?? 1080;
+
+            var bannerHeight = slide.Content.Value<int?>("bannerHeight") ?? 700;
+            var overlayOpacity = slide.Content.Value<int?>("overlayOpacity") ?? 50;
+
+            var textAlignment = slide.Content.Value<string>("textAlignment") ?? "Center";
+
+            var ctaText = slide.Content.Value<string>("ctaText");
+             var ctaLink = slide.Content.Value<IEnumerable<Link>>("ctaLink")?.FirstOrDefault();
+           
+
+            var enableAutoplay = slide.Content.Value<bool>("enableAutoplay");
+            var enableLoop = slide.Content.Value<bool>("enableLoop");
+            var muteVideo = slide.Content.Value<bool>("muteVideo");
+                var alignments = slide.Content?.Value<IEnumerable<string>>("textAlignment");
+    var alignment = alignments?.FirstOrDefault()?.ToLower() ?? "left";
+
+            <div class="hero-banner" style="height:@(bannerHeight)vh;">
+
+                @if (backgroundVideo != null)
+                {
+                    <video class="hero-video"
+                           width="@videoWidth"
+                           height="@videoHeight"
+                           @(enableAutoplay ? "autoplay" : "")
+                           @(enableLoop ? "loop" : "")
+                           @(muteVideo ? "muted" : "")
+                           playsinline>
+
+                        <source src="@backgroundVideo.Url()" type="video/mp4" />
+
+                    </video>
+                }
+                else if (backgroundImage != null)
+                {
+                    <img src="@backgroundImage.Url()"
+                         alt="@heading"
+                         width="@imageWidth"
+                         height="@imageHeight"
+                         class="hero-image" />
+                }
+
+                <div class="hero-overlay"
+                     style="background: #122560F0;">
+                </div>
+
+             <div class="hero-content text-@alignment">
+
+                    @if (!string.IsNullOrWhiteSpace(heading))
+                    {
+                        <h1>@heading</h1>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(subHeading))
+                    {
+                        <h3>@subHeading</h3>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(description))
+                    {
+                        <div class="hero-description">
+                            @Html.Raw(description)
+                        </div>
+                    }
+            
+
+                 @if (ctaLink != null)
+                    {
+                        <a href="@ctaLink.Url"
+                        target="@ctaLink.Target"
+                        class="hero-btn">
+                            @(string.IsNullOrWhiteSpace(ctaText) ? ctaLink.Name : ctaText)
+                        </a>
+                    }
+
+
+
+                </div>
+
+            </div>
+        }
+
+    </section>
+}

@@ -1,0 +1,128 @@
+﻿
+
+       @using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Extensions
+
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var eyebrowText = content.Value<string>("eyebrowText") ?? "";
+    var heading = content.Value<string>("heading") ?? "";
+    var highlightText = content.Value<string>("highlightText") ?? "";
+    var description = content.Value<string>("description") ?? "";
+    var buttonText = content.Value<string>("buttonText") ?? "";
+    var buttonLink = content.Value<IEnumerable<Link>>("buttonLink")?.FirstOrDefault();
+    var partners = content.Value<BlockListModel>("partnerLogos");
+}  
+<section class="ps-section">
+    <div class="container">
+<div class="ps-inner">
+
+
+            @* LEFT: Text content *@
+              <div class="ps-text">
+
+                @if (!string.IsNullOrWhiteSpace(eyebrowText))
+                {
+                    <p class="ps-eyebrow">@eyebrowText</p>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(heading) || !string.IsNullOrWhiteSpace(highlightText))
+                {
+                    <h2 class="ps-heading">
+                        @if (!string.IsNullOrWhiteSpace(heading))
+                        {
+                            <span class="ps-heading__main">@heading</span>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(highlightText))
+                        {
+                            <span class="ps-heading__highlight">@highlightText</span>
+                        }
+                    </h2>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(description))
+                {
+                    <div class="ps-description">
+                        @Html.Raw(description)
+                    </div>
+                }
+
+                @if (buttonLink != null)
+                {
+                    <a href="@buttonLink.Url"
+                       target="@(string.IsNullOrWhiteSpace(buttonLink.Target) ? "_self" : buttonLink.Target)"
+                       class="ps-btn">
+
+                        <span>@buttonText</span>
+
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 8H13M13 8L9 4M13 8L9 12"
+                                  stroke="currentColor"
+                                  stroke-width="1.5"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                }
+
+            </div>
+
+            @* RIGHT: Logo cards *@
+            <div class="ps-logos-wrapper">
+
+                @if (partners != null && partners.Any())
+                {
+                    foreach (var block in partners)
+                    {
+                        var logo = block.Content.Value<IPublishedContent>("partnerLogo");
+                        var bgColor = block.Content.Value<string>("backgroundColor") ?? "";
+                        var cardWidth = block.Content.Value<int?>("cardWidth") ?? 0;
+                        var cardHeight = block.Content.Value<int?>("cardHeight") ?? 0;
+                        var posLeft = block.Content.Value<int?>("positionLeft") ?? 0;
+                        var posTop = block.Content.Value<int?>("positionTop") ?? 0;
+                        var cssClass = block.Content.Value<string>("customCssClass") ?? "";
+
+                        var styleStr = $"left:{posLeft}px;top:{posTop}px;position:absolute;";
+
+                        if (cardWidth > 0)
+                        {
+                            styleStr += $"width:{cardWidth}px;";
+                        }
+
+                        if (cardHeight > 0)
+                        {
+                            styleStr += $"height:{cardHeight}px;";
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(bgColor))
+                        {
+                            styleStr += $"background-color:{bgColor};";
+                        }
+
+                        if (logo != null)
+                        {
+                            <div class="ps-card @cssClass" style="@styleStr">
+
+                                <img src="@logo.Url()"
+                                     alt="@logo.Name"
+                                     loading="lazy" />
+
+                            </div>
+                        }
+
+                    }
+                }
+
+            </div>
+
+
+        </div>
+    </div>
+</section> 

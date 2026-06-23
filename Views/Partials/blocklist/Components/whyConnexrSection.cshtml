@@ -1,0 +1,137 @@
+﻿@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Extensions
+
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var smallHeading = content.Value<string>("smallHeading");
+    var title = content.Value<string>("title");
+    var highlightText = content.Value<string>("highlightText");
+    var description = content.Value<string>("description");
+
+    var centerLogo = content.Value<IPublishedContent>("centerLogo");
+
+    var leftCards = content.Value<BlockListModel>("leftCards");
+    var rightCards = content.Value<BlockListModel>("rightCards");
+}
+<section class="why-connexr">
+    <div class="container">
+
+        <div class="section-header">
+
+            <div class="top-dots">
+                <span></span>
+                <span></span>
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(smallHeading))
+            {
+                <div class="sub-heading">@smallHeading</div>
+            }
+
+            <h2 class="section-title">
+                @title <span>@highlightText</span>
+            </h2>
+
+            @if (!string.IsNullOrWhiteSpace(description))
+            {
+                <p class="section-desc">@description</p>
+            }
+
+        </div>
+
+        <div class="apart-wrapper">
+            <div class="cards-column left-column">
+
+    @if (leftCards != null)
+    {
+        foreach (var card in leftCards)
+        {
+            var image = card.Content.Value<IPublishedContent>("cardImage");
+            var cardTitle = card.Content.Value<string>("cardTitle");
+            var cardDescription = card.Content.Value<string>("cardDescription");
+
+            <div class="feature-card">
+
+                @if (image != null)
+                {
+                    <img src="@image.Url()" alt="@cardTitle" />
+                }
+
+                <div class="card-content">
+                    <h3>@cardTitle</h3>
+                    <p>@cardDescription</p>
+                </div>
+
+            </div>
+        }
+    }
+
+</div>
+<div class="center-area">
+
+    <svg class="curve curve-left-top" viewBox="0 0 150 80">
+        <path d="M0 40 C45 40, 70 40, 120 70"></path>
+        <circle cx="0" cy="40" r="4"></circle>
+        <circle cx="120" cy="70" r="4"></circle>
+    </svg>
+
+    <svg class="curve curve-left-bottom" viewBox="0 0 150 80">
+        <path d="M0 40 C45 40, 70 40, 120 10"></path>
+        <circle cx="0" cy="40" r="4"></circle>
+        <circle cx="120" cy="10" r="4"></circle>
+    </svg>
+
+    <svg class="curve curve-right-top" viewBox="0 0 150 80">
+        <path d="M30 70 C80 40, 100 40, 150 40"></path>
+        <circle cx="30" cy="70" r="4"></circle>
+        <circle cx="150" cy="40" r="4"></circle>
+    </svg>
+
+    <svg class="curve curve-right-bottom" viewBox="0 0 150 80">
+        <path d="M30 10 C80 40, 100 40, 150 40"></path>
+        <circle cx="30" cy="10" r="4"></circle>
+        <circle cx="150" cy="40" r="4"></circle>
+    </svg>
+
+    <div class="center-logo">
+        @if (centerLogo != null)
+        {
+            <img src="@centerLogo.Url()" alt="@centerLogo.Name" />
+        }
+    </div>
+
+</div>
+<div class="cards-column right-column">
+
+    @if (rightCards != null)
+    {
+        foreach (var card in rightCards)
+        {
+            var image = card.Content.Value<IPublishedContent>("cardImage");
+            var cardTitle = card.Content.Value<string>("cardTitle");
+            var cardDescription = card.Content.Value<string>("cardDescription");
+
+            <div class="feature-card">
+
+                @if (image != null)
+                {
+                    <img src="@image.Url()" alt="@cardTitle" />
+                }
+
+                <div class="card-content">
+                    <h3>@cardTitle</h3>
+                    <p>@cardDescription</p>
+                </div>
+
+            </div>
+        }
+    }
+
+</div>
+        </div>
+    </div>
+</section>

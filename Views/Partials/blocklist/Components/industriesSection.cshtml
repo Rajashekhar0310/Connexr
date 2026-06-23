@@ -1,0 +1,211 @@
+﻿
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var sectionTag = content.Value<string>("sectionTag");
+    var heading = content.Value<string>("heading");
+    var headingHighlight = content.Value<string>("headingHighlight");
+    var buttonText = content.Value<string>("buttonText");
+    var buttonLink = content.Value<string>("buttonLink");
+
+var industries = content.Value<BlockListModel>("industries");
+
+    IPublishedElement? firstIndustry = industries.FirstOrDefault()?.Content;
+    var firstImage = firstIndustry?.Value<IPublishedContent>("industryImage");
+        
+}
+    
+<section class="industries">
+
+    <div class="container">
+
+        <!-- Header -->
+        <div class="industries-header">
+
+            <div class="heading-left">
+
+                <div class="top-dots">
+                    <span></span>
+                    <span></span>
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(sectionTag))
+                {
+                    <p class="section-tag">@sectionTag</p>
+                }
+    
+                <h2>
+                    @Html.Raw((heading ?? "").Replace(Environment.NewLine, "<br />"))
+                    <span>@headingHighlight</span>
+                </h2>
+
+            </div>
+
+            <a href="@(buttonLink ?? "#")" class="view-btn">
+                @(buttonText ?? "View More") →
+            </a>
+
+        </div>
+
+        <!-- Tabs -->
+        @if (industries.Any())
+        {
+            <div class="industry-tabs">
+
+                @{
+                    var counter = 1;
+                }
+
+                @foreach (var industry in industries)
+                {
+                   var titleText = industry.Content.Value<string>("title");
+var subtitleText = industry.Content.Value<string>("subtitle");
+
+                    <div class="industry-card @(counter == 1 ? "active" : "")"
+                         data-tab="industry-@counter">
+
+                        <span class="count">
+                            @counter.ToString("00")
+                        </span>
+
+                     <h3>@titleText</h3>
+<p>@subtitleText</p>
+
+                    </div>
+
+                    counter++;
+                }
+
+            </div>
+
+            <!-- Content -->
+            <div class="industry-content">
+
+                <div class="industry-image">
+
+                    <img id="industryImage"
+                         src="@(firstImage?.Url() ?? "")"
+                         alt="@(firstIndustry?.Value<string>("title") ?? "")">
+                         <!-- <p>@firstIndustry?.Value("image")</p> -->
+
+                </div>
+
+                <div class="industry-info">
+
+                    <h3 id="industryTitle">
+                        @(firstIndustry?.Value<string>("title") ?? "")
+                    </h3>
+
+                    <h4 id="industrySubtitle">
+                        @(firstIndustry?.Value<string>("subtitle") ?? "")
+                    </h4>
+
+                    <p id="industryDescription">
+                        @(firstIndustry?.Value<string>("description") ?? "")
+                    </p>
+
+                    <a id="industryLink"
+                       href="@(firstIndustry?.Value<string>("readMoreLink") ?? "#")"
+                       class="read-btn">
+
+                        <span id="industryButtonText">
+                            @(firstIndustry?.Value<string>("readMoreText") ?? "Read More")
+                        </span>
+
+                        <div class="circle-arrow">→</div>
+
+                    </a>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+
+
+</section>
+
+@if (industries.Any())
+{
+<script>
+
+const industries = {
+
+@{
+    var index = 1;
+
+    foreach (var industry in industries)
+    {
+        IPublishedElement industryItem = industry.Content;
+      var image = industryItem.Value<IPublishedContent>("industryImage");;
+
+<text>
+"industry-@index": {
+    title: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(industryItem.Value<string>("title"))),
+    subtitle: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(industryItem.Value<string>("subtitle"))),
+    description: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(industryItem.Value<string>("description"))),
+    image: "@(image?.Url() ?? "")",
+    link: "@(industryItem.Value<string>("readMoreLink") ?? "#")",
+    buttonText: "@(industryItem.Value<string>("readMoreText") ?? "Read More")"
+},
+</text>
+
+        index++;
+    }
+}
+
+};
+
+const cards = document.querySelectorAll('.industry-card');
+
+const title = document.getElementById('industryTitle');
+const subtitle = document.getElementById('industrySubtitle');
+const description = document.getElementById('industryDescription');
+const image = document.getElementById('industryImage');
+const link = document.getElementById('industryLink');
+const buttonText = document.getElementById('industryButtonText');
+
+cards.forEach(card => {
+
+    card.addEventListener('click', () => {
+
+        cards.forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+
+        const data = industries[card.dataset.tab];
+
+        if (!data) return;
+
+        title.textContent = data.title;
+        subtitle.textContent = data.subtitle;
+        description.textContent = data.description;
+
+        image.src = data.image;
+
+        link.href = data.link;
+        buttonText.textContent = data.buttonText;
+
+        title.classList.add('fade');
+        subtitle.classList.add('fade');
+        description.classList.add('fade');
+        image.classList.add('fade');
+
+        setTimeout(() => {
+            title.classList.remove('fade');
+            subtitle.classList.remove('fade');
+            description.classList.remove('fade');
+            image.classList.remove('fade');
+        }, 400);
+
+    });
+
+});
+
+</script>
+}
+

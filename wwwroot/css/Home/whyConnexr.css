@@ -1,0 +1,302 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+.why-connexr{
+    padding:100px ;
+   
+}
+.section-header{
+    max-width:500px;
+    margin-bottom:60px;
+}
+
+.top-dots{
+    display:flex;
+    gap:6px;
+    margin-bottom:12px;
+}
+
+.top-dots span{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:#F28C28;
+}
+
+.sub-heading{
+    font-family:'Poppins',sans-serif;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:#121212;
+    margin-bottom:10px;
+}
+
+.section-title{
+    font-family:'Poppins',sans-serif;
+    font-size:48px;
+    font-weight:600;
+    line-height:1.2;
+    color:#121212;
+    margin-bottom:16px;
+}
+
+.section-desc{
+    font-family:'DM Sans',sans-serif;
+    font-size:14px;
+    line-height:1.8;
+    color:#555;
+    max-width:450px;
+}
+.section-title span{
+    color:#F28C28;
+}
+
+
+
+/* =========================
+   MAIN LAYOUT
+========================= */
+
+.apart-wrapper{
+    display:grid;
+    grid-template-columns:1fr 300px 1fr;
+    align-items:center;
+    gap: 30px;
+}
+
+/* =========================
+   CARD COLUMNS
+========================= */
+
+.cards-column{
+    display:flex;
+    flex-direction:column;
+    gap:50px;
+}
+
+.feature-card{
+    position:relative;
+    overflow:hidden;
+    height:340px;
+   
+}
+
+.feature-card img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  
+}
+
+.card-content{
+    position:absolute;
+    bottom:0;
+    min-height:140px;
+    padding:24px 20px;
+    color:#fff;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.card-content h3{
+    font-family:'Poppins',sans-serif;
+    font-size:18px;
+    font-weight:600;
+    line-height:1.2;
+    margin-bottom:12px;
+}
+
+.card-content p{
+    font-family:'DM Sans',sans-serif;
+    font-size:14px;
+    font-weight:400;
+    line-height:1.6;
+    color:rgba(255,255,255,.95);
+}
+/* LEFT CARDS */
+.left-column .card-content{
+    left:0;
+    width:82%;
+}
+
+/* RIGHT CARDS */
+.right-column .card-content{
+    right:0;
+    width:82%;
+}
+
+.left-column .feature-card:first-child .card-content{
+    background:rgba(52,75,75,.92);
+}
+
+.left-column .feature-card:last-child .card-content{
+    background:rgba(44,67,132,.92);
+}
+
+.right-column .feature-card:first-child .card-content{
+    background:rgba(85,89,99,.88);
+}
+
+.right-column .feature-card:last-child .card-content{
+    background:rgba(214,214,214,.80);
+}
+
+/* =========================
+   CENTER LOGO
+========================= */
+
+.center-logo{
+    position:relative;
+    width:220px;
+    height:220px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.center-logo img{
+    width:120px;
+    position:relative;
+    z-index:3;
+}
+
+/* =========================
+   CONNECTORS
+========================= */
+/* =========================
+   CENTER AREA
+========================= */
+.center-area{
+    position:relative;
+    width:260px;
+    height:260px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.center-logo{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    z-index:5;
+}
+
+.center-logo img{
+    width:150px;
+}
+
+.curve{
+    position:absolute;
+    overflow:visible;
+}
+
+.curve path{
+    fill:none;
+    stroke:#F28C28;
+    stroke-width:2;
+    stroke-linecap:round;
+}
+
+.curve circle{
+    fill:#F28C28;
+}
+
+.curve-left-top{
+    width:130px;
+    height:80px;
+    left:-70px;
+    top:45px;
+}
+
+.curve-left-bottom{
+    width:130px;
+    height:80px;
+    left:-70px;
+    bottom:45px;
+}
+
+.curve-right-top{
+    width:130px;
+    height:80px;
+    right:-70px;
+    top:45px;
+}
+
+.curve-right-bottom{
+    width:130px;
+    height:80px;
+    right:-70px;
+    bottom:45px;
+}
+
+.left-column .feature-card{
+    border-top-right-radius:16px;
+    border-bottom-right-radius:16px;
+}
+
+/* TOP LEFT CARD */
+.left-column .feature-card:first-child{
+    border-bottom-right-radius:60px;
+}
+
+/* BOTTOM LEFT CARD */
+.left-column .feature-card:last-child{
+    border-top-right-radius:60px;
+}
+
+/* TOP RIGHT CARD */
+.right-column .feature-card:first-child{
+    border-bottom-left-radius:60px;
+}
+
+/* BOTTOM RIGHT CARD */
+.right-column .feature-card:last-child{
+    border-top-left-radius:60px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:991px){
+
+    .apart-wrapper{
+        grid-template-columns:1fr;
+        gap:50px;
+    }
+
+    .center-logo{
+        order:2;
+        margin:auto;
+    }
+
+    .left-column{
+        order:1;
+    }
+
+    .right-column{
+        order:3;
+    }
+
+    .connector{
+        display:none;
+    }
+
+    .section-title{
+        font-size:36px;
+    }
+
+    .feature-card{
+        height:260px;
+    }
+}

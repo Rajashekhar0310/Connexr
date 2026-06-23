@@ -1,0 +1,39 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+@using Umbraco.Cms.Core.Models.Blocks
+
+@{
+    var cards = Model.Content.Value<BlockListModel>("achievementCards");
+}
+
+<section class="achievement-section">
+
+    @foreach(var item in cards)
+    {
+        var content = item.Content;
+
+        var number = content.Value<string>("number");
+        var title = content.Value<string>("title");
+        var description = content.Value<string>("description");
+        var image = content.Value<IPublishedContent>("image");
+
+        <div class="achievement-card">
+
+            @if(image != null)
+            {
+                <img src="@image.Url()" />
+            }
+
+            <div class="card-content">
+
+                <h2>@number</h2>
+
+                <h3>@title</h3>
+
+                <p>@description</p>
+
+            </div>
+
+        </div>
+    }
+
+</section>

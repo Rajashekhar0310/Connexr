@@ -1,0 +1,156 @@
+﻿@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Extensions
+
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var smallHeading = content.Value<string>("smallHeading");
+    var titleLine1 = content.Value<string>("titleLine1");
+    var highlightText = content.Value<string>("highlightText");
+    var description = content.Value<string>("description");
+
+    var buttonText = content.Value<string>("buttonText");
+    var buttonLink = content.Value<IEnumerable<Link>>("buttonLink")?.FirstOrDefault();
+
+    var cards = content.Value<BlockListModel>("insightCards");
+}
+
+<section class="insight-v2-section">
+    <div class="container">
+
+        <div class="insight-v2-header">
+
+            <div class="insight-v2-heading">
+
+                <div class="insight-v2-dots">
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <span class="insight-v2-eyebrow">
+                    @smallHeading
+                </span>
+
+                <h2 class="insight-v2-title">
+                    <span>@highlightText</span> @titleLine1
+                </h2>
+
+                <p class="insight-v2-desc">
+                    @description
+                </p>
+
+            </div>
+
+            @if(buttonLink != null)
+            {
+                <a href="@buttonLink.Url" class="insight-v2-view-btn">
+                    <span>@buttonText</span>
+                    <span class="insight-v2-view-icon">↗</span>
+                </a>
+            }
+
+        </div>
+
+        <div class="insight-v2-grid">
+
+            @if(cards != null)
+            {
+                foreach(var card in cards)
+                {
+                    var image = card.Content.Value<IPublishedContent>("image");
+                    var layout = card.Content.Value<string>("cardLayout");
+
+                    var category = card.Content.Value<string>("tags");
+
+                    var title = card.Content.Value<string>("title");
+                    var cardDesc = card.Content.Value<string>("description");
+
+                    var stat1Value = card.Content.Value<string>("stat1Value");
+                    var stat1Label = card.Content.Value<string>("stat1Label");
+
+                    var stat2Value = card.Content.Value<string>("stat2Value");
+                    var stat2Label = card.Content.Value<string>("stat2Label");
+
+                    var readMoreText = card.Content.Value<string>("readMoreText");
+                    <!-- var readMoreLink = card.Content.Value<Link>("readMoreLink"); -->
+                        var readMoreLink = content.Value<IEnumerable<Link>>("readMoreLink")?.FirstOrDefault();
+
+                    <article class="insight-v2-card @(layout == "horizontal" ? "insight-v2-horizontal" : "insight-v2-vertical")">
+
+                        @if(image != null)
+                        {
+                            <div class="insight-v2-image">
+                                <img src="@image.Url()" alt="@title">
+                            </div>
+                        }
+
+                        <div class="insight-v2-content">
+
+                            <span class="insight-v2-category">
+                                @category
+                            </span>
+
+                            <h3>@title</h3>
+
+                            <p>@cardDesc</p>
+
+                            <div class="insight-v2-stats">
+
+                                @if(!string.IsNullOrWhiteSpace(stat1Value))
+                                {
+                                    <div class="insight-v2-stat">
+                                        <div class="insight-v2-number">
+                                            @stat1Value
+                                        </div>
+
+                                        <div class="insight-v2-label">
+                                            @stat1Label
+                                        </div>
+                                    </div>
+                                }
+
+                                @if(!string.IsNullOrWhiteSpace(stat2Value))
+                                {
+                                    <div class="insight-v2-stat">
+                                        <div class="insight-v2-number">
+                                            @stat2Value
+                                        </div>
+
+                                        <div class="insight-v2-label">
+                                            @stat2Label
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+
+                            @if(readMoreLink != null)
+                            {
+                                <div class="insight-v2-footer">
+
+                                    <a href="@readMoreLink.Url" class="insight-v2-read-btn">
+                                        @readMoreText
+                                    </a>
+
+                                    <span class="insight-v2-arrow">
+                                        ↗
+                                    </span>
+
+                                </div>
+                            }
+
+                        </div>
+
+                    </article>
+                }
+            }
+
+        </div>
+
+    </div>
+
+</section>

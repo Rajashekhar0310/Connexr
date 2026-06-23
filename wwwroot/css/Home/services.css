@@ -1,0 +1,286 @@
+/* ========================================
+   RESET
+======================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    overflow-x:hidden;
+}
+
+/* ========================================
+   SECTION
+======================================== */
+
+[data-component="services-cta"]{
+    position:relative;
+}
+
+/* ========================================
+   SERVICES WRAPPER
+======================================== */
+
+.engineering-services-component .services-wrapper{
+    position:sticky;
+    top:0;
+    height: 100vh;
+    overflow:hidden;
+}
+
+/* ========================================
+   SLIDES
+======================================== */
+
+.engineering-services-component .service{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100vh;
+}
+
+
+
+/* ========================================
+   IMAGES
+======================================== */
+
+.engineering-services-component .media{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+    /* clip-path:inset(100% 0 0 0); */
+}
+
+.service:first-child .media{
+    clip-path:inset(0 0 0 0);
+}
+
+.engineering-services-component .media-inner{
+    position:absolute;
+    inset:0;
+}
+
+.engineering-services-component .media img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+/* ========================================
+   CONTENT
+======================================== */
+
+.engineering-services-component .g-row{
+    position:absolute;
+    inset:0;
+    z-index:50;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    color:#173b7a;
+}
+
+/* ========================================
+   LEFT HEADER
+======================================== */
+
+.engineering-services-component .section-header{
+    position:absolute;
+    top:60px;
+    left:60px;
+    z-index:1000;
+}
+
+.engineering-services-component .dots{
+    display:flex;
+    gap:8px;
+    margin-bottom:18px;
+}
+
+.engineering-services-component .dots span{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#f7933b;
+}
+
+.engineering-services-component .eyebrow{
+    font-size:12px;
+    font-weight:600;
+    color:#173b7a;
+    margin-bottom:12px;
+}
+
+.engineering-services-component .heading-primary,
+.heading-secondary{
+    font-family:'Poppins',sans-serif;
+    font-size:64px;
+    line-height:1;
+}
+
+.engineering-services-component .heading-primary{
+    color:#f7933b;
+}
+
+.engineering-services-component .heading-secondary{
+    color:#173b7a;
+}
+
+/* ========================================
+   TITLE ABOVE LINE
+======================================== */
+
+.engineering-services-component .title-block{
+    width:100%;
+    padding-left:32%;
+    margin-bottom:45px;
+}
+
+.engineering-services-component .title{
+    font-family:'Poppins',sans-serif;
+    font-size:42px;
+    font-weight:600;
+    color:#173b7a;
+}
+
+/* ========================================
+   DESCRIPTION
+======================================== */
+
+.engineering-services-component .lower-content{
+    padding-left:32%;
+      margin-top:80px;
+}
+
+.engineering-services-component .description{
+    max-width:420px;
+    font-size:15px;
+    line-height:1.7;
+    color:#1f1f1f;
+    margin-bottom:24px;
+}
+
+/* ========================================
+   BUTTON
+======================================== */
+
+.engineering-services-component .special-button{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:12px 24px;
+    border-radius:40px;
+    background:#f7933b;
+    color:#fff;
+    text-decoration:none;
+    font-size:14px;
+    font-weight:500;
+}
+
+/* ========================================
+   CENTER LINE
+======================================== */
+
+.engineering-services-component .line-wrapper{
+    position:absolute;
+    inset:0;
+    z-index:900;
+    pointer-events:none;
+}
+
+.engineering-services-component .line{
+    position:absolute;
+    top:50%;
+    left:60px;
+    right:60px;
+    height:1px;
+    /* background:rgba(255,255,255,.3); */
+}
+
+.engineering-services-component .progress{
+    position:absolute;
+    left:0;
+    top:0;
+    height:100%;
+    width:100%;
+    background:#fff;
+}
+
+.engineering-services-component .main-label{
+    position:absolute;
+    left:60px;
+    top:calc(50% + 12px);
+    color:#fff;
+    font-size:12px;
+    font-weight:600;
+}
+
+.engineering-services-component .scroll-label{
+    position:absolute;
+    right:60px;
+    top:calc(50% - 25px);
+    color:#fff;
+    font-size:12px;
+    font-weight:600;
+}
+.engineering-services-component .title-block,
+.g-row,
+.service,
+.services-wrapper{
+    border:none !important;
+}
+
+.engineering-services-component .title-block::before,
+.title-block::after,
+.g-row::before,
+.g-row::after,
+.service::before,
+.service::after{
+    display:none !important;
+    content:none !important;
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media(max-width:991px){
+
+    .section-header{
+        left:30px;
+        top:30px;
+    }
+
+    .heading-primary,
+    .heading-secondary{
+        font-size:42px;
+    }
+
+    .title-block,
+    .lower-content{
+        padding-left:20%;
+    }
+
+    .title{
+        font-size:28px;
+    }
+
+    .line{
+        left:30px;
+        right:30px;
+    }
+
+    .main-label{
+        left:30px;
+    }
+
+    .scroll-label{
+        right:30px;
+    }
+}

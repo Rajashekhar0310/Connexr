@@ -1,0 +1,12 @@
+﻿@using Umbraco.Cms.Core.Models.Blocks
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+
+
+<section class="content-block rich-text">
+
+    <h2>@Model.Content.Value("heading")</h2>
+
+    @Html.Raw(Model.Content.Value("content"))
+
+</section>

@@ -1,0 +1,276 @@
+/* ============================================================
+   SITE HEADER – Updated Version
+   - Overlays on top of expanding/growing video
+   - Smart background handling based on video state
+   - Transparent at top, semi-transparent when over video
+   ============================================================ */
+
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999999;  /* High z-index to stay above video */
+    pointer-events: auto;
+    background: transparent;
+    transition: all 0.3s ease;
+    opacity: 1;
+}
+
+/* Hide header when scrolling down (past banner) */
+.site-header.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-100%);
+    transition: all 0.3s ease;
+}
+
+/* Show header when scrolling back to top */
+.site-header.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+/* ── Over Video: Semi-transparent background (when video grows) ── */
+.site-header.over-video {
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* ── Scrolled state: Subtle white background ── */
+.site-header.scrolled:not(.over-video) {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* ── Header Wrapper: Contained width, not full-width ── */
+.header-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px 30px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    width: calc(100% - 60px);
+}
+
+/* ── Logo ── */
+.logo {
+    flex: 0 0 auto;
+    z-index: 1;
+}
+
+.logo a {
+    display: block;
+    transition: opacity 0.3s ease;
+}
+
+.logo a:hover {
+    opacity: 0.8;
+}
+
+.logo img {
+    max-height: 50px;
+    width: auto;
+    display: block;
+    transition: max-height 0.3s ease;
+}
+
+.site-header.scrolled .logo img {
+    max-height: 45px;
+}
+
+/* ── Navigation Container ── */
+.nav-container {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-left: auto;
+    
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    
+    padding: 10px 20px;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    
+    transition: all 0.3s ease;
+}
+
+/* Over video: darker, more opaque background */
+.site-header.over-video .nav-container {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Scrolled state (not over video): white-ish background */
+.site-header.scrolled:not(.over-video) .nav-container {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* ── Main Navigation ── */
+.main-nav ul {
+    display: flex;
+    gap: 5px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.main-nav a {
+    display: block;
+    padding: 10px 16px;
+    color: #ffffff;  /* White text for visibility over video/dark bg */
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+/* Over video: white text, darker hover */
+.site-header.over-video .main-nav a {
+    color: #ffffff;
+}
+
+.site-header.over-video .main-nav a:hover {
+    background-color: rgba(232, 119, 34, 0.8);
+    color: #ffffff;
+}
+
+/* Scrolled state: dark text */
+.site-header.scrolled:not(.over-video) .main-nav a {
+    color: #0d1b2a;
+}
+
+.site-header.scrolled:not(.over-video) .main-nav a:hover {
+    background-color: rgba(232, 119, 34, 0.1);
+    color: #E87722;
+}
+
+/* ── CTA Button ── */
+.header-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    
+    padding: 10px 18px;
+    background-color: #E87722;
+    color: white;
+    
+    border: none;
+    border-radius: 50px;
+    
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.header-btn:hover {
+    background-color: #d4671a;
+    transform: translateX(2px);
+}
+
+.header-btn span {
+    font-size: 16px;
+}
+
+/* ── Responsive: Tablet ── */
+@media (max-width: 768px) {
+    .header-wrapper {
+        padding: 14px 20px;
+        width: calc(100% - 40px);
+    }
+    
+    .nav-container {
+        gap: 15px;
+        padding: 10px 15px;
+    }
+    
+    .main-nav ul {
+        gap: 3px;
+    }
+    
+    .main-nav a {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+    
+    .header-btn {
+        padding: 8px 14px;
+        font-size: 12px;
+    }
+}
+
+/* ── Responsive: Mobile ── */
+@media (max-width: 576px) {
+    .header-wrapper {
+        padding: 12px 15px;
+        width: calc(100% - 30px);
+    }
+    
+    .logo img {
+        max-height: 40px;
+    }
+    
+    .nav-container {
+        gap: 10px;
+        padding: 8px 12px;
+        border-radius: 40px;
+    }
+    
+    .main-nav ul {
+        gap: 2px;
+    }
+    
+    .main-nav a {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+    
+    .header-btn {
+        padding: 7px 12px;
+        font-size: 11px;
+    }
+    
+    .header-btn span {
+        font-size: 14px;
+    }
+}
+
+/* ── Responsive: Small Mobile ── */
+@media (max-width: 480px) {
+    .header-wrapper {
+        padding: 10px 10px;
+        width: calc(100% - 20px);
+        gap: 10px;
+    }
+    
+    .logo img {
+        max-height: 35px;
+    }
+    
+    .nav-container {
+        gap: 8px;
+        padding: 6px 10px;
+    }
+    
+    .main-nav a {
+        padding: 5px 8px;
+        font-size: 11px;
+    }
+}

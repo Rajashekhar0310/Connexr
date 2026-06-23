@@ -1,0 +1,65 @@
+.hero-banner {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+.hero-video,
+.hero-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: #122560F0;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    height: 750px;
+   display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px;
+    color: #fff;
+    text-align: center !important;
+}
+
+.hero-content.text-left {
+    text-align: left !important;
+}
+
+.hero-content.text-center {
+    text-align: center !important;
+}
+
+.hero-content.text-right {
+    text-align: right !important;
+}
+
+
+.hero-btn {
+       display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 32px;
+    background: #f58220;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 200px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.hero-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}

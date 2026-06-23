@@ -1,0 +1,117 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>
+
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+
+@{
+    var content = Model.Content;
+
+    var eyebrow = content.Value<string>("eyebrow");
+    var headingPrimary = content.Value<string>("headingPrimary");
+    var headingSecondary = content.Value<string>("headingSecondary");
+
+    var services = content.Value<BlockListModel>("services");
+}
+
+<section class="engineering-services-component"
+         data-component="services-cta"
+         style="height:@((services?.Count ?? 0) * 100)vh;">
+    <div class="services-wrapper">
+
+        <!-- Progress Line -->
+        <div class="line-wrapper">
+            <span class="line">
+                <span class="progress"></span>
+            </span>
+
+            <p class="main-label">01</p>
+
+            <p class="scroll-label">
+                Scroll For More Services
+            </p>
+        </div>
+
+        <!-- Header -->
+        <div class="section-header">
+
+            <div class="dots">
+                <span></span>
+                <span></span>
+            </div>
+
+            <p class="eyebrow">@eyebrow</p>
+
+            <h2 class="heading-primary">
+                @headingPrimary
+            </h2>
+
+            <h2 class="heading-secondary">
+                @headingSecondary
+            </h2>
+
+        </div>
+
+        @if (services != null)
+        {
+            foreach (var item in services)
+            {
+                var serviceTitle = item.Content.Value<string>("title");
+                var serviceDescription = item.Content.Value<string>("description");
+                var buttonText = item.Content.Value<string>("buttonText");
+                var buttonLink = item.Content.Value<Link>("buttonLink");
+                var image = item.Content.Value<MediaWithCrops>("image");
+
+                <div class="service">
+
+                    <div class="media">
+                        <div class="media-inner">
+
+                            @if (image != null)
+                            {
+                                <img src="@image.MediaUrl()"
+                                     alt="@serviceTitle" />
+                            }
+
+                        </div>
+                    </div>
+
+                    <div class="g-row">
+
+                        <div class="title-block">
+                            <h4 class="title">
+                                @serviceTitle
+                            </h4>
+                        </div>
+
+                        <div class="lower-content">
+
+                            <div class="title-wrapper">
+
+                                <p class="description">
+                                    @serviceDescription
+                                </p>
+
+                                @if (buttonLink != null)
+                                {
+                                    <a href="@buttonLink.Url"
+                                       target="@(string.IsNullOrWhiteSpace(buttonLink.Target) ? "_self" : buttonLink.Target)"
+                                       class="special-button">
+
+                                        @buttonText
+
+                                    </a>
+                                }
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+        }
+
+    </div>
+
+</section>

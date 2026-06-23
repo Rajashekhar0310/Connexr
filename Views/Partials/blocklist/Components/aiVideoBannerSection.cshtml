@@ -1,0 +1,119 @@
+﻿@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Extensions
+
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var marqueeText1 = Model.Content.Value<string>("marqueeText1");
+    var marqueeText2 = Model.Content.Value<string>("marqueeText2");
+
+    var slides = Model.Content.Value<BlockListModel>("slides");
+}
+<section class="tech-section">
+
+    <div class="loop-background">
+        <div class="loop-track">
+
+            @for (int i = 0; i < 4; i++)
+            {
+                <span>
+                    <span class="orange-text">@marqueeText1</span>
+                    <span class="blue-text">@marqueeText2</span>
+                </span>
+            }
+
+        </div>
+    </div>
+
+    <div class="sticky-wrapper">
+
+        <div class="video-wrapper">
+
+            @{
+                var firstSlide = slides?.FirstOrDefault();
+
+                var firstVideo = firstSlide?.Content
+                    .Value<IPublishedContent>("backgroundVideo");
+            }
+
+            @if (firstVideo != null)
+            {
+                <video autoplay muted loop playsinline id="bannerVideo">
+                    <source src="@firstVideo.Url()" type="video/mp4">
+                </video>
+            }
+
+            <div class="overlay"></div>
+
+            <div class="video-content">
+
+                @if (slides != null)
+                {
+                    int slideIndex = 0;
+
+                    foreach (var slide in slides)
+                    {
+                        var heading = slide.Content.Value<string>("heading");
+                        var highlightText = slide.Content.Value<string>("highlightText");
+                        var description = slide.Content.Value<string>("description");
+
+                        var buttonText = slide.Content.Value<string>("buttonText");
+
+                        var buttonLink =
+                            slide.Content.Value<IEnumerable<Link>>("buttonLink")
+                            ?.FirstOrDefault();
+
+                        var video =
+                            slide.Content.Value<IPublishedContent>("backgroundVideo");
+
+                        <div class="slide @(slideIndex == 0 ? "active" : "")"
+                             data-video="@(video?.Url())">
+
+                            <h2>
+                                @heading
+                                <span>@highlightText</span>
+                            </h2>
+
+                            <div class="labels">
+                                <span>Capture</span>
+                                <span>Analyze</span>
+                                <span>Predict</span>
+                                <span>Execute</span>
+                                <span>Optimize</span>
+                            </div>
+
+                            <p>@description</p>
+
+                            @if (buttonLink != null)
+                            {
+                                <a href="@buttonLink.Url" class="btn">
+                                    @buttonText
+                                </a>
+                            }
+
+                        </div>
+
+                        slideIndex++;
+                    }
+                }
+
+                <div class="progress-wrapper">
+
+                    @for (int i = 0; i < slides.Count(); i++)
+                    {
+                        <div class="progress-segment" data-index="@i">
+                            <div class="progress-fill"></div>
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>

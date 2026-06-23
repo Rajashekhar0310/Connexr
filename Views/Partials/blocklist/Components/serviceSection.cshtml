@@ -1,0 +1,125 @@
+﻿@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models
+
+@{
+    var eyebrow = Model.Value<string>("eyebrow");
+    var headingPrimary = Model.Value<string>("headingPrimary");
+    var headingSecondary = Model.Value<string>("headingSecondary");
+
+    var services =
+        Model.Value<BlockListModel>("services");
+}
+<section data-component="services-cta" style="height:@((services?.Count ?? 0) * 100)vh;">
+
+    <div class="line-wrapper">
+        <span class="line">
+            <span class="progress"></span>
+        </span>
+
+        <p class="main-label">01</p>
+
+        <p class="scroll-label">
+            Scroll For More Services
+        </p>
+    </div>
+
+    <div class="services-wrapper">
+
+        <div class="section-header">
+
+            <div class="dots">
+                <span></span>
+                <span></span>
+            </div>
+
+            <p class="eyebrow">
+                @eyebrow
+            </p>
+
+            <h2 class="heading-primary">
+                @headingPrimary
+            </h2>
+
+            <h2 class="heading-secondary">
+                @headingSecondary
+            </h2>
+
+        </div>
+
+        @if (services != null)
+        {
+            foreach (var item in services)
+            {
+                var title =
+                    item.Content.Value<string>("title");
+
+                var description =
+                    item.Content.Value<string>("description");
+
+                var buttonText =
+                    item.Content.Value<string>("buttonText");
+
+                var buttonLink =
+                    item.Content.Value<Link>("buttonLink");
+
+                var image =
+                    item.Content.Value<MediaWithCrops>("image");
+
+                <div class="service">
+
+                    <div class="media">
+
+                        <div class="media-inner">
+
+                            @if (image != null)
+                            {
+                                <img src="@image.MediaUrl()"
+                                     alt="@title" />
+                            }
+
+                        </div>
+
+                    </div>
+
+                    <div class="g-row">
+
+                        <div class="title-block">
+
+                            <h4 class="title">
+                                @title
+                            </h4>
+
+                        </div>
+
+                        <div class="lower-content">
+
+                            <div class="title-wrapper">
+
+                                <p class="description">
+                                    @description
+                                </p>
+
+                                @if (buttonLink != null)
+                                {
+                                    <a href="@buttonLink.Url"
+                                       target="@buttonLink.Target"
+                                       class="special-button">
+
+                                        @buttonText
+
+                                    </a>
+                                }
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+        }
+
+    </div>
+
+</section>

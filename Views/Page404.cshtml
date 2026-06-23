@@ -1,0 +1,30 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Page404>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+
+@{
+	Layout = "master.cshtml";
+}
+
+<section class="error-page">
+    <div class="error-container">
+
+        <h1 class="error-code">404</h1>
+
+        <h2 class="error-title">
+            @Model.Value("pageTitle")
+        </h2>
+<div class="error-description">
+    @Html.Raw(Model.Value("content"))
+</div>
+
+
+        <div class="error-actions">
+            <a href="/" class="btn-primary">
+                Back to Home
+            </a>
+        </div>
+    </div>
+</section>
+
+
