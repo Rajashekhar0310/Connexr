@@ -1,0 +1,48 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Extensions
+
+@inherits UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var centerText = content.Value<string>("centerText");
+    var galleryPdf = content.Value<MediaWithCrops>("galleryPdf");
+
+    var backgroundColor =
+        content.Value<string>("backgroundColor") ?? "#ffffff";
+
+    var sectionHeight =
+        content.Value<int?>("sectionHeight") ?? 700;
+
+    var uniqueId =
+        "lifeHero_" + content.Key.ToString("N");
+
+    var pdfUrl = galleryPdf?.MediaUrl() ?? "";
+}
+
+<section
+    id="@uniqueId"
+    class="life-hero"
+    style="
+        --life-bg:@backgroundColor;
+        --life-height:@(sectionHeight)px;
+    "
+    data-pdf-url="@pdfUrl">
+
+    <div class="life-floating-images"></div>
+
+    <div class="life-hero-content">
+
+        @if (!string.IsNullOrWhiteSpace(centerText))
+        {
+            <h2 class="life-center-title">
+                @centerText
+            </h2>
+        }
+
+    </div>
+
+</section>
+<script src="/scripts/About Us/life-at-connexr.js"></script>

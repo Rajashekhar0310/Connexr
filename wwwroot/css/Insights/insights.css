@@ -1,0 +1,720 @@
+/* =====================================================
+   INSIGHTS PAGE
+   -----------------------------------------------------
+   Design tokens (kept from original):
+     Brand orange .... #F58220
+     Ink ............. #101010
+     Muted ........... #666
+     Fonts ........... Poppins (display) / DM Sans (ui)
+     Radii ........... 28 / 24 (cards), 999 (pills)
+===================================================== */
+
+.insights-page{
+    width:100%;
+    background:#fff;
+    padding:80px 40px 120px;
+}
+
+.insights-container{
+    width:100%;
+    max-width:1500px;
+    margin:0 auto;
+}
+
+/* =====================================================
+   BREADCRUMB  (Insights page override)
+   -----------------------------------------------------
+   The shared breadcrumb is white so it reads on dark hero
+   images. The Insights page has a white background, so
+   white text is invisible here — recolor it to a dark,
+   on-brand tone and drop the shared divider/shadow strip.
+
+   The breadcrumb is rendered by the master layout, OUTSIDE
+   .insights-page, so we scope with body:has(.insights-page)
+   — i.e. "only on the page that contains the insights
+   section." No markup/master change required. !important
+   guarantees it beats the global white rule.
+===================================================== */
+
+body:has(.insights-page) .breadcrumb-wrapper .breadcrumb,
+body:has(.insights-page) .breadcrumb-wrapper .breadcrumb a,
+body:has(.insights-page) .breadcrumb-wrapper .breadcrumb span{
+    color:#666 !important;      /* was #fff — invisible on white */
+    text-decoration:none;
+    font-size:9.24px;
+    font-weight:700;
+    letter-spacing:1px;
+    text-transform:uppercase;
+}
+
+body:has(.insights-page) .breadcrumb-wrapper .breadcrumb a:hover{
+    color:#F58220 !important;
+}
+
+/* current / last crumb sits darker for hierarchy */
+body:has(.insights-page) .breadcrumb-wrapper .breadcrumb .active,
+body:has(.insights-page) .breadcrumb-wrapper .breadcrumb span:last-child{
+    color:#101010 !important;
+}
+
+body:has(.insights-page) .breadcrumb-wrapper::before,
+body:has(.insights-page) .breadcrumb-wrapper::after{
+    background:transparent !important;
+    background-image:none !important;
+    box-shadow:none !important;
+}
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.insights-page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:80px;
+    margin-bottom:70px;
+}
+
+.insights-header-left{
+    max-width:760px;
+}
+
+.insights-header-right{
+    margin-left:auto;
+}
+
+/* =====================================================
+   EYEBROW
+===================================================== */
+
+.insights-eyebrow{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:22px;
+}
+
+.eyebrow-dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#F58220;
+}
+
+.eyebrow-text{
+    /* gap on the flex parent already handles spacing,
+       so no extra margin-left needed */
+    font-family:"DM Sans";
+    font-size:14px;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:.15em;
+    color:#666;
+}
+
+/* =====================================================
+   TITLE
+===================================================== */
+
+.insights-title{
+    margin:0;
+    font-family:"Poppins";
+    font-size:64px;
+    font-weight:600;
+    line-height:1.08;
+    color:#101010;
+}
+
+.insights-title span{
+    color:#F58220;
+}
+
+/* =====================================================
+   FILTERS
+===================================================== */
+
+.insights-filters{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+}
+
+.insights-filter{
+    border:1px solid #D7D7D7;
+    background:#fff;
+    color:#101010;
+    border-radius:999px;
+    padding:12px 26px;
+    cursor:pointer;
+    font-family:"DM Sans";
+    font-size:15px;
+    font-weight:600;
+    letter-spacing:.05em;
+    transition:color .3s ease,
+               border-color .3s ease,
+               background .3s ease;
+}
+
+.insights-filter:hover{
+    border-color:#F58220;
+    color:#F58220;
+}
+
+.insights-filter.active{
+    background:#F58220;
+    border-color:#F58220;
+    color:#fff;
+}
+
+/* =====================================================
+   TOP LAYOUT  (featured + right column)
+   -----------------------------------------------------
+   align-items:stretch lets the right column match the
+   featured card's height so the two sides line up.
+===================================================== */
+
+.insights-top-layout{
+    display:grid;
+    grid-template-columns:1.6fr .85fr;
+    align-items:stretch;
+    gap:28px;
+    margin-bottom:45px;
+}
+
+/* Right column height is driven by its own cards (fixed
+   height each). The featured card then stretches to match
+   this height, so there is never an empty forced row. */
+.insights-right-column{
+    display:flex;
+    flex-direction:column;
+    gap:24px;
+    min-height:0;
+}
+
+/* =====================================================
+   FEATURED CARD
+===================================================== */
+
+.featured-blog-card{
+    position:relative;
+    display:block;
+    width:100%;
+    height:auto;        /* stretches to the right column's height */
+    min-height:460px;   /* fallback if the right column is short/empty */
+    border-radius:0;
+    overflow:hidden;
+    text-decoration:none;
+}
+
+.featured-blog-media{
+    position:absolute;  /* fills the card without dictating its height */
+    inset:0;
+    width:100%;
+    height:100%;
+}
+
+.featured-blog-image,
+.featured-blog-video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:transform .6s ease;
+}
+
+.featured-blog-overlay{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:flex-end;
+    padding:40px;
+    background:linear-gradient(
+        to top,
+        rgba(0,0,0,.92),
+        rgba(0,0,0,.30) 55%,
+        rgba(0,0,0,.05)
+    );
+}
+
+.featured-blog-content{
+    width:100%;
+}
+
+.featured-category{
+    display:inline-flex;
+    padding:8px 18px;
+    border-radius:50px;
+    background:#F58220;
+    color:#fff;
+    font-family:"DM Sans";
+    font-size:13px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    margin-bottom:20px;
+}
+
+.featured-blog-content h2{
+    margin:0;
+    color:#fff;
+    font-size:48px;
+    line-height:1.15;
+    font-family:"Poppins";
+    font-weight:600;
+    display:-webkit-box;
+    -webkit-line-clamp:3;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+}
+
+.featured-description{
+    margin-top:0;
+    max-width:640px;
+    max-height:0;
+    overflow:hidden;
+    color:#fff;
+    opacity:0;
+    line-height:1.7;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    transition:max-height .4s ease, opacity .35s ease, margin-top .4s ease;
+}
+
+.featured-footer{
+    margin-top:0;
+    max-height:0;
+    overflow:hidden;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    opacity:0;
+    transition:max-height .4s ease, opacity .35s ease, margin-top .4s ease;
+}
+
+.featured-date{
+    color:#fff;
+    font-family:"DM Sans";
+    font-size:15px;
+}
+
+.featured-arrow{
+    width:54px;
+    height:54px;
+    border-radius:50%;
+    background:#F58220;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+}
+
+/* =====================================================
+   RIGHT SIDE CARDS
+   -----------------------------------------------------
+   height:100% so each fills its 1fr grid row and the
+   three cards align exactly to the featured card.
+===================================================== */
+
+.insight-side-card{
+    position:relative;
+    display:block;
+    width:100%;
+    height:232px;
+    flex:0 0 232px;     /* fixed height; column height = sum of cards + gaps */
+    overflow:hidden;
+    border-radius:0;
+    text-decoration:none;
+}
+
+.insight-side-media{
+    position:relative;
+    width:100%;
+    height:100%;
+}
+
+.insight-side-image,
+.insight-side-video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:transform .6s ease;
+}
+
+.insight-side-overlay{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:flex-end;
+    padding:26px;
+    background:linear-gradient(
+        to top,
+        rgba(0,0,0,.88),
+        rgba(0,0,0,.25),
+        transparent
+    );
+}
+
+.insight-side-content{
+    width:100%;
+}
+
+.insight-side-category{
+    display:inline-block;
+    background:#F58220;
+    color:#fff;
+    border-radius:40px;
+    padding:6px 14px;
+    font-family:"DM Sans";
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    margin-bottom:12px;
+}
+
+.insight-side-content h3{
+    color:#fff;
+    margin:0;
+    font-size:26px;
+    line-height:1.3;
+    font-family:"Poppins";
+    font-weight:600;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+}
+
+.insight-side-description{
+    margin-top:0;
+    max-height:0;
+    overflow:hidden;
+    color:#fff;
+    line-height:1.6;
+    opacity:0;
+    transition:max-height .4s ease, opacity .35s ease, margin-top .4s ease;
+}
+
+.insight-side-footer{
+    margin-top:0;
+    max-height:0;
+    overflow:hidden;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    opacity:0;
+    transition:max-height .4s ease, opacity .35s ease, margin-top .4s ease;
+}
+
+.insight-side-footer span{
+    color:#fff;
+    font-family:"DM Sans";
+    font-size:14px;
+}
+
+.insight-side-arrow{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:#F58220;
+    color:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* =====================================================
+   EDITORIAL GRID  (real CSS Grid — no balancing gaps)
+   -----------------------------------------------------
+   A plain 3-column grid with uniform-height cards. Rows
+   always line up, so there are no empty vertical gaps,
+   and it reflows cleanly when the filter hides cards.
+
+   NOTE ON cardSize: staggered/masonry heights are what
+   caused the large white gaps, so all cards share one
+   height here. If you want a taller "feature" card back,
+   let a `.large` card span two rows and turn on dense
+   flow to backfill the hole (commented out below).
+===================================================== */
+
+.insights-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:26px;
+    margin-bottom:45px;
+}
+
+.insight-grid-card{
+    position:relative;
+    display:block;
+    width:100%;
+    height:380px;                 /* uniform for all sizes */
+    border-radius:0;
+    overflow:hidden;
+    text-decoration:none;
+}
+
+/* Optional stagger — uncomment to let large cards take
+   two rows. Also add `grid-auto-flow:row dense;` to the
+   .insights-grid rule above so gaps get backfilled.
+
+.insight-grid-card.large{
+    grid-row:span 2;
+    height:100%;
+}
+*/
+
+.insight-grid-media{
+    position:relative;
+    width:100%;
+    height:100%;
+}
+
+.insight-grid-image,
+.insight-grid-video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:transform .6s ease;
+}
+
+.insight-grid-overlay{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:flex-end;
+    padding:26px;
+    background:linear-gradient(
+        to top,
+        rgba(0,0,0,.88),
+        rgba(0,0,0,.25),
+        transparent
+    );
+}
+
+.insight-grid-content{
+    width:100%;
+}
+
+.insight-grid-category{
+    display:inline-block;
+    background:#F58220;
+    color:#fff;
+    border-radius:40px;
+    padding:6px 14px;
+    font-family:"DM Sans";
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    margin-bottom:12px;
+}
+
+.insight-grid-content h3{
+    color:#fff;
+    margin:0;
+    font-size:26px;
+    line-height:1.3;
+    font-family:"Poppins";
+    font-weight:600;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+}
+
+.insight-grid-description{
+    margin-top:0;
+    max-height:0;
+    overflow:hidden;
+    color:#fff;
+    line-height:1.6;
+    opacity:0;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    transition:max-height .4s ease, opacity .35s ease, margin-top .4s ease;
+}
+
+.insight-grid-footer{
+    margin-top:0;
+    max-height:0;
+    overflow:hidden;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    opacity:0;
+    transition:max-height .4s ease, opacity .35s ease, margin-top .4s ease;
+}
+
+.insight-grid-footer span{
+    color:#fff;
+    font-family:"DM Sans";
+    font-size:14px;
+}
+
+.insight-grid-arrow{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:#F58220;
+    color:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* =====================================================
+   HOVER EFFECTS  (shared across all card types)
+===================================================== */
+
+.featured-blog-card,
+.insight-side-card,
+.insight-grid-card{
+    transition:transform .35s ease, box-shadow .35s ease;
+}
+
+.featured-blog-card:hover,
+.insight-side-card:hover,
+.insight-grid-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 25px 60px rgba(0,0,0,.18);
+}
+
+/* Image / video zoom */
+.featured-blog-card:hover img,
+.featured-blog-card:hover video,
+.insight-side-card:hover img,
+.insight-side-card:hover video,
+.insight-grid-card:hover img,
+.insight-grid-card:hover video{
+    transform:scale(1.05);
+}
+
+/* Reveal description + footer on hover (expand from collapsed) */
+.featured-blog-card:hover .featured-description{
+    max-height:160px;
+    margin-top:20px;
+    opacity:1;
+}
+.featured-blog-card:hover .featured-footer{
+    max-height:80px;
+    margin-top:26px;
+    opacity:1;
+}
+/* Side cards are short: keep title fixed, reveal only the
+   date/arrow (never the description) so nothing clips. */
+.insight-side-card:hover .insight-side-footer{
+    max-height:60px;
+    margin-top:14px;
+    opacity:1;
+}
+.insight-grid-card:hover .insight-grid-description{
+    max-height:3.4em;   /* ~2 lines */
+    margin-top:14px;
+    opacity:1;
+}
+.insight-grid-card:hover .insight-grid-footer{
+    max-height:60px;
+    margin-top:14px;
+    opacity:1;
+}
+
+/* =====================================================
+   NO RESULTS
+===================================================== */
+
+.insights-no-results{
+    display:none;
+    text-align:center;
+    padding:100px 20px;
+    font-family:"DM Sans";
+    color:#666;
+}
+
+.insights-no-results h3{
+    font-family:"Poppins";
+    color:#101010;
+    margin:0 0 10px;
+}
+
+.insights-no-results.show{
+    display:block;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:1200px){
+
+    .insights-page-header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:40px;
+    }
+
+    /* Stack featured over the right column */
+    .insights-top-layout{
+        grid-template-columns:1fr;
+    }
+
+    /* Right column becomes a wrapping row of cards once
+       it's stacked under the featured card */
+    .insights-right-column{
+        flex-direction:row;
+        flex-wrap:wrap;
+    }
+
+    .insight-side-card{
+        flex:1 1 300px;
+        height:280px;
+    }
+
+    .insights-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:768px){
+
+    .insights-page{
+        padding:60px 20px;
+    }
+
+    .insights-title{
+        font-size:42px;
+    }
+
+    .featured-blog-card{
+        height:500px;
+    }
+
+    .insights-right-column{
+        flex-direction:column;
+    }
+
+    .insights-grid{
+        grid-template-columns:1fr;
+    }
+
+    /* On mobile, hover reveals never fire (no hover), so
+       show content by default. Side cards stay title+date
+       only (they're too short for a description). */
+    .featured-description,
+    .featured-footer,
+    .insight-side-footer,
+    .insight-grid-description,
+    .insight-grid-footer{
+        opacity:1;
+        max-height:6em;
+        margin-top:14px;
+    }
+    .insight-side-description{
+        max-height:0;
+        opacity:0;
+        margin-top:0;
+    }
+}

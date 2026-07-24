@@ -1,0 +1,68 @@
+﻿@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Cms.Web.Common.Views
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>
+
+@{
+    var content = Model.Content;     
+
+    var bgImage = content.Value<IPublishedContent>("backgroundImage");
+    var profileImage = content.Value<IPublishedContent>("profileImage");
+
+    var personName = content.Value<string>("personName");
+    var designation = content.Value<string>("designation");
+
+    var linkedIn = content.Value<string>("linkedInLink");
+    var email = content.Value<string>("emailLink");
+}
+
+<section class="leadership-hero-section"
+         style="background-image:
+         linear-gradient(rgb(28 36 108 / 6%), rgba(28, 47, 108, .92)),
+         url('@bgImage?.Url()');">
+
+    <div class="leadership-hero-container">
+
+        
+
+        <div class="leadership-hero-content">
+
+            <div class="leadership-hero-image">
+                @if (profileImage != null)
+                {
+                    <img src="@profileImage.Url()" alt="@personName" />
+                }
+            </div>
+
+            <div class="leadership-hero-info">
+
+                <h1>@personName</h1>
+
+                <span class="leadership-hero-designation">
+                    @designation
+                </span>
+
+                <div class="leadership-hero-social">
+
+                    @if (!string.IsNullOrWhiteSpace(linkedIn))
+                    {
+                        <a href="@linkedIn" target="_blank">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(email))
+                    {
+                        <a href="mailto:@email">
+                            <i class="fa-regular fa-envelope"></i>
+                        </a>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>

@@ -1,0 +1,138 @@
+﻿@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Extensions
+
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var sectionId = content.Value<string>("sectionId");
+    var smallTitle = content.Value<string>("smallTitle");
+    var heading = content.Value<string>("heading");
+    var body = content.Value<Microsoft.AspNetCore.Html.IHtmlContent>("content");
+    var image = content.Value<IPublishedContent>("image");
+    var layout = content.Value<string>("layout") ?? "Image Top";
+}
+
+<section id="@sectionId"
+         class="blog-content-section @(layout.Replace(" ","-").ToLower())">
+
+    @if (!string.IsNullOrWhiteSpace(smallTitle))
+    {
+        <div class="blog-small-title">
+
+            <span></span>
+
+            @smallTitle
+
+        </div>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(heading))
+    {
+        <h2 class="blog-section-title">
+
+            @heading
+
+        </h2>
+    }
+
+    @switch(layout)
+    {
+        case "Image Top":
+
+            @if(image!=null)
+            {
+                <div class="blog-image-full">
+
+                    <img src="@image.Url()" alt="@heading"/>
+
+                </div>
+            }
+
+            <div class="blog-richtext">
+
+                @body
+
+            </div>
+
+            break;
+
+        case "Image Left":
+
+            <div class="blog-two-column">
+
+                <div class="blog-image">
+
+                    @if(image!=null)
+                    {
+                        <img src="@image.Url()" alt="@heading"/>
+                    }
+
+                </div>
+
+                <div class="blog-richtext">
+
+                    @body
+
+                </div>
+
+            </div>
+
+            break;
+
+        case "Image Right":
+
+            <div class="blog-two-column reverse">
+
+                <div class="blog-image">
+
+                    @if(image!=null)
+                    {
+                        <img src="@image.Url()" alt="@heading"/>
+                    }
+
+                </div>
+
+                <div class="blog-richtext">
+
+                    @body
+
+                </div>
+
+            </div>
+
+            break;
+
+        case "Large Banner":
+
+            @if(image!=null)
+            {
+                <div class="blog-banner-image">
+
+                    <img src="@image.Url()" alt="@heading"/>
+
+                </div>
+            }
+
+            <div class="blog-richtext">
+
+                @body
+
+            </div>
+
+            break;
+
+        default:
+
+            <div class="blog-richtext">
+
+                @body
+
+            </div>
+
+            break;
+    }
+
+</section>

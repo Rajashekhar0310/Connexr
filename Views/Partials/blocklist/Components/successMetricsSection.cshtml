@@ -1,0 +1,71 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var title = Model.Content.Value<string>("smallTitle");
+
+    var bgImage = Model.Content.Value<IPublishedContent>("backgroundImage");
+
+    var metrics = Model.Content.Value<BlockListModel>("metrics");
+}
+
+<section class="sm-section">
+
+    @if(bgImage != null)
+    {
+        <img class="sm-bg" src="@bgImage.Url()" alt="@bgImage.Name"/>
+    }
+
+    <div class="sm-overlay"></div>
+
+    <div class="container">
+
+        <div class="sm-heading">
+
+            <h2>@title</h2>
+
+        </div>
+
+        <div class="sm-cards">
+
+            @if(metrics != null)
+            {
+                foreach(var item in metrics)
+                {
+                    var color = item.Content.Value<string>("cardColor") ?? "Dark";
+
+                    <div class="sm-card @color.ToLower()">
+
+                        <div class="sm-number">
+
+                            @item.Content.Value("metricNumber")
+
+                        </div>
+
+                        <div class="sm-content">
+
+                            <h3>
+
+                                @item.Content.Value("metricTitle")
+
+                            </h3>
+
+                            <p>
+
+                                @item.Content.Value("metricDescription")
+
+                            </p>
+
+                        </div>
+
+                    </div>
+                }
+            }
+
+        </div>
+
+    </div>
+
+</section>
+<script src="/Scripts/Industries/successMetricsSection.js"></script>

@@ -1,0 +1,181 @@
+﻿@using System.Text.RegularExpressions
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Cms.Core.Strings
+@using Umbraco.Extensions
+
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@functions {
+    public static string Slug(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value)) return "";
+        var s = value.ToLowerInvariant().Trim();
+        s = Regex.Replace(s, @"[^a-z0-9]+", "-");
+        return s.Trim('-');
+    }
+}
+
+@{
+    var content = Model.Content;
+
+    var titleOrange = content.Value<string>("titleOrange");
+    var titleRest = content.Value<string>("titleRest");
+    var sectionDescription = content.Value<string>("sectionDescription");
+
+    var locationPlaceholder = content.Value<string>("locationPlaceholder") ?? "Select location";
+    var searchPlaceholder = content.Value<string>("searchPlaceholder") ?? "Search Jobs";
+    var emptyMessage = content.Value<string>("emptyMessage")
+        ?? "No roles match your filters. Try clearing the search or choosing another location.";
+
+    var jobs = content.Value<BlockListModel>("jobs");
+
+    var locations = jobs?
+        .Select(b => b.Content.Value<string>("jobLocation"))
+        .Where(l => !string.IsNullOrWhiteSpace(l))
+        .Distinct()
+        .OrderBy(l => l)
+        .ToList() ?? new List<string>();
+}
+
+@if (jobs != null && jobs.Any())
+{
+    <section class="careers">
+
+        <div class="careers__inner">
+
+            <div class="careers__head">
+
+                <div class="careers__intro">
+
+                    <h1 class="careers__title">
+                        @if (!string.IsNullOrWhiteSpace(titleOrange))
+                        {
+                            <span class="careers__title-orange">@titleOrange</span><text> </text>
+                        }
+                        @Html.Raw(Html.Encode(titleRest).Replace("\n", "<br />"))
+                    </h1>
+
+                    @if (!string.IsNullOrWhiteSpace(sectionDescription))
+                    {
+                        <p class="careers__desc">@sectionDescription</p>
+                    }
+
+                </div>
+
+                <div class="careers__filters">
+
+                    <div class="careers__select-wrap">
+                        <select class="careers__select" id="jobLocation" aria-label="Filter by location">
+                            <option value="">@locationPlaceholder</option>
+                            @foreach (var loc in locations)
+                            {
+                                <option value="@Slug(loc)">@loc</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="careers__search-wrap">
+                        <input type="text"
+                               class="careers__search"
+                               id="jobSearch"
+                               placeholder="@searchPlaceholder"
+                               aria-label="Search jobs">
+                        <span class="careers__search-icon" aria-hidden="true">⌕</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="careers__list" id="jobList">
+
+                @foreach (var block in jobs)
+                {
+                    var job = block.Content;
+
+                    var jobTag = job.Value<string>("jobTag");
+                    var jobTitle = job.Value<string>("jobTitle");
+                    var jobSummary = job.Value<string>("jobSummary");
+                    var jobLocation = job.Value<string>("jobLocation");
+                    var jobType = job.Value<string>("jobType");
+                    var jobExperience = job.Value<string>("jobExperience");
+
+                    var jobDetails = job.Value("jobDetails");
+
+                    var applyText = job.Value<string>("jobApplyText") ?? "Apply Now";
+                    var applyLink = job.Value<IEnumerable<Link>>("jobApplyLink")?.FirstOrDefault();
+
+                    <div class="job" data-location="@Slug(jobLocation)">
+
+                        <div class="job__head" role="button" tabindex="0" aria-expanded="false">
+
+                            <div class="job__dots"><span></span><span></span></div>
+
+                            <div class="job__main">
+                                @if (!string.IsNullOrWhiteSpace(jobTag))
+                                {
+                                    <span class="job__tag">@jobTag</span>
+                                }
+                                <h3 class="job__title">@jobTitle</h3>
+                            </div>
+
+                            <div class="job__mid">
+
+                                @if (!string.IsNullOrWhiteSpace(jobSummary))
+                                {
+                                    <p class="job__summary">@jobSummary</p>
+                                }
+
+                                <div class="job__meta">
+                                    @if (!string.IsNullOrWhiteSpace(jobLocation))
+                                    {
+                                        <span><i>◎</i> @jobLocation</span>
+                                    }
+                                    @if (!string.IsNullOrWhiteSpace(jobType))
+                                    {
+                                        <span><i>◔</i> @jobType</span>
+                                    }
+                                    @if (!string.IsNullOrWhiteSpace(jobExperience))
+                                    {
+                                        <span><i>▤</i> @jobExperience</span>
+                                    }
+                                </div>
+
+                            </div>
+
+                            @if (applyLink != null)
+                            {
+                                <a class="job__btn"
+                                   href="@applyLink.Url"
+                                   target="@applyLink.Target">
+                                    @applyText <span>↗</span>
+                                </a>
+                            }
+
+                        </div>
+
+                        @if (jobDetails != null)
+                        {
+                            <div class="job__panel">
+                                <div class="job__panel-inner">
+                                    <div class="job__panel-body">
+                                        @Html.Raw(jobDetails)
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                }
+
+            </div>
+
+            <p class="careers__empty" id="jobEmpty">@emptyMessage</p>
+
+        </div>
+
+    </section>
+}
+<script src="/Scripts/Careers/careers.js"></script>

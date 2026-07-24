@@ -1,0 +1,876 @@
+/* ==================================================
+   RESET
+================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+
+html,
+body {
+    margin: 0;
+
+    padding: 0;
+
+    color: #090d17;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+}
+
+
+/* body {
+    background:
+        linear-gradient(
+            100deg,
+            #f9e4d7 0%,
+            #f5e9e5 42%,
+            #f2f5ff 100%
+        );
+} */
+
+
+
+/* ==================================================
+   MAIN PROCESS SECTION
+================================================== */
+
+.process {
+    position: relative;
+    background:
+        linear-gradient(
+            100deg,
+            #f9e4d7 0%,
+            #f5e9e5 42%,
+            #f2f5ff 100%
+        );
+    height: 500vh;
+}
+
+
+
+/* ==================================================
+   STICKY SCREEN
+================================================== */
+
+.sticky {
+    position: sticky;
+
+    top: 0;
+
+    width: 100%;
+
+    height: 100vh;
+
+    min-height: 650px;
+
+    overflow: hidden;
+}
+
+
+
+/* ==================================================
+   SECTION HEADING
+================================================== */
+
+.head {
+    position: absolute;
+
+    left: 5vw;
+
+    top: 10.5vh;
+
+    z-index: 20;
+}
+
+
+.head .twodots {
+    display: flex;
+
+    gap: 6px;
+
+    margin-bottom: 18px;
+}
+
+
+.head .twodots i {
+    width: 8px;
+
+    height: 8px;
+
+    background: #ff963d;
+
+    border-radius: 50%;
+}
+
+
+.head b {
+    font-family:
+        'Poppins',
+        sans-serif;
+
+    font-size: 18px;
+
+    font-weight: 600;
+
+    letter-spacing: 1.45px;
+}
+
+
+
+/* ==================================================
+   MAIN LAYOUT
+================================================== */
+
+.layout {
+    width: 100%;
+
+    height: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        48%
+        52%;
+
+    align-items: center;
+}
+
+
+
+/* ==================================================
+   LEFT SIDE
+================================================== */
+
+.left {
+    position: relative;
+
+    height: 100%;
+}
+
+
+
+/* ==================================================
+   CONTENT
+================================================== */
+
+.copy {
+    position: absolute;
+
+    left: 5vw;
+
+    top: 31.5%;
+
+    width: 500px;
+
+    max-width: 80%;
+}
+
+
+
+/* ==================================================
+   ICON
+================================================== */
+
+/* .icon {
+    width: 50px;
+
+    height: 50px;
+
+    margin-bottom: 25px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 50%;
+
+    background: #0b2b67;
+
+    border:
+        9px solid
+        #f5b27d;
+
+    color: #ffffff;
+
+    font-size: 19px;
+}
+.icon img{
+    width:24px;
+    height:24px;
+    object-fit:contain;
+    display:block;
+    margin:auto;
+} */
+.bg-icon{
+    position:relative;
+    width:50px;
+    height:50px;
+    margin-bottom:25px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:50%;
+
+    background:#0b2b67;
+    border:9px solid #f5b27d;
+
+    overflow:hidden;
+}
+
+.bg-icon img{
+    position:absolute;
+    inset:0;
+
+    width:22px;
+    height:22px;
+
+    margin:auto;
+
+    object-fit:contain;
+
+    opacity:0;
+    visibility:hidden;
+
+    transition:.45s;
+}
+
+.bg-icon img.active{
+    opacity:1;
+    visibility:visible;
+}
+
+
+/* ==================================================
+   CONTENT HEADING
+================================================== */
+
+.copy h2 {
+    margin:
+        0
+        0
+        14px;
+
+    font-family:
+        'Poppins',
+        sans-serif;
+
+    font-size: 28px;
+
+    font-weight: 600;
+
+    line-height: 1.25;
+
+    letter-spacing: -0.5px;
+}
+
+
+
+/* ==================================================
+   DESCRIPTION
+================================================== */
+
+.copy p {
+    margin:
+        0
+        0
+        20px;
+
+    font-family:
+        'DM Sans',
+        sans-serif;
+
+    font-size: 18px;
+
+    font-weight: 400;
+
+    line-height: 1.55;
+}
+
+
+
+/* ==================================================
+   LARGE STEP NUMBER
+================================================== */
+
+.big-num {
+    position: absolute;
+
+    left: 80%;
+
+    top: 20%;
+
+    color: #ffffff;
+
+    font-family:
+        'Poppins',
+        sans-serif;
+
+    font-size: 138px;
+
+    font-weight: 400;
+
+    line-height: 1;
+}
+
+
+
+/* ==================================================
+   BOTTOM STEP NUMBERS
+================================================== */
+
+.steps {
+    position: absolute;
+
+    left: 5vw;
+
+    bottom: 10.5vh;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 22px;
+
+    font-family:
+        'DM Sans',
+        sans-serif;
+
+    font-size: 18px;
+
+    font-weight: 700;
+}
+
+
+.steps span {
+    color: #ffff;
+
+    transition:
+        color 0.3s ease;
+}
+
+
+.steps span.active {
+    color: #08265e;
+}
+
+
+
+/* ==================================================
+   ARROW BUTTONS
+================================================== */
+
+.arrows {
+    position: absolute;
+
+    left: 85%;
+
+    bottom: 9.7vh;
+
+    display: flex;
+
+    gap: 10px;
+}
+
+
+.arrows button {
+    width: 48px;
+
+    height: 48px;
+
+    padding: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: 0;
+
+    border-radius: 50%;
+
+    background: #ff963d;
+
+    color: #090d17;
+
+    font-size: 22px;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease;
+}
+
+
+.arrows button:hover {
+    transform: scale(1.08);
+
+    background: #ff8725;
+}
+
+
+
+/* ==================================================
+   RIGHT SIDE
+================================================== */
+
+.right {
+    position: relative;
+
+    width: 100%;
+
+    height: 100%;
+
+    display: grid;
+
+    place-items: center;
+}
+
+
+
+/* ==================================================
+   FULL VISUAL SIZE
+
+   Increase 850px if you want even bigger.
+================================================== */
+
+.scene {
+    position: relative;
+
+    width:
+        min(
+            850px,
+            60vw
+        );
+
+    aspect-ratio:
+        1 / 1;
+}
+
+
+
+/* ==================================================
+   SVG LAYER
+================================================== */
+
+.path {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    overflow: visible;
+
+    z-index: 2;
+
+    pointer-events: none;
+}
+
+
+/* ==================================================
+   PLACEHOLDER TRACK RING
+================================================== */
+
+.path .track {
+    fill: none;
+
+    stroke: #e8e8e6;
+
+    stroke-width: 2;
+}
+
+
+
+/* ==================================================
+   ORANGE PROGRESS (fills on scroll)
+================================================== */
+
+.path .link {
+    fill: none;
+
+    stroke: #ff963d;
+
+    stroke-width: 2.6;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+
+    stroke-dasharray: 100;
+
+    stroke-dashoffset: 100;
+
+    transition:
+        stroke-dashoffset
+        0.5s
+        ease;
+}
+
+
+
+/* ==================================================
+   DOTS (gray placeholder, orange when active)
+================================================== */
+
+.path .dot {
+    fill: #d9d9d7;
+
+    transition:
+        fill 0.45s ease;
+}
+
+
+.path .dot.on {
+    fill: #08265e;
+}
+
+
+.path .dot.orange.on {
+    fill: #ff963d;
+}
+
+
+
+/* ==================================================
+   ORANGE CIRCLE
+================================================== */
+
+.orange {
+    position: absolute;
+
+    width: 66%;
+
+    height: 66%;
+
+    left: 17%;
+
+    top: 17%;
+
+    border:
+        1px solid
+        #ff9f43;
+
+    border-radius: 50%;
+
+    z-index: 1;
+}
+
+
+
+/* ==================================================
+   CENTER IMAGE CIRCLE
+================================================== */
+
+.photo {
+    position: absolute;
+
+    width: 56%;
+
+    height: 56%;
+
+    left: 22%;
+
+    top: 22%;
+
+    overflow: hidden;
+
+    border-radius: 50%;
+
+    background: #dddddd;
+
+    z-index: 3;
+}
+
+
+.photo img {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transform:
+        scale(1.08);
+
+    transition:
+        opacity 0.65s ease,
+        transform 0.65s ease,
+        visibility 0.65s ease;
+}
+
+
+.photo img.active {
+    opacity: 1;
+
+    visibility: visible;
+
+    transform:
+        scale(1);
+}
+
+@media (max-width:1440px){
+
+    .layout{
+        grid-template-columns:46% 54%;
+    }
+
+    .copy{
+        width:420px;
+        top:28%;
+    }
+
+    .copy h2{
+        font-size:24px;
+    }
+
+    .copy p{
+        font-size:16px;
+    }
+
+    .scene{
+        width:clamp(420px,42vw,620px);
+    }
+
+    .big-num{
+        font-size:105px;
+    }
+
+    .steps{
+        font-size:16px;
+    }
+
+    .arrows button{
+        width:44px;
+        height:44px;
+    }
+}
+
+/* ==================================================
+   TABLET
+================================================== */
+
+@media (
+    max-width: 1200px
+) {
+
+    .scene {
+        width:
+            min(
+                720px,
+                58vw
+            );
+    }
+
+
+    .copy {
+        width: 430px;
+    }
+
+
+    .copy p {
+        font-size: 16px;
+    }
+
+
+    .big-num {
+        left: 75%;
+
+        font-size: 110px;
+    }
+
+
+    .arrows {
+        left: 78%;
+    }
+
+}
+
+@media (max-width:1024px){
+
+    .layout{
+        grid-template-columns:1fr;
+        gap:40px;
+    }
+
+    .left,
+    .right{
+        width:100%;
+    }
+
+    .copy{
+        position:relative;
+        top:0;
+        left:0;
+        margin:auto;
+    }
+
+    .scene{
+        width:min(500px,90vw);
+    }
+
+    .big-num{
+        right:30px;
+        top:20px;
+        font-size:90px;
+    }
+
+    .steps{
+        left:30px;
+    }
+
+    .arrows{
+        right:30px;
+    }
+}
+
+
+/* ==================================================
+   MOBILE
+================================================== */
+
+@media (
+    max-width: 768px
+) {
+
+    .process {
+        height: auto;
+    }
+
+
+    .sticky {
+        position: relative;
+
+        height: auto;
+
+        min-height: 0;
+
+        overflow: visible;
+
+        padding:
+            45px
+            20px
+            60px;
+    }
+
+
+    .head {
+        position: relative;
+
+        left: auto;
+
+        top: auto;
+
+        margin-bottom: 30px;
+    }
+
+
+    .layout {
+        display: flex;
+
+        flex-direction: column;
+    }
+
+
+    .right {
+        order: 1;
+
+        height: auto;
+
+        margin-bottom: 40px;
+    }
+
+
+    .scene {
+        width:
+            min(
+                600px,
+                95vw
+            );
+    }
+
+
+    .left {
+        order: 2;
+
+        width: 100%;
+
+        height: 550px;
+    }
+
+
+    .copy {
+        left: 0;
+
+        top: 120px;
+
+        width: 100%;
+
+        max-width: 100%;
+    }
+
+
+    .copy h2 {
+        font-size: 26px;
+    }
+
+
+    .copy p {
+        font-size: 16px;
+    }
+
+
+    .big-num {
+        top: 10px;
+
+        right: 0;
+
+        left: auto;
+
+        font-size: 90px;
+    }
+
+
+    .steps {
+        left: 0;
+
+        bottom: 20px;
+
+        gap: 15px;
+
+        font-size: 15px;
+    }
+
+
+    .arrows {
+        right: 0;
+
+        left: auto;
+
+        bottom: 10px;
+    }
+
+
+    .arrows button {
+        width: 44px;
+
+        height: 44px;
+    }
+
+}

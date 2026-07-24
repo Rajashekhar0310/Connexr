@@ -1,241 +1,423 @@
+/* =====================================================
+   PARTNERS SECTION
+=====================================================*/
 
-/* =============================================================
-   Partners Section  –  partners-section.css
-   Add to your site bundle or link in your layout.
-   ============================================================= */
-
-/* ── Wrapper ─────────────────────────────────────────────────── */
-/* =============================================================
-   Partners Section
-============================================================= */
-
-.ps-section {
-    padding: 100px ;
-    background: #fff;
-    overflow: hidden;
-   
-
-}
-
-.ps-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 80px;
-}
-
-/* ===========================
-   Left Content
-=========================== */
-
-.ps-text {
-    flex: 0 0 40%;
-    max-width: 500px;
-}
-
-.ps-eyebrow {
+.ps-section{
     
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #F28C28;
-    margin-bottom: 16px;
+    /* background:#fff; */
+    overflow:hidden;
 }
 
-.ps-heading {
-    display: flex;
-    flex-direction: column;
-    font-size: clamp(32px, 4vw, 54px);
-    font-weight: 700;
-    line-height: 1.1;
-    margin-bottom: 24px;
+.ps-inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:70px;
+    padding: 120px;
+    background: linear-gradient(to right, #ffffff, #ffbd88);
 }
 
-/* .ps-heading__main {
-    color: #111827;
+/*==========================
+ Left Content
+==========================*/
+
+.ps-text{
+    width:38%;
+    max-width:500px;
+    flex-shrink:0;
+}
+
+.ps-eyebrow{
+    font-size:15px;
+    font-weight:600;
+    color:#F28C28;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    margin-bottom:18px;
+}
+
+.ps-heading{
+    font-size:64px;
+    font-weight:700;
+    line-height:1.05;
+    margin-bottom:30px;
+}
+
+.ps-heading__main{
+    display:block;
+    color:#111827;
+}
+
+.ps-heading__highlight{
+    display:block;
+    color:#F28C28;
+}
+
+.ps-description{
+    color:#667085;
+    line-height:1.9;
+    font-size:18px;
+    margin-bottom:40px;
+}
+
+.ps-description p{
+    margin:0;
+}
+
+.ps-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+    padding:16px 34px;
+    border:2px solid #F28C28;
+    border-radius:50px;
+    color:#F28C28;
+    text-decoration:none;
+    font-weight:600;
+    transition:.35s;
+}
+
+.ps-btn:hover{
+    background:#F28C28;
+    color:#fff;
+}
+
+.ps-btn svg{
+    transition:.35s;
+}
+
+.ps-btn:hover svg{
+    transform:translateX(5px);
+}
+
+/*==========================
+ Right Area
+==========================*/
+
+.ps-logos-wrapper{
+    flex:1;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:26px;
+    min-height:460px;
+    position:relative;
+}
+
+/*==========================
+ Each Row
+==========================*/
+
+.ps-row{
+    overflow:hidden;
+    width:100%;
+}
+
+.ps-track{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    width:max-content;
+    animation:ps-marquee 24s linear infinite;
+}
+
+.ps-row-two .ps-track{
+    animation-duration:28s;
+    animation-delay:-10s;
+}
+
+/*==========================
+ Card
+==========================*/
+
+/* .ps-card{ */
+
+    /* width:210px;
+
+    height:170px;
+
+    background:#fff;
+
+    border:1px solid #ECECEC; */
+
+    /* display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    flex-shrink:0;
+
+    transition:.35s;
+
+    overflow:hidden;
 } */
+.ps-card{
+    width:210px;
+    height:170px;
 
-.ps-heading__highlight {
-    color: #F28C28;
+    /* glass */
+    background:rgba(255,255,255,0.18);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    /* border:1px solid rgba(255,255,255,0.5); */
+    border-radius:14px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+    transition:.35s;
+    overflow:hidden;
 }
 
-.ps-description {
-    font-size: 16px;
-    line-height: 1.8;
-    color: #667085;
-    margin-bottom: 36px;
+.ps-card:hover{
+
+    transform:translateY(-8px);
+
+    /* box-shadow:0 18px 45px rgba(0,0,0,.08); */
+
 }
 
-.ps-description p:last-child {
-    margin-bottom: 0;
+.ps-card img{
+    width:70%;
+    height:70%;
+    object-fit:contain;
+    background:transparent;
 }
 
-.ps-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    padding: 14px 28px;
-    border: 2px solid #E87722;
-    border-radius: 50px;
-    color: #E87722;
-    font-weight: 600;
-    transition: all .3s ease;
+/*==========================
+ Make last card larger
+==========================*/
+
+.ps-row-one .ps-card:first-child{
+
+    width:240px;
+
+    height:170px;
+
 }
 
-.ps-btn svg {
-    transition: transform .3s ease;
+.ps-row-two .ps-card:last-child{
+
+    width:250px;
+
+    height:170px;
+
 }
 
-.ps-btn:hover {
-    background: #E87722;
-    color: #fff;
-}
+/*==========================
+ Infinite Animation
+==========================*/
 
-.ps-btn:hover svg {
-    transform: translateX(4px);
-}
+@keyframes ps-marquee{
 
-/* ===========================
-   Logo Area
-=========================== */
-
-.ps-logos-wrapper {
-    flex: 1;
-    position: relative;
-    width: 700px;
-    height: 500px;
-    margin: 0 auto;
-}
-
-/* Floating cards */
-
-.ps-card {
-    position: absolute;
-    
-    
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 30px;
-    
-    transition: all .35s ease;
-    overflow: hidden;
-}
-
-.ps-card:hover {
-    transform: translateY(-8px);
-    
-}
-
-.ps-card img {
-    
-    width: 220px;
-    height: 160px;
-    object-fit: contain;
-}
-
-/* ===========================
-   Optional floating animation
-=========================== */
-
-.ps-card:nth-child(1) {
-    animation: float1 6s ease-in-out infinite;
-}
-
-.ps-card:nth-child(2) {
-    animation: float2 7s ease-in-out infinite;
-}
-
-.ps-card:nth-child(3) {
-    animation: float3 8s ease-in-out infinite;
-}
-
-.ps-card:nth-child(4) {
-    animation: float4 7s ease-in-out infinite;
-}
-
-.ps-card:nth-child(5) {
-    animation: float5 6s ease-in-out infinite;
-}
-
-@keyframes float1 {
-    0%,100% { transform: translateY(0px); }
-    50% { transform: translateY(-12px); }
-}
-
-@keyframes float2 {
-    0%,100% { transform: translateY(0px); }
-    50% { transform: translateY(14px); }
-}
-
-@keyframes float3 {
-    0%,100% { transform: translateY(0px); }
-    50% { transform: translateY(-18px); }
-}
-
-@keyframes float4 {
-    0%,100% { transform: translateY(0px); }
-    50% { transform: translateY(10px); }
-}
-
-@keyframes float5 {
-    0%,100% { transform: translateY(0px); }
-    50% { transform: translateY(-15px); }
-}
-
-/* ===========================
-   Responsive
-=========================== */
-
-@media (max-width: 991px) {
-
-    .ps-inner {
-        flex-direction: column;
-        gap: 60px;
+    0%{
+        transform:translateX(0);
     }
 
-    .ps-text {
-        max-width: 100%;
-        flex: 1;
+    100%{
+        transform:translateX(calc(-50% - 9px));
     }
 
-    .ps-logos-wrapper {
-        width: 100%;
-        min-height: 500px;
-    }
 }
 
-@media (max-width: 767px) {
+/*==========================
+ Pause on Hover
+==========================*/
 
-    .ps-section {
-        padding: 70px 0;
-    }
+.ps-row:hover .ps-track{
 
-    .ps-heading {
-        font-size: 34px;
-    }
+    animation-play-state:paused;
 
-    .ps-logos-wrapper {
-        min-height: 400px;
-    }
-
-    .ps-card {
-        padding: 20px;
-    }
 }
 
-@media (max-width: 575px) {
+/* ==============
+Breadcrumb for partners page
+============= */
+/* ======================================================
+   PARTNERS PAGE - BREADCRUMB OVERRIDE
+====================================================== */
+/* PARTNERS PAGE - COMPLETE BREADCRUMB RESET */
 
-    .ps-logos-wrapper {
-        min-height: 320px;
-    }
+.partners-page .breadcrumb-wrapper {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
 
-    .ps-description {
-        font-size: 15px;
-    }
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
 
-    .ps-btn {
-        padding: 12px 22px;
-        font-size: 14px;
-    }
+    background: transparent !important;
+    opacity: 1 !important;
+
+    z-index: auto !important;
+
+    transform: none !important;
+}
+
+
+.partners-page .breadcrumb-wrapper::before,
+.partners-page .breadcrumb-wrapper::after {
+    content: none !important;
+    display: none !important;
+}
+
+
+.partners-page .breadcrumb-wrapper .breadcrumb {
+    position: relative !important;
+
+    top: auto !important;
+    left: auto !important;
+
+    width: calc(100% - 140px) !important;
+    max-width: 1450px;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    margin: 0 auto !important;
+    padding: 30px 0 !important;
+
+    background: transparent !important;
+
+    opacity: 1 !important;
+    transform: none !important;
+}
+/*==========================
+ Responsive
+==========================*/
+
+@media(max-width:1200px){
+
+.ps-heading{
+
+font-size:52px;
+
+}
+
+.ps-text{
+
+width:42%;
+
+}
+
+.ps-card{
+
+width:180px;
+
+height:150px;
+
+}
+
+}
+
+@media(max-width:991px){
+
+.ps-inner{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+}
+
+.ps-text{
+
+width:100%;
+
+max-width:100%;
+
+}
+
+.ps-heading{
+
+font-size:46px;
+
+}
+
+.ps-logos-wrapper{
+
+width:100%;
+
+min-height:380px;
+
+}
+
+}
+
+@media(max-width:768px){
+
+.ps-section{
+
+padding:70px 0;
+
+}
+
+.ps-heading{
+
+font-size:38px;
+
+}
+
+.ps-description{
+
+font-size:16px;
+
+}
+
+.ps-card{
+
+width:150px;
+
+height:130px;
+
+}
+
+.ps-row-one .ps-card:first-child{
+
+width:170px;
+
+height:130px;
+
+}
+
+.ps-row-two .ps-card:last-child{
+
+width:170px;
+
+height:130px;
+
+}
+
+}
+
+@media(max-width:480px){
+
+.ps-heading{
+
+font-size:32px;
+
+}
+
+.ps-btn{
+
+padding:13px 24px;
+
+font-size:14px;
+
+}
+
+.ps-card{
+
+width:130px;
+
+height:110px;
+
+}
+
 }

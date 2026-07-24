@@ -1,0 +1,19 @@
+﻿@using Umbraco.Cms.Core.Models.Blocks
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+
+@{
+    Layout = "master.cshtml";
+
+    var heroSection = Model.Value<BlockListModel>("cloudHero");
+    var contentSection = Model.Value<BlockListModel>("cloudContent");
+}
+
+@if (heroSection != null)
+{
+    @await Html.GetBlockListHtmlAsync(heroSection)
+}
+
+@if (contentSection != null)
+{
+    @await Html.GetBlockListHtmlAsync(contentSection)
+}

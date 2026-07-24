@@ -1,0 +1,133 @@
+.hc-solutions{
+    padding:70px 0;
+}
+
+.hc-solutions__grid{
+    width:92%;
+    max-width:1400px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+}
+
+.hc-solutions__card{
+    background:#fff;
+    padding:28px;
+    min-height:200px;
+    display:flex;
+    flex-direction:column;
+    transition:.35s;
+}
+
+.hc-solutions__card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 18px 40px rgba(0,0,0,.08);
+}
+
+.hc-solutions__card--featured{
+    background:#FF9A48;
+    color:#fff;
+}
+
+.hc-solutions__featured-title{
+    font-size:38px;
+    line-height:1.25;
+    font-weight:600;
+    margin-bottom:22px;
+    font-family: poppins;
+}
+
+.hc-solutions__featured-text{
+    font-size:18px;
+    line-height:1.8;
+    font-family: sans-serif;
+}
+
+.hc-solutions__icon{
+    color:#F58220;
+    font-size:20px;
+    margin-bottom:18px;
+}
+
+.hc-solutions__icon img{
+    max-width:60px;
+    height:auto;
+}
+
+.hc-solutions__title{
+    font-family: poppins;
+    font-size:22px;
+    color:#1E2952;
+    line-height:1.45;
+    font-weight:600;
+    margin-bottom:16px;
+}
+
+.hc-solutions__title span{
+    color:#FF9A48;
+}
+
+.hc-solutions__description{
+    color:#122560;
+    font-size:18px;
+    line-height:1.8;
+}
+
+.hc-solutions__card--cta{
+    background:#13235F;
+    justify-content:center;
+}
+
+.hc-solutions__cta-title{
+    color:#fff;
+    font-size:30px;
+    line-height:1.4;
+    margin-bottom:35px;
+}
+
+.hc-solutions__button{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background:#F58220;
+    color:#fff;
+    text-decoration:none;
+    padding:14px 28px;
+    border-radius:40px;
+    font-weight:500;
+    width:max-content;
+    transition:.3s;
+}
+
+.hc-solutions__button:hover{
+    background:#ff9336;
+}
+
+@media (max-width:991px){
+
+    .hc-solutions__grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media (max-width:767px){
+
+    .hc-solutions__grid{
+        grid-template-columns:1fr;
+    }
+
+    .hc-solutions__featured-title{
+        font-size:28px;
+    }
+
+    .hc-solutions__title{
+        font-size:20px;
+    }
+
+    .hc-solutions__cta-title{
+        font-size:26px;
+    }
+
+}

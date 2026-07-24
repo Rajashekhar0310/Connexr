@@ -1,0 +1,164 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Extensions
+
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+
+@{
+    Layout = "master.cshtml";
+
+    var title = Model.Value<string>("blogTitle");
+    var shortDescription = Model.Value<string>("shortDescription");
+    var category = Model.Value<string>("category");
+    var author = Model.Value<string>("author");
+    var readingTime = Model.Value<string>("readingTime");
+    var publishDate = Model.Value<DateTime>("publishDate");
+
+    var heroImage = Model.Value<IPublishedContent>("heroImage2");
+    var heroVideo = Model.Value<IPublishedContent>("video");
+
+    var heroMediaType = Model.Value<string>("heroMediaType") ?? "Image";
+}
+
+<section class="blog-hero">
+
+    <div class="blog-container">
+
+        <div class="blog-hero-grid">
+
+            <div class="blog-left">
+
+                @if (!string.IsNullOrWhiteSpace(category))
+                {
+                    <span class="blog-category">@category</span>
+                }
+
+                <h1>@title</h1>
+
+                @if (!string.IsNullOrWhiteSpace(shortDescription))
+                {
+                    <p class="blog-description">
+                        @shortDescription
+                    </p>
+                }
+
+            </div>
+
+            <div class="blog-right">
+
+                @if (!string.IsNullOrWhiteSpace(author))
+                {
+                    <div class="meta">
+
+                        <span>Author</span>
+
+                        <strong>@author</strong>
+
+                    </div>
+                }
+
+                <div class="meta">
+
+                    <span>Published</span>
+
+                    <strong>@publishDate.ToString("dd MMM yyyy")</strong>
+
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(readingTime))
+                {
+                    <div class="meta">
+
+                        <span>Reading Time</span>
+
+                        <strong>@readingTime</strong>
+
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section> 
+
+ <section class="blog-media">
+
+    <div class="blog-container">
+
+        @if (heroMediaType == "Video" && heroVideo != null)
+        {
+            <video autoplay
+                   muted
+                   loop
+                   playsinline
+                   controls>
+
+                <source src="@heroVideo.Url()" type="video/mp4"/>
+
+            </video>
+        }
+        else if(heroImage != null)
+        {
+            <img src="@heroImage.Url()"
+                 alt="@title" />
+        }
+
+    </div>
+
+</section> -->
+
+<section class="blog-wrapper">
+
+    <div class="blog-container">
+
+        <aside class="blog-navigation">
+
+            <div class="nav-sticky">
+
+                @{
+                    var blocks = Model.Value<Umbraco.Cms.Core.Models.Blocks.BlockListModel>("blogSections");
+                    var count = 1;
+                }
+
+                @if(blocks != null)
+                {
+                    foreach(var block in blocks)
+                    {
+                        var section = block.Content;
+
+                        var smallTitle = section.Value<string>("smallTitle");
+
+                        var sectionId = section.Value<string>("sectionId");
+
+                        <a href="#@sectionId"
+                           class="blog-nav-link">
+
+                            <span class="line"></span>
+
+                            <span class="number">
+                                @count.ToString("00")
+                            </span>
+
+                        </a>
+
+                        count++;
+                    }
+                }
+
+            </div>
+
+        </aside>
+
+        <div class="blog-content">
+
+            @await Html.GetBlockListHtmlAsync(Model,"blogSections")
+
+        </div>
+
+    </div>
+
+</section> -->
+<script src="/Scripts/bog-page.js"></script>

@@ -18,14 +18,21 @@
 
     var certifications = Model.Content.Value<IEnumerable<IPublishedContent>>("certifications");
 
-    if (!string.IsNullOrWhiteSpace(highlightWord) &&
-        !string.IsNullOrWhiteSpace(heading))
-    {
-        heading = heading.Replace(
-            highlightWord,
-            $"<span>{highlightWord}</span>"
-        );
-    }
+    if (!string.IsNullOrWhiteSpace(highlightWord))
+        {
+            if (!string.IsNullOrWhiteSpace(heading) &&
+                heading.Contains(highlightWord, StringComparison.OrdinalIgnoreCase))
+            {
+                heading = heading.Replace(
+                    highlightWord,
+                    $"<span>{highlightWord}</span>",
+                    StringComparison.OrdinalIgnoreCase);
+            }
+            else
+            {
+                heading = $"{heading} <span>{highlightWord}</span>";
+            }
+        }
 }
 
 <section class="about-cards-section @layoutStyle">
@@ -131,7 +138,7 @@
 }
 else if (layoutStyle == "Style3")
 {
-    <div class="card-grid">
+    <div class="products-grid">
 
         @if (cards != null)
         {
@@ -139,22 +146,22 @@ else if (layoutStyle == "Style3")
             {
                 var image = card.Content.Value<IPublishedContent>("image");
 
-                <div class="card-item">
+                <div class="products-item">
 
-                 @if (cardVideo != null)
+                    @if (cardVideo != null)
                     {
-                        <video autoplay muted loop playsinline>
+                        <video class="products-media" autoplay muted loop playsinline>
                             <source src="@cardVideo.Url()" type="video/mp4" />
                         </video>
                     }
                     else if (image != null)
                     {
-                        <img src="@image.Url()" alt="@image.Name"  />
+                        <img class="products-media" src="@image.Url()" alt="@image.Name" />
                     }
 
-                    <div class="card-overlay">
+                    <div class="products-overlay">
 
-                        <div class="card-content">
+                        <div class="products-content">
 
                             <h3>@card.Content.Value("title")</h3>
 
@@ -172,21 +179,18 @@ else if (layoutStyle == "Style3")
 
     @if (certifications != null && certifications.Any())
     {
-        <div class="certification-row">
+        <div class="products-certifications">
 
             @foreach (var cert in certifications)
             {
-                <div class="certification-item">
+                <div class="products-certification">
                     <img src="@cert.Url()" alt="@cert.Name" />
                 </div>
             }
 
         </div>
     }
-
-    <div class="bottom-line"></div>
 }
-
 else if (layoutStyle == "Style4")
 {
     <div class="card-grid style4-grid">
@@ -234,7 +238,7 @@ else if (layoutStyle == "Style4")
                                 @card.Content.Value("title")
                             </h3>
                             
-                                    @{
+                                      @{
                                             var cardDescription = card.Content.Value<BlockListModel>("description");
                                         }
 
@@ -255,6 +259,8 @@ else if (layoutStyle == "Style4")
     </div>
 }
 
+
+@* Style1 - Who are we (About Us section on Home page) *@
 else
 {
 <div class="section-header-wrap">

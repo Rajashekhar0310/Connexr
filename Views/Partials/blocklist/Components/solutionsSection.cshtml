@@ -1,0 +1,105 @@
+﻿<!-- About us Section-- 1st section -->
+
+
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@using Umbraco.Cms.Core.Models.Blocks
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var content = (ContentModels.SolutionsSection)Model.Content;
+
+    var titleHighlight = content.Value<string>("titleHighlight");
+    var title = content.Value<string>("title");
+    var description = content.Value<string>("description");
+    var cards = content.Value<BlockListModel>("cards");
+}
+
+<section class="enterprise-solutions about-page">
+
+    <!-- Header -->
+    <div class="enterprise-header">
+
+        <div class="enterprise-heading">
+            <h1>
+                @if (!string.IsNullOrWhiteSpace(titleHighlight))
+                {
+                    <span class="enterprise-accent">
+                        @titleHighlight
+                    </span>
+                }
+
+                @title
+            </h1>
+        </div>
+
+        <div class="enterprise-description">
+             @Html.Raw(description?.Replace(Environment.NewLine, "<br />"))
+        </div>
+
+    </div>
+
+    <!-- Cards -->
+    @if (cards != null && cards.Any())
+    {
+        <div class="enterprise-cards">
+
+            @foreach (var item in cards)
+            {
+                var card = item.Content;
+
+                var image = card.Value<IPublishedContent>("image");
+                var cardTitle = card.Value<string>("title");
+                var label = card.Value<string>("label");
+                var cardDescription = card.Value<string>("description");
+                   
+                    var showPrefixFirst = card.Value<bool>("showPrefixFirst");
+                   var prefixText = card.Value<string>("prefixText");
+
+                <div class="enterprise-card">
+
+                    @if (image != null)
+                    {
+                        <div class="enterprise-card-image"
+                             style="background-image:url('@image.Url()')">
+                        </div>
+                    }
+
+                   <h3 class="enterprise-card-title">
+
+                        @if (showPrefixFirst)
+                        {
+                            <span class="enterprise-card-prefix">@prefixText</span>
+                            <span class="enterprise-card-main">@cardTitle</span>
+                        }
+                        else
+                        {
+                            <span class="enterprise-card-main">@cardTitle</span>
+                            <span class="enterprise-card-prefix">@prefixText</span>
+                        }
+
+                    </h3>
+                    <div class="enterprise-card-content">
+
+                        @if (!string.IsNullOrWhiteSpace(label))
+                        {
+                            <p class="enterprise-card-label">
+                                @label
+                            </p>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(cardDescription))
+                        {
+                            <p class="enterprise-card-description">
+                                @cardDescription
+                            </p>
+                        }
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+
+</section>

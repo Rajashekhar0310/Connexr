@@ -1,0 +1,248 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+
+@model BlockListItem
+
+@{
+    var content = Model.Content;
+
+    var eyebrowText =
+        content.Value<string>("eyebrowText");
+
+    var orangeTitle =
+        content.Value<string>("orangeTitle");
+
+    var mainTitle =
+        content.Value<string>("mainTitle");
+
+    var cards =
+        content.Value<BlockListModel>("deliverCards");
+}
+
+
+<section class="deliver-section">
+
+    <div class="deliver-heading">
+
+        <div class="deliver-dots">
+            <span></span>
+            <span></span>
+        </div>
+
+
+        @if (!string.IsNullOrWhiteSpace(eyebrowText))
+        {
+            <div class="deliver-small-title">
+                @eyebrowText
+            </div>
+        }
+
+
+        <h2>
+
+            @if (!string.IsNullOrWhiteSpace(orangeTitle))
+            {
+                <span>
+                    @orangeTitle
+                </span>
+            }
+
+            @mainTitle
+
+        </h2>
+
+    </div>
+
+
+    @if (cards != null && cards.Any())
+    {
+        <div class="deliver-cards">
+
+            @{
+                var cardIndex = 0;
+            }
+
+
+            @foreach (var cardBlock in cards)
+            {
+                var card =
+                    cardBlock.Content;
+
+
+                var cardNumber =
+                    card.Value<string>("cardNumber");
+
+
+                var cardTitle =
+                    card.Value<string>("cardTitle");
+
+
+                var description =
+                    card.Value<string>("description");
+
+
+                var backgroundImage =
+                    card.Value<IPublishedContent>(
+                        "backgroundImage"
+                    );
+
+
+                var cardIcon =
+                    card.Value<IPublishedContent>(
+                        "cardIcon"
+                    );
+
+
+                var buttonText =
+                    card.Value<string>(
+                        "buttonText"
+                    );
+
+
+                var buttonLinks =
+                    card.Value<IEnumerable<Link>>(
+                        "buttonLink"
+                    );
+
+
+                var buttonLink =
+                    buttonLinks?.FirstOrDefault();
+
+
+                var activeClass =
+                    cardIndex == 0
+                        ? "active"
+                        : "";
+
+
+                /*
+                ========================================
+                CMS NAVIGATION VALUES
+                ========================================
+                */
+
+                var cardUrl =
+                    buttonLink?.Url ?? "";
+
+
+                var cardTarget =
+                    string.IsNullOrWhiteSpace(
+                        buttonLink?.Target
+                    )
+                    ? "_self"
+                    : buttonLink.Target;
+
+
+                <article
+                    class="deliver-card @activeClass"
+
+                    style="
+                        --card-image:
+                        url('@backgroundImage?.Url()');
+                    "
+
+                    data-url="@cardUrl"
+
+                    data-target="@cardTarget"
+                >
+
+
+                    @if (cardIcon != null)
+                    {
+                        <div class="deliver-icon">
+
+                            <img
+                                src="@cardIcon.Url()"
+                                alt="@cardTitle"
+                            />
+
+                        </div>
+                    }
+
+
+                    @if (!string.IsNullOrWhiteSpace(cardNumber))
+                    {
+                        <div class="deliver-number">
+                            @cardNumber
+                        </div>
+                    }
+
+
+                    <div class="deliver-content">
+
+
+                        @if (!string.IsNullOrWhiteSpace(cardTitle))
+                        {
+                            <h3>
+                                @cardTitle
+                            </h3>
+                        }
+
+
+                        @if (!string.IsNullOrWhiteSpace(description))
+                        {
+                            <p class="deliver-description">
+                                @description
+                            </p>
+                        }
+
+
+                        @if (buttonLink != null)
+                        {
+                            <a
+                                href="@buttonLink.Url"
+
+                                target="@cardTarget"
+
+                                class="deliver-link"
+                            >
+
+                                @(string.IsNullOrWhiteSpace(buttonText)
+                                    ? buttonLink.Name
+                                    : buttonText)
+
+
+                                <span>
+                                    →
+                                </span>
+
+                            </a>
+                        }
+
+                    </div>
+
+
+                    <button
+                        class="deliver-toggle"
+
+                        type="button"
+
+                        aria-label="Open @cardTitle"
+                    >
+
+                        <span class="plus">
+                            +
+                        </span>
+
+
+                        <span class="minus">
+                            −
+                        </span>
+
+                    </button>
+
+
+                </article>
+
+
+                cardIndex++;
+            }
+
+        </div>
+    }
+
+</section>
+
+
+<script src="/Scripts/Home/what-we-deliver.js"></script>

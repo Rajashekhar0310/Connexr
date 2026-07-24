@@ -1,0 +1,94 @@
+﻿@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Extensions
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+    if (content is null) { return; }
+
+    string Fallback(string? value, string fallback)
+        => string.IsNullOrWhiteSpace(value) ? fallback : value;
+
+    var heading    = content.Value<string>("heading");
+    var bodyText   = content.Value<string>("bodyText");
+    var emailLabel = Fallback(content.Value<string>("emailLabel"), "*Email");
+    var buttonText = Fallback(content.Value<string>("buttonText"), "Subscribe");
+    var background = content.Value<IPublishedContent>("backgroundImage");
+
+    // Optional settings element type: newsletterBlockSettings
+    var overlayAlign = Fallback(Model.Settings?.Value<string>("cardAlignment"), "left");
+
+    var blockId    = $"nl-{content.Key.ToString("N")[..8]}";
+    var bgUrl      = background?.GetCropUrl(width: 1920, quality: 80);
+    var bgUrlSmall = background?.GetCropUrl(width: 900, quality: 75);
+}
+
+<section class="nl-block nl-block--@overlayAlign"
+         id="@blockId"
+         aria-labelledby="@(blockId)-heading">
+
+    @if (!string.IsNullOrWhiteSpace(bgUrl))
+    {
+        <picture class="nl-block__bg">
+            <source media="(max-width: 700px)" srcset="@bgUrlSmall" />
+            <img src="@bgUrl" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+        </picture>
+    }
+
+    <div class="nl-block__inner">
+        <div class="nl-card">
+
+            @if (!string.IsNullOrWhiteSpace(heading))
+            {
+                <h2 class="nl-card__heading" id="@(blockId)-heading">@heading</h2>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(bodyText))
+            {
+                <p class="nl-card__body">@bodyText</p>
+            }
+
+            @using (Html.BeginUmbracoForm("Subscribe", "NewsletterSurface",
+                    FormMethod.Post, new { @class = "nl-form", novalidate = "novalidate" }))
+            {
+                
+
+                <div class="nl-field">
+                    <label class="nl-field__label" for="@(blockId)-email">@emailLabel</label>
+                    <input class="nl-field__input"
+                           type="email"
+                           id="@(blockId)-email"
+                           name="Email"
+                           autocomplete="email"
+                           required
+                           aria-required="true" />
+                </div>
+
+                @* Honeypot — hidden from people, catches bots *@
+                <div class="nl-honeypot" aria-hidden="true">
+                    <label for="@(blockId)-company">Company</label>
+                    <input type="text" id="@(blockId)-company" name="Company"
+                           tabindex="-1" autocomplete="off" />
+                </div>
+
+                <input type="hidden" name="SourcePage" value="@Umbraco.AssignedContentItem?.Key" />
+
+                <button class="nl-button" type="submit">
+                    <span class="nl-button__text">@buttonText</span>
+                    <svg class="nl-button__icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                        <path d="M4.5 11.5 11.5 4.5M6 4.5h5.5V10"
+                              fill="none" stroke="currentColor" stroke-width="1.6"
+                              stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+            }
+
+            @if (TempData["NewsletterMessage"] is string msg && !string.IsNullOrWhiteSpace(msg))
+            {
+                <p class="nl-message" role="status">@msg</p>
+            }
+
+        </div>
+    </div>
+</section>

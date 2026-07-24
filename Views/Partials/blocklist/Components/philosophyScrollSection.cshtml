@@ -1,0 +1,171 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Extensions
+
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var quoteIcon = content.Value<MediaWithCrops>("quoteIcon");
+
+    var philosophyText =
+        content.Value<string>("philosophyText");
+
+    var labelText =
+        content.Value<string>("labelText");
+
+    var iconImage =
+        content.Value<MediaWithCrops>("iconImage");
+
+    var blocksImage =
+        content.Value<MediaWithCrops>("blocksImage");
+
+    var chessVideo =
+        content.Value<MediaWithCrops>("chessVideo");
+
+    var iconPosition =
+        content.Value<int>("iconPosition");
+
+    var blocksPosition =
+        content.Value<int>("blocksPosition");
+
+    var chessPosition =
+        content.Value<int>("chessPosition");
+
+
+    var words = !string.IsNullOrWhiteSpace(philosophyText)
+        ? philosophyText.Split(
+            ' ',
+            StringSplitOptions.RemoveEmptyEntries
+        )
+        : Array.Empty<string>();
+}
+
+
+<section class="philosophy-section">
+
+    <div class="philosophy-sticky">
+
+        <div class="philosophy-content">
+
+
+            @* ==============================
+               QUOTE ICON
+            ============================== *@
+
+            @if (quoteIcon != null)
+            {
+                <div class="quote">
+
+                    <img
+                        src="@quoteIcon.MediaUrl()"
+                        alt="Quote"
+                    />
+
+                </div>
+            }
+
+
+            @* ==============================
+               PHILOSOPHY TEXT
+            ============================== *@
+
+            <h2 class="philosophy-heading">
+
+                @for (int i = 0; i < words.Length; i++)
+                {
+                    <span class="word">@words[i]</span><text> </text>
+
+
+                    @* =========================
+                       ICON IMAGE
+                    ========================= *@
+
+                    @if ((i + 1) == iconPosition &&
+                         iconImage != null)
+                    {
+                        <span class="inline-image icon">
+
+                            <img
+                                src="@iconImage.MediaUrl()"
+                                alt=""
+                            />
+
+                        </span><text> </text>
+                    }
+
+
+                    @* =========================
+                       BLOCKS IMAGE
+                    ========================= *@
+
+                    @if ((i + 1) == blocksPosition &&
+                         blocksImage != null)
+                    {
+                        <span class="inline-image blocks">
+
+                            <img
+                                src="@blocksImage.MediaUrl()"
+                                alt=""
+                            />
+
+                        </span><text> </text>
+                    }
+
+
+                    @* =========================
+                       CHESS VIDEO
+                    ========================= *@
+
+                    @if ((i + 1) == chessPosition &&
+                         chessVideo != null)
+                    {
+                        <span class="inline-image chess">
+
+                            <video
+                                autoplay
+                                muted
+                                loop
+                                playsinline
+                                preload="metadata">
+
+                                <source
+                                    src="@chessVideo.MediaUrl()"
+                                    type="video/mp4"
+                                />
+
+                            </video>
+
+                        </span><text> </text>
+                    }
+                }
+
+            </h2>
+
+
+            @* ==============================
+               FOOTER LABEL
+            ============================== *@
+
+            @if (!string.IsNullOrWhiteSpace(labelText))
+            {
+                <div class="footer-label">
+
+                    <span class="footer-dot"></span>
+
+                    <span class="footer-text">
+                        @labelText
+                    </span>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<script src="/Scripts/About%20Us/philosophyScrollSection.js?v=@DateTime.Now.Ticks"></script>

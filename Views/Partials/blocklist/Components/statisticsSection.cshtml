@@ -1,0 +1,36 @@
+﻿@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Web.Common.PublishedModels
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var section = (StatisticsSection)Model.Content;
+    var stats = section.Statistics;
+}
+
+@if (stats != null)
+{
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+
+                @foreach (var item in stats)
+                {
+                    var stat = (StatItem)item.Content;
+
+                    <div class="stat-card">
+                        <span class="stat-line"></span>
+
+                        <h2 class="stat-number">
+                            @stat.Number
+                        </h2>
+
+                        <p class="stat-description">
+                            @stat.Description
+                        </p>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </section>
+}

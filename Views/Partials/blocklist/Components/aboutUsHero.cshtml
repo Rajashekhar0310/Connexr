@@ -1,0 +1,207 @@
+﻿@using System.Text.Json
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var heroWhiteTitle =
+        content.Value<string>("heroWhiteTitle");
+
+    var heroBlueTitle =
+        content.Value<string>("heroBlueTitle");
+     var heroDescription =
+        content.Value<string>("heroDescription");
+    var heroSlides =
+        content.Value<BlockListModel>("heroSlides");
+
+
+    var slideData = new List<object>();
+
+
+    if (heroSlides != null)
+    {
+        foreach (var block in heroSlides)
+        {
+            var slide = block.Content;
+
+
+            var sectionName =
+                slide.Value<string>("sectionName");
+
+
+            var contentTitle =
+                slide.Value<string>("contentTitle");
+
+
+            var description =
+                slide.Value<string>("description");
+
+
+            var backgroundImage =
+                slide.Value<MediaWithCrops>(
+                    "backgroundImage"
+                );
+
+
+            var cardImage =
+                slide.Value<MediaWithCrops>(
+                    "cardImage"
+                );
+
+
+            slideData.Add(new
+            {
+                name = sectionName ?? "",
+
+                title = contentTitle ?? "",
+
+                description = description ?? "",
+
+                background =
+                    backgroundImage?.MediaUrl() ?? "",
+
+                cardImage =
+                    cardImage?.MediaUrl() ?? ""
+            });
+        }
+    }
+
+
+    var slidesJson =
+        JsonSerializer.Serialize(slideData);
+}
+
+
+<section class="about-hero"
+         data-about-hero>
+
+
+    <!-- ==============================
+         BACKGROUND
+    =============================== -->
+
+
+    <div class="about-hero-bg about-hero-bg-current">
+    </div>
+
+
+    <div class="about-hero-bg about-hero-bg-next">
+    </div>
+
+
+    <div class="about-hero-overlay">
+    </div>
+
+
+
+    <!-- ==============================
+         MAIN CONTENT
+    =============================== -->
+
+
+    <div class="about-hero-container">
+
+
+        <!-- HERO HEADING -->
+
+
+        <h1 class="about-hero-heading">
+
+            <span class="about-heading-white">
+                @heroWhiteTitle
+            </span>
+
+
+            <span class="about-heading-blue">
+
+                @Html.Raw(
+                    heroBlueTitle?
+                        .Replace(
+                            "\r\n",
+                            "<br>"
+                        )
+                        .Replace(
+                            "\n",
+                            "<br>"
+                        )
+                )
+
+            </span>
+
+        </h1>
+       <p class="about-hero-description">
+            @heroDescription
+        </p>
+        
+
+
+
+        <!-- ==============================
+             BOTTOM AREA
+        =============================== -->
+
+
+        <div class="about-hero-bottom">
+
+
+            <!-- LEFT SIDE -->
+
+
+            <div class="about-hero-info">
+
+
+                <h2 class="about-active-name">
+                </h2>
+
+
+
+                <div class="about-slider-dots">
+                </div>
+
+
+
+                <div class="about-active-content">
+
+
+                    <h3 class="about-active-title">
+                    </h3>
+
+
+                    <p class="about-active-description">
+                    </p>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- RIGHT TWO CARDS -->
+
+
+            <div class="about-hero-cards">
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- UMBRACO DATA FOR JS -->
+<script type="application/json"
+        class="about-hero-data">
+    @Html.Raw(slidesJson)
+</script>
+
+   <script src="/Scripts/About Us/aboutHero.js"></script>
+
+
+</section>

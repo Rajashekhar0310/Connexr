@@ -1,0 +1,66 @@
+﻿@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Extensions
+
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var orangeHeading = content.Value<string>("orangeHeading");
+    var blueHeading = content.Value<string>("blueHeading");
+    var description = content.Value<string>("description");
+
+    var badges = content.Value<BlockListModel>("trustBadges");
+}
+
+<section class="talk-people-section">
+
+    <div class="talk-people-container">
+
+        <div class="talk-people-left">
+
+            @if (!string.IsNullOrWhiteSpace(orangeHeading))
+            {
+                <h5>@orangeHeading</h5>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(blueHeading))
+            {
+                <h2>@blueHeading</h2>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(description))
+            {
+                <p>@description</p>
+            }
+
+        </div>
+
+        <div class="talk-people-right">
+
+            @if (badges != null && badges.Any())
+            {
+                foreach (var item in badges)
+                {
+                    var badge = item.Content;
+
+                    var logo = badge.Value<IPublishedContent>("logo");
+                    var alt = badge.Value<string>("altText") ?? "";
+
+                    <div class="talk-people-logo-card">
+
+                        @if (logo != null)
+                        {
+                            <img src="@logo.Url()" alt="@alt" />
+                        }
+
+                    </div>
+                }
+            }
+
+        </div>
+
+    </div>
+
+</section>

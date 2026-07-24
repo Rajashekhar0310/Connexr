@@ -1,80 +1,74 @@
 ﻿@using Umbraco.Cms.Core.Models
 @using Umbraco.Cms.Core.Models.Blocks
-@using Umbraco.Cms.Core.Models.PublishedContent
 @using Umbraco.Extensions
 
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
 
 @{
-    // Get all content values with proper null handling
-    string title = Model.Content.Value<string>("title") ?? "";
-    string description = Model.Content.Value<string>("content") ?? "";
-    string buttonText = Model.Content.Value<string>("buttonText") ?? "";
-    Link buttonLink = Model.Content.Value<Link>("buttonLink");
-    IPublishedContent image = Model.Content.Value<IPublishedContent>("ctaImage");
-    string imagePosition = Model.Content.Value<string>("imagePosition") ?? "left";
-    
-    // Normalize image position
-    bool isReverse = imagePosition.Equals("right", StringComparison.OrdinalIgnoreCase);
+    var title = Model.Content.Value<string>("title");
+    var content = Model.Content.Value<string>("content");
+
+    var bgImage = Model.Content.Value<MediaWithCrops>("ctaimage");
+    var video = Model.Content.Value<MediaWithCrops>("video");
+
+    var imagePosition = Model.Content.Value<string>("imagePosition") ?? "Left";
+
+    var links = Model.Content.Value<IEnumerable<Link>>("buttonLink");
 }
+<section class="image-content-section @(imagePosition.ToLower())">
 
-<section class="cta-section">
-    <div class="container">
+    @if (bgImage != null)
+    {
+        <img class="image-content-bg"
+             src="@bgImage.Url()"
+             alt="@title" />
+    }
 
-        <div class="cta-wrapper @(isReverse ? "cta-wrapper--reverse" : "")">
+    @if (video != null)
+    {
+        <video class="image-content-video" autoplay muted loop playsinline>
+            <source src="@video.Url()" type="video/mp4" />
+        </video>
+    }
 
-            @* ── IMAGE SECTION ── *@
-            <div class="cta-image">
+    <div class="image-content-overlay"></div>
 
-              
-                @if (image != null)
-                {
-                    <img src="@image.Url()"
-                         alt="@(image.Value<string>("umbracoAltText") ?? title ?? "CTA Image")"
-                         loading="lazy"
-                         width="650"
-                         height="auto" />
-                }
-                else
-                {
-                    <div class="cta-image-placeholder">
-                        <p>Image not set</p>
-                    </div>
-                }
+    <div class="image-content-wrapper">
 
-            </div>
+        <div class="image-content-details">
 
-            @* ── CONTENT SECTION ── *@
-            <div class="cta-content">
+            @if (!string.IsNullOrWhiteSpace(title))
+            {
+                <h2 class="image-content-title">
+                    @title
+                </h2>
+            }
 
-                <div class="cta-content-dots">
-                    <span></span>
-                    <span></span>
+            @if (!string.IsNullOrWhiteSpace(content))
+            {
+                <div class="image-content-description">
+                    @Html.Raw(content)
                 </div>
+            }
 
-                @if (!string.IsNullOrWhiteSpace(title))
+            @if (links != null)
+            {
+                foreach (var item in links)
                 {
-                    <h2>@Html.Raw(title)</h2>
-                }
+                    <a href="@item.Url"
+                       target="@item.Target"
+                       class="image-content-button">
 
-                @if (!string.IsNullOrWhiteSpace(description))
-                {
-                    <p>@description</p>
-                }
+                        @item.Name
 
-                @if (buttonLink != null)
-                {
-                    <a href="@buttonLink.Url"
-                       target="@(string.IsNullOrWhiteSpace(buttonLink.Target) ? "_self" : buttonLink.Target)"
-                       class="cta-btn"
-                       aria-label="@(string.IsNullOrWhiteSpace(buttonText) ? buttonLink.Name : buttonText)">
-                        @(string.IsNullOrWhiteSpace(buttonText) ? buttonLink.Name : buttonText)
+                        <span>→</span>
+
                     </a>
                 }
-
-            </div>
+            }
 
         </div>
 
     </div>
+
 </section>

@@ -1,0 +1,69 @@
+﻿@using Umbraco.Cms.Core.Models
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var heading = content.Value<string>("heroHeading");
+    var highlight = content.Value<string>("highlightText");
+    var description = content.Value<string>("heroDescription");
+
+    var background =
+        content.Value<MediaWithCrops>("backgroundImage");
+
+    var imageUrl = background?.MediaUrl();
+}
+
+<section class="industryHeroSection">
+
+    @if(background != null)
+    {
+        <img
+            class="industryHeroSection__image"
+            src="@imageUrl"
+            alt="@heading" />
+    }
+
+    <div class="industryHeroSection__overlay"></div>
+
+    <div class="industryHeroSection__container">
+
+        <div class="industryHeroSection__content">
+
+            <div class="industryHeroSection__left">
+
+                <h1>
+
+                    @heading
+
+                    @if(!string.IsNullOrWhiteSpace(highlight))
+                    {
+                        <span>@highlight</span>
+                    }
+
+                </h1>
+
+            </div>
+
+            <div class="industryHeroSection__right">
+
+                <p>
+                    @description
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+    const hero = document.querySelector(".industryHeroSection");
+
+    if (!hero) return;
+
+});
+</script>

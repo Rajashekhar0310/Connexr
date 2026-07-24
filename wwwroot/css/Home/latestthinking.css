@@ -1,0 +1,1088 @@
+/* =========================================================
+   LATEST THINKING SECTION
+========================================================= */
+
+.latest-thinking-section {
+    width: 100%;
+    
+    background: #ffffff;
+}
+
+
+.latest-thinking-container {
+    width: 100%;
+    padding: 120px;
+}
+
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.latest-thinking-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    gap: 30px;
+
+    margin-bottom: 28px;
+}
+
+
+.latest-thinking-heading-area {
+    position: relative;
+    flex-shrink: 0;
+}
+
+
+
+/* =========================================================
+   ORANGE DOTS
+========================================================= */
+
+.latest-thinking-dots {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    margin-bottom: 18px;
+}
+
+
+.latest-thinking-dots span {
+    display: block;
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #ff914d;
+}
+
+
+
+/* =========================================================
+   EYEBROW
+========================================================= */
+
+.latest-thinking-eyebrow {
+    margin-bottom: 12px;
+
+    color: #111111;
+
+    font-size: 17px;
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
+    text-transform: uppercase;
+}
+
+
+
+/* =========================================================
+   MAIN TITLE
+========================================================= */
+
+.latest-thinking-title {
+    margin: 0;
+
+    color: #132968;
+
+    font-size: 45px;
+    font-weight: 600;
+font-family: poppins;
+    line-height: 1;
+}
+
+
+.latest-thinking-title span {
+    color: #ff8b42;
+}
+
+
+
+/* =========================================================
+   FILTER TABS
+========================================================= */
+
+.latest-thinking-filters {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    flex-wrap: wrap;
+
+    gap: 28px;
+}
+
+
+.latest-thinking-filter {
+    position: relative;
+font-family: poppins;
+    padding: 5px 0;
+
+    border: 0;
+    outline: 0;
+
+    background: transparent;
+
+    color: #999999;
+
+    
+
+    font-size: 16px;
+    font-weight: 400;
+
+    text-transform: uppercase;
+
+    cursor: pointer;
+
+    transition: color 0.3s ease;
+}
+
+
+.latest-thinking-filter:hover,
+.latest-thinking-filter.active {
+    color: #162c6b;
+}
+
+
+.latest-thinking-filter::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    bottom: -4px;
+
+    width: 0;
+    height: 1px;
+
+    background: #162c6b;
+
+    transition: width 0.3s ease;
+}
+
+
+.latest-thinking-filter.active::after {
+    width: 100%;
+}
+
+
+
+/* =========================================================
+   ORIGINAL MOSAIC GRID
+========================================================= */
+
+.latest-thinking-grid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1.03fr)
+        minmax(0, 1fr);
+
+    grid-template-rows:
+        270px
+        270px
+        270px;
+
+    gap: 14px;
+
+    height: 824px;
+}
+
+
+
+/* =========================================================
+   ORIGINAL CARD POSITIONS
+========================================================= */
+
+.latest-thinking-card-1 {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+}
+
+
+.latest-thinking-card-2 {
+    grid-column: 1;
+    grid-row: 3;
+}
+
+
+.latest-thinking-card-3 {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+
+.latest-thinking-card-4 {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+
+.latest-thinking-card-5 {
+    grid-column: 2;
+    grid-row: 3;
+}
+
+
+.latest-thinking-card-6 {
+    grid-column: 3;
+    grid-row: 1;
+}
+
+
+.latest-thinking-card-7 {
+    grid-column: 3;
+    grid-row: 2 / span 2;
+}
+
+
+
+/* =========================================================
+   CARD BASE
+========================================================= */
+
+.latest-thinking-card {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    min-width: 0;
+
+    overflow: hidden;
+
+    background: #dfe6ee;
+
+    cursor: pointer;
+
+    isolation: isolate;
+}
+
+
+
+/* =========================================================
+   CARD IMAGE
+========================================================= */
+
+.latest-thinking-card-image {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 1;
+
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    transform: scale(1);
+
+    transition:
+        transform 0.65s cubic-bezier(.22, .61, .36, 1);
+}
+
+
+.latest-thinking-card:hover
+.latest-thinking-card-image {
+    transform: scale(1.04);
+}
+
+
+
+/* =========================================================
+   NORMAL CARD CONTENT
+========================================================= */
+
+.latest-thinking-normal-content {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 3;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    padding: 20px;
+
+    background:
+        linear-gradient(
+            to top,
+            rgba(8, 26, 70, 0.76) 0%,
+            rgba(8, 26, 70, 0.15) 45%,
+            rgba(8, 26, 70, 0) 70%
+        );
+
+    opacity: 1;
+
+    visibility: visible;
+
+    transform: translateY(0);
+
+    transition:
+        opacity 0.35s ease,
+        transform 0.45s ease,
+        visibility 0.35s ease;
+}
+
+
+
+/* =========================================================
+   CATEGORY LABEL
+========================================================= */
+
+.latest-thinking-category {
+    align-self: flex-start;
+
+    display: inline-flex;
+    align-items: center;
+
+    min-height: 30px;
+
+    padding: 0 16px;
+
+    background: rgba(230, 238, 247, 0.90);
+
+    color: #0f245d;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    line-height: 1;
+
+    text-transform: uppercase;
+}
+
+
+
+/* =========================================================
+   NORMAL TITLE
+========================================================= */
+
+.latest-thinking-normal-title {
+    max-width: 90%;
+
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 19px;
+    font-weight: 700;
+
+    line-height: 1.25;
+}
+
+
+
+/* =========================================================
+   ACTIVE CONTENT
+========================================================= */
+
+.latest-thinking-active-content {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 5;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    padding: 22px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.02) 0%,
+            rgba(255, 255, 255, 0.35) 35%,
+            rgba(255, 255, 255, 0.90) 70%,
+            rgba(255, 255, 255, 1) 100%
+        );
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transform: translateY(25px);
+
+    transition:
+        opacity 0.4s ease,
+        transform 0.5s cubic-bezier(.22, .61, .36, 1),
+        visibility 0.4s ease;
+}
+
+
+
+/* =========================================================
+   ACTIVE CATEGORY
+========================================================= */
+
+.latest-thinking-active-category {
+    position: absolute;
+
+    top: 20px;
+    left: 20px;
+
+    padding: 10px 17px;
+
+    background: rgba(225, 234, 244, 0.92);
+
+    color: #10255d;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    line-height: 1;
+
+    text-transform: uppercase;
+}
+
+
+
+/* =========================================================
+   ACTIVE TITLE
+========================================================= */
+
+.latest-thinking-active-title {
+    max-width: 95%;
+
+    margin: 0 0 10px 0;
+
+    color: #102b69;
+
+    font-size: 28px;
+    font-weight: 600;
+
+    line-height: 1.18;
+}
+
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.latest-thinking-description {
+    max-width: 95%;
+
+    margin: 0 0 15px 0;
+font-family: sans-serif;
+    color: #18346d;
+
+    font-size: 18px;
+
+    line-height: 1.45;
+}
+
+
+
+/* =========================================================
+   ARROW BUTTON
+========================================================= */
+
+.latest-thinking-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 38px;
+    height: 38px;
+
+    flex: 0 0 38px;
+
+    border-radius: 50%;
+
+    background: #ff914d;
+
+    color: #132968;
+
+    font-size: 17px;
+
+    line-height: 1;
+
+    text-decoration: none;
+
+    transition:
+        transform 0.3s ease,
+        background 0.3s ease;
+}
+
+
+.latest-thinking-arrow:hover {
+    transform: translateX(4px);
+
+    background: #ff7d2b;
+}
+
+
+
+/* =========================================================
+   ACTIVE CARD STATE
+========================================================= */
+
+.latest-thinking-card.active
+.latest-thinking-normal-content {
+    opacity: 0;
+
+    visibility: hidden;
+
+    transform: translateY(15px);
+
+    pointer-events: none;
+}
+
+
+.latest-thinking-card.active
+.latest-thinking-active-content {
+    opacity: 1;
+
+    visibility: visible;
+
+    transform: translateY(0);
+}
+
+
+.latest-thinking-card.active
+.latest-thinking-card-image {
+    transform: scale(1.02);
+}
+
+
+
+/* =========================================================
+   HIDDEN CARD
+========================================================= */
+
+.latest-thinking-card.latest-thinking-hidden {
+    display: none !important;
+}
+
+
+
+/* =========================================================
+   FILTERED GRID
+========================================================= */
+
+.latest-thinking-grid.latest-thinking-filter-layout {
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    grid-template-rows: 450px;
+
+    grid-auto-rows: 450px;
+
+    height: auto;
+}
+
+
+.latest-thinking-grid.latest-thinking-filter-layout
+.latest-thinking-card {
+    grid-column: auto;
+    grid-row: auto;
+
+    width: 100%;
+    height: 450px;
+}
+
+
+
+/* =========================================================
+   NO RESULTS
+========================================================= */
+
+.latest-thinking-no-results {
+    display: none;
+
+    padding: 80px 20px;
+
+    color: #10255d;
+
+    font-size: 18px;
+
+    text-align: center;
+}
+
+
+.latest-thinking-no-results.show {
+    display: block;
+}
+
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .latest-thinking-container {
+        width: calc(100% - 50px);
+    }
+
+
+    .latest-thinking-header {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 25px;
+    }
+
+
+    .latest-thinking-filters {
+        justify-content: flex-start;
+
+        gap: 18px;
+    }
+
+
+    .latest-thinking-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        grid-template-rows:
+            repeat(4, 320px);
+
+        height: auto;
+    }
+
+
+    .latest-thinking-card-1,
+    .latest-thinking-card-2,
+    .latest-thinking-card-3,
+    .latest-thinking-card-4,
+    .latest-thinking-card-5,
+    .latest-thinking-card-6,
+    .latest-thinking-card-7 {
+        grid-column: auto;
+        grid-row: auto;
+    }
+
+
+    .latest-thinking-grid.latest-thinking-filter-layout {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        grid-template-rows: 420px;
+
+        grid-auto-rows: 420px;
+    }
+
+
+    .latest-thinking-grid.latest-thinking-filter-layout
+    .latest-thinking-card {
+        height: 420px;
+    }
+}
+
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+/* =========================================================
+   MOBILE - LATEST THINKING
+========================================================= */
+
+@media (max-width: 650px) {
+
+    /* =========================
+       SECTION
+    ========================= */
+
+    .latest-thinking-section {
+        width: 100%;
+        padding: 25px 0 35px;
+        overflow: hidden;
+        background: #ffffff;
+    }
+
+
+    /* =========================
+       CONTAINER
+    ========================= */
+
+    .latest-thinking-container {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .latest-thinking-header {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        gap: 0;
+
+        width: 100%;
+
+        margin: 0;
+        padding: 0 15px;
+    }
+
+
+    .latest-thinking-heading-area {
+        width: 100%;
+    }
+
+
+    /* =========================
+       DOTS
+       Screenshot does not show dots
+    ========================= */
+
+    .latest-thinking-dots {
+        display: none;
+    }
+
+
+    /* =========================
+       EYEBROW
+    ========================= */
+
+    .latest-thinking-eyebrow {
+        margin: 0 0 12px;
+
+        font-family: 'Poppins', sans-serif;
+
+        font-size: 8px;
+        font-weight: 700;
+
+        line-height: 1.2;
+
+        letter-spacing: 0.7px;
+
+        text-transform: uppercase;
+
+        color: #111111;
+    }
+
+
+    /* =========================
+       TITLE
+    ========================= */
+
+    .latest-thinking-title {
+        margin: 0 0 18px;
+
+        font-family: 'Poppins', sans-serif;
+
+        font-size: 26px;
+        font-weight: 600;
+
+        line-height: 1.05;
+
+        letter-spacing: -0.5px;
+
+        color: #132968;
+    }
+
+
+    .latest-thinking-title span {
+        color: #ff8b42;
+    }
+
+
+    /* =====================================================
+       CARDS HORIZONTAL SLIDER
+    ===================================================== */
+
+    .latest-thinking-grid,
+    .latest-thinking-grid.latest-thinking-filter-layout {
+
+        display: flex !important;
+
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+
+        width: 100% !important;
+        height: auto !important;
+
+        gap: 14px;
+
+        padding:
+            0
+            15px
+            8px;
+
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+
+        scroll-snap-type: x mandatory;
+
+        -webkit-overflow-scrolling: touch;
+
+        scrollbar-width: none;
+
+        -ms-overflow-style: none;
+    }
+
+
+    .latest-thinking-grid::-webkit-scrollbar,
+    .latest-thinking-grid.latest-thinking-filter-layout::-webkit-scrollbar {
+        display: none;
+
+        width: 0;
+        height: 0;
+    }
+
+
+    /* =========================
+       CARD SIZE
+    ========================= */
+
+    .latest-thinking-card,
+    .latest-thinking-grid.latest-thinking-filter-layout
+    .latest-thinking-card {
+
+        flex:
+            0
+            0
+            calc(100vw - 55px) !important;
+
+        width:
+            calc(100vw - 55px) !important;
+
+        min-width:
+            calc(100vw - 55px) !important;
+
+        max-width:
+            calc(100vw - 55px) !important;
+
+        height: 325px !important;
+
+        min-height: 325px !important;
+
+        grid-column: auto !important;
+        grid-row: auto !important;
+
+        scroll-snap-align: start;
+    }
+
+
+    /* =========================
+       IMAGE
+    ========================= */
+
+    .latest-thinking-card-image {
+        width: 100%;
+        height: 100%;
+
+        object-fit: cover;
+
+        object-position: center;
+    }
+
+
+    /* =========================
+       NORMAL CARD CONTENT
+    ========================= */
+
+    .latest-thinking-normal-content {
+        padding: 12px;
+
+        background:
+            linear-gradient(
+                to top,
+                rgba(8, 26, 70, 0.85) 0%,
+                rgba(8, 26, 70, 0.30) 38%,
+                rgba(8, 26, 70, 0) 65%
+            );
+    }
+
+
+    /* =========================
+       CATEGORY
+    ========================= */
+
+    .latest-thinking-category {
+        min-height: 22px;
+
+        padding: 0 10px;
+
+        font-family: 'Poppins', sans-serif;
+
+        font-size: 7px;
+        font-weight: 600;
+
+        line-height: 1;
+
+        color: #10255d;
+    }
+
+
+    /* =========================
+       CARD TITLE
+    ========================= */
+
+    .latest-thinking-normal-title {
+        max-width: 95%;
+
+        margin: 0;
+
+        font-family: 'Poppins', sans-serif;
+
+        font-size: 17px;
+        font-weight: 600;
+
+        line-height: 1.3;
+
+        letter-spacing: -0.2px;
+
+        color: #ffffff;
+    }
+
+
+    /* =====================================================
+       ACTIVE CARD
+    ===================================================== */
+
+    .latest-thinking-active-content {
+        padding: 15px;
+    }
+
+
+    .latest-thinking-active-category {
+        top: 12px;
+        left: 12px;
+
+        padding: 7px 10px;
+
+        font-size: 7px;
+    }
+
+
+    .latest-thinking-active-title {
+        margin-bottom: 8px;
+
+        font-family: 'Poppins', sans-serif;
+
+        font-size: 18px;
+        font-weight: 600;
+
+        line-height: 1.25;
+    }
+
+
+    .latest-thinking-description {
+        margin-bottom: 10px;
+
+        font-family: 'DM Sans', sans-serif;
+
+        font-size: 11px;
+
+        line-height: 1.5;
+    }
+
+
+    .latest-thinking-arrow {
+        width: 30px;
+        height: 30px;
+
+        flex-basis: 30px;
+
+        font-size: 13px;
+    }
+
+
+    /* =====================================================
+       FILTER TABS
+    ===================================================== */
+
+    .latest-thinking-filters {
+        order: 2;
+
+        display: flex;
+
+        flex-direction: row;
+
+        flex-wrap: nowrap;
+
+        align-items: center;
+
+        justify-content: flex-start;
+
+        width: calc(100% + 30px);
+
+        margin:
+            15px
+            -15px
+            0;
+
+        padding:
+            0
+            15px
+            5px;
+
+        gap: 24px;
+
+        overflow-x: auto;
+
+        overflow-y: hidden;
+
+        white-space: nowrap;
+
+        scrollbar-width: none;
+
+        -ms-overflow-style: none;
+    }
+
+
+    .latest-thinking-filters::-webkit-scrollbar {
+        display: none;
+    }
+
+
+    .latest-thinking-filter {
+        flex-shrink: 0;
+
+        padding: 4px 0;
+
+        font-family: 'Poppins', sans-serif;
+
+        font-size: 12px;
+        font-weight: 400;
+
+        line-height: 1;
+
+        color: #999999;
+
+        white-space: nowrap;
+    }
+
+
+    .latest-thinking-filter.active {
+        color: #162c6b;
+    }
+
+
+    /* =========================
+       NO RESULTS
+    ========================= */
+
+    .latest-thinking-no-results {
+        padding: 40px 15px;
+
+        font-size: 14px;
+    }
+}

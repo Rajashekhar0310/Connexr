@@ -1,0 +1,142 @@
+﻿@using System.Text.Json
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Extensions
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var sectionTitle = content.Value<string>("sectionTitle");
+    var deliveryItems = content.Value<BlockListModel>("deliveryItems");
+
+    var slides = new List<object>();
+
+    if (deliveryItems != null)
+    {
+        foreach (var block in deliveryItems)
+        {
+            var item = block.Content;
+
+            var media = item.Value<MediaWithCrops>("image");
+            var imageUrl = media?.Url()
+                ?? item.Value<IPublishedContent>("image")?.Url()
+                ?? "";
+
+            slides.Add(new
+            {
+                number = item.Value<string>("number") ?? "",
+                title = item.Value<string>("title") ?? "",
+                description = item.Value<string>("description") ?? "",
+                image = imageUrl
+            });
+        }
+    }
+
+    var slidesJson = JsonSerializer.Serialize(slides);
+}
+
+@if (deliveryItems != null && deliveryItems.Any())
+{
+<section class="caswd-scroll-section" id="caswdScrollSection">
+
+    <div class="caswd-slider" id="caswdSlider">
+
+        <!-- Background -->
+        <div class="caswd-background">
+
+            <img class="caswd-bg-image"
+                 src=""
+                 alt="Background Image" />
+
+            <img class="caswd-bg-image caswd-bg-next"
+                 src=""
+                 alt="" />
+
+            <div class="caswd-overlay"></div>
+
+        </div>
+
+        <!-- Left Content -->
+        <div class="caswd-content">
+
+            <!-- Label -->
+            <div class="caswd-label">
+
+                <div class="caswd-dots">
+
+                    <span class="blue"></span>
+
+                    <span class="ciaorange"></span>
+
+                </div>
+
+                <div class="caswd-label-text">
+                    @sectionTitle
+                </div>
+
+            </div>
+
+            <!-- Glass Card -->
+            <div class="caswd-card">
+
+                <span class="caswd-number"></span>
+
+                <div class="caswd-text">
+
+                    <h2></h2>
+
+                    <p></p>
+
+                </div>
+
+            </div>
+
+            <!-- Navigation -->
+            <div class="caswd-navigation">
+
+                <div class="caswd-buttons">
+
+                    <button
+                        class="caswd-arrow caswd-prev"
+                        type="button"
+                        aria-label="Previous">
+
+                        &#8592;
+
+                    </button>
+
+                    <button
+                        class="caswd-arrow caswd-next"
+                        type="button"
+                        aria-label="Next">
+
+                        &#8594;
+
+                    </button>
+
+                </div>
+
+                <!-- <div
+                    class="caswd-pagination"
+                    id="caswdPagination">
+
+                </div> -->
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<script>
+
+window.deliverSlides = @Html.Raw(slidesJson);
+
+</script>
+
+}
+
+<script src="/Scripts/Custom Ai Solutions/custom-ai-solutions-what-we-deliver.js"></script>

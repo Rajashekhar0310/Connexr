@@ -1,0 +1,657 @@
+/* ======================================================
+   PARTNERS ECOSYSTEM SECTION
+====================================================== */
+
+.ecosystem-section {
+    position: relative;
+
+    width: 100%;
+    min-height: 100vh;
+
+    padding: 65px 0 80px;
+
+    overflow: hidden;
+
+    background: #182f70;
+
+    color: #ffffff;
+}
+
+
+/* ======================================================
+   CONTAINER
+====================================================== */
+
+.ecosystem-container {
+    width: calc(100% - 130px);
+    max-width: 1560px;
+
+    margin: 0 auto;
+}
+
+
+/* ======================================================
+   HEADER
+====================================================== */
+
+.ecosystem-header {
+    margin-bottom: 42px;
+}
+
+
+.ecosystem-eyebrow {
+    display: block;
+
+    margin-bottom: 24px;
+
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
+    text-transform: uppercase;
+}
+
+
+.ecosystem-heading {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 42px;
+    font-weight: 600;
+
+    line-height: 1.12;
+}
+
+
+.ecosystem-heading span {
+    display: block;
+
+    color: #ff8a32;
+}
+
+
+/* ======================================================
+   MAIN GRID
+====================================================== */
+
+.ecosystem-grid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.5fr)
+        minmax(380px, 1fr);
+
+    gap: 25px;
+
+    align-items: stretch;
+
+    width: 100%;
+}
+
+
+/* ======================================================
+   LEFT IMAGE
+====================================================== */
+
+.ecosystem-image-wrapper {
+    position: relative;
+
+    width: 100%;
+    height: 575px;
+
+    overflow: hidden;
+
+    background: #e9edf3;
+}
+
+
+.ecosystem-main-image {
+    position: absolute;
+
+    inset: 0;
+
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    opacity: 1;
+
+    transform: scale(1);
+
+    transition:
+        opacity 0.35s ease,
+        transform 0.7s ease;
+}
+
+
+.ecosystem-main-image.is-changing {
+    opacity: 0;
+
+    transform: scale(1.03);
+}
+
+
+/* ======================================================
+   ACCORDION
+====================================================== */
+
+.ecosystem-accordion {
+    position: relative;
+
+    width: 100%;
+    height: 575px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    overscroll-behavior: contain;
+
+    border-top:
+        1px solid
+        rgba(255, 138, 50, 0.9);
+
+    scrollbar-width: none;
+}
+
+
+.ecosystem-accordion::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* ======================================================
+   ACCORDION ITEM
+====================================================== */
+
+.ecosystem-item {
+    position: relative;
+
+    width: 100%;
+
+    border-bottom:
+        1px solid
+        rgba(255, 138, 50, 0.9);
+}
+
+
+/* ======================================================
+   ITEM HEADER
+====================================================== */
+
+.ecosystem-item-header {
+    position: relative;
+
+    width: 100%;
+    min-height: 66px;
+
+    display: grid;
+
+    grid-template-columns:
+        48px
+        minmax(0, 1fr)
+        30px;
+
+    align-items: center;
+
+    padding: 0 2px;
+
+    margin: 0;
+
+    border: none;
+
+    outline: none;
+
+    background: transparent;
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    appearance: none;
+
+    -webkit-appearance: none;
+}
+
+
+.ecosystem-item-header:focus {
+    outline: none;
+}
+
+
+.ecosystem-item-header:focus-visible {
+    outline:
+        1px solid
+        rgba(255, 138, 50, 0.8);
+
+    outline-offset: -2px;
+}
+
+
+/* ======================================================
+   NUMBER
+====================================================== */
+
+.ecosystem-number {
+    display: block;
+
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    line-height: 1;
+}
+
+
+/* ======================================================
+   ITEM NAME
+====================================================== */
+
+.ecosystem-item-name {
+    display: block;
+
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    line-height: 1.3;
+}
+
+
+/* ======================================================
+   PLUS / MINUS ICON
+====================================================== */
+
+.ecosystem-icon {
+    width: 22px;
+    height: 22px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    justify-self: end;
+
+    flex-shrink: 0;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.8);
+
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 400;
+
+    line-height: 1;
+
+    transition:
+        background 0.3s ease,
+        border-color 0.3s ease,
+        color 0.3s ease,
+        transform 0.3s ease;
+}
+
+
+/* ======================================================
+   ITEM CONTENT
+====================================================== */
+
+.ecosystem-item-content {
+    max-height: 0;
+
+    overflow: hidden;
+
+    opacity: 0;
+
+    padding-left: 48px;
+    padding-right: 35px;
+    padding-bottom: 0;
+
+    transform: translateY(-5px);
+
+    transition:
+        max-height 0.45s ease,
+        opacity 0.3s ease,
+        padding-bottom 0.35s ease,
+        transform 0.35s ease;
+}
+
+
+/* ======================================================
+   ACTIVE ITEM
+====================================================== */
+
+.ecosystem-item.active
+.ecosystem-item-content {
+    max-height: 320px;
+
+    opacity: 1;
+
+    padding-bottom: 30px;
+
+    transform: translateY(0);
+}
+
+
+.ecosystem-item.active
+.ecosystem-item-name {
+    visibility: hidden;
+}
+
+
+.ecosystem-item.active
+.ecosystem-item-header {
+    min-height: 48px;
+}
+
+
+.ecosystem-item.active
+.ecosystem-icon {
+    border-color: #ff8a32;
+
+    background: #ff8a32;
+
+    color: #182f70;
+}
+
+
+/* ======================================================
+   CATEGORY
+====================================================== */
+
+.ecosystem-category {
+    margin: 0 0 20px;
+
+    color: #ff8a32;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    line-height: 1.3;
+
+    text-transform: uppercase;
+}
+
+
+/* ======================================================
+   CONTENT TITLE
+====================================================== */
+
+.ecosystem-item-content h3 {
+    margin: 0 0 18px;
+
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    line-height: 1.3;
+}
+
+
+/* ======================================================
+   DESCRIPTION
+====================================================== */
+
+.ecosystem-item-content p {
+    max-width: 520px;
+
+    margin: 0 0 25px;
+
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.92
+        );
+
+    font-size: 13px;
+    font-weight: 400;
+
+    line-height: 1.55;
+}
+
+
+/* ======================================================
+   TAGS
+====================================================== */
+
+.ecosystem-tags {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    align-items: center;
+
+    gap: 12px 24px;
+}
+
+
+.ecosystem-tags span {
+    display: inline-block;
+
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.45
+        );
+
+    font-size: 11px;
+
+    line-height: 1.3;
+
+    white-space: nowrap;
+}
+
+
+/* ======================================================
+   LAPTOP
+====================================================== */
+
+@media (max-width: 1200px) {
+
+    .ecosystem-container {
+        width: calc(100% - 80px);
+    }
+
+
+    .ecosystem-grid {
+        grid-template-columns:
+            minmax(0, 1.25fr)
+            minmax(360px, 1fr);
+
+        gap: 22px;
+    }
+
+
+    .ecosystem-image-wrapper {
+        height: 520px;
+    }
+
+
+    .ecosystem-accordion {
+        height: 520px;
+    }
+
+
+    .ecosystem-heading {
+        font-size: 38px;
+    }
+
+
+    .ecosystem-item-header {
+        min-height: 62px;
+    }
+
+
+    .ecosystem-item-content {
+        padding-right: 20px;
+    }
+}
+
+
+/* ======================================================
+   TABLET
+====================================================== */
+
+@media (max-width: 900px) {
+
+    .ecosystem-section {
+        min-height: auto;
+
+        padding: 55px 0 65px;
+
+        overflow: visible;
+    }
+
+
+    .ecosystem-container {
+        width: calc(100% - 50px);
+    }
+
+
+    .ecosystem-grid {
+        grid-template-columns: 1fr;
+
+        gap: 35px;
+    }
+
+
+    .ecosystem-image-wrapper {
+        height: 500px;
+    }
+
+
+    .ecosystem-accordion {
+        height: 500px;
+
+        overflow-y: auto;
+
+        overscroll-behavior: contain;
+    }
+
+
+    .ecosystem-heading {
+        font-size: 36px;
+    }
+}
+
+
+/* ======================================================
+   MOBILE
+====================================================== */
+
+@media (max-width: 600px) {
+
+    .ecosystem-section {
+        padding: 45px 0 55px;
+    }
+
+
+    .ecosystem-container {
+        width: calc(100% - 30px);
+    }
+
+
+    .ecosystem-header {
+        margin-bottom: 30px;
+    }
+
+
+    .ecosystem-eyebrow {
+        margin-bottom: 16px;
+
+        font-size: 11px;
+    }
+
+
+    .ecosystem-heading {
+        font-size: 30px;
+
+        line-height: 1.15;
+    }
+
+
+    .ecosystem-grid {
+        gap: 25px;
+    }
+
+
+    .ecosystem-image-wrapper {
+        height: 320px;
+    }
+
+
+    .ecosystem-accordion {
+        height: 480px;
+    }
+
+
+    .ecosystem-item-header {
+        grid-template-columns:
+            38px
+            minmax(0, 1fr)
+            28px;
+
+        min-height: 60px;
+    }
+
+
+    .ecosystem-item-content {
+        padding-left: 38px;
+        padding-right: 10px;
+    }
+
+
+    .ecosystem-item.active
+    .ecosystem-item-content {
+        max-height: 380px;
+
+        padding-bottom: 24px;
+    }
+
+
+    .ecosystem-category {
+        margin-bottom: 15px;
+
+        font-size: 11px;
+    }
+
+
+    .ecosystem-item-content h3 {
+        margin-bottom: 14px;
+    }
+
+
+    .ecosystem-item-content p {
+        margin-bottom: 20px;
+
+        font-size: 12px;
+    }
+
+
+    .ecosystem-tags {
+        gap: 10px 16px;
+    }
+}

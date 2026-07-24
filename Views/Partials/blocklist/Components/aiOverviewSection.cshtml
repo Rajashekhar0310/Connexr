@@ -1,0 +1,59 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Extensions
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var sectionTag     = content.Value<string>("sectionTag");
+    var orangeHeading  = content.Value<string>("orangeHeading");
+    var blueHeading    = content.Value<string>("blueHeading");
+    var descriptionOne = content.Value<string>("descriptionOne");
+    var descriptionTwo = content.Value<string>("descriptionTwo");
+
+    var image = content.Value<MediaWithCrops>("backgroundImage");
+    var bgUrl = image?.MediaUrl();
+}
+
+<section class="overview-section"
+         @if (!string.IsNullOrWhiteSpace(bgUrl)) { <text>style="background-image:url('@bgUrl')"</text> }>
+
+    <div class="overview-inner">
+
+        <!-- TAG -->
+        <div class="overview-tag">
+            @if (!string.IsNullOrWhiteSpace(sectionTag))
+            {
+                <span class="section-tag">@sectionTag</span>
+            }
+        </div>
+
+        <!-- HEADING -->
+        <div class="overview-heading">
+            <h2>
+                @if (!string.IsNullOrWhiteSpace(orangeHeading))
+                {
+                    <span class="ovorange">@orangeHeading</span>
+                }
+                @blueHeading
+            </h2>
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div class="overview-description">
+
+            @if (!string.IsNullOrWhiteSpace(descriptionOne))
+            {
+                <p class="desc-lead">@Html.Raw(descriptionOne)</p>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(descriptionTwo))
+            {
+                <p>@Html.Raw(descriptionTwo)</p>
+            }
+
+        </div>
+
+    </div>
+
+</section>

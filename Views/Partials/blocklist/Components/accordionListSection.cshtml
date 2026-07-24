@@ -1,4 +1,7 @@
-﻿@using Umbraco.Cms.Core.Models.Blocks
+﻿
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Extensions
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
 
 @{
@@ -8,6 +11,10 @@
     var highlightWord = Model.Content.Value<string>("highlightWord");
 
     var items = Model.Content.Value<BlockListModel>("accordions");
+
+    // Background Image (Media Picker)
+    var bgImage = Model.Content.Value<MediaWithCrops>("backgroundImage");
+    var bgImageUrl = bgImage?.MediaUrl();
 
     if (!string.IsNullOrWhiteSpace(highlightWord) &&
         !string.IsNullOrWhiteSpace(heading))
@@ -23,24 +30,31 @@
 
     <div class="faq-layout">
 
-        <div class="faq-left">
+        <!-- Left Side -->
+        <div class="faq-left"
+             @if (!string.IsNullOrWhiteSpace(bgImageUrl))
+             {
+                 <text>style="background-image:url('@bgImageUrl');"</text>
+             }>
 
             @if (!string.IsNullOrWhiteSpace(smallLabel))
             {
-                <span class="faq-label">@smallLabel</span>
+                <span class="faq-label">
+                    @smallLabel
+                </span>
             }
 
             @if (!string.IsNullOrWhiteSpace(heading))
             {
                 <h2>
-                    @Html.Raw(heading?.Replace("|", "<br />"))
+                    @Html.Raw(heading.Replace("|", "<br/>"))
                 </h2>
             }
 
             @if (!string.IsNullOrWhiteSpace(description))
             {
                 <p>
-                    @Html.Raw(description?.Replace(Environment.NewLine, "<br />"))
+                    @Html.Raw(description.Replace(Environment.NewLine, "<br/>"))
                 </p>
             }
 
@@ -51,9 +65,11 @@
 
         </div>
 
+
+        <!-- Right Side -->
         <div class="faq-right">
 
-            @if (items != null)
+            @if (items != null && items.Any())
             {
                 int count = 1;
 
@@ -93,3 +109,30 @@
     </div>
 
 </section>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const accordions = document.querySelectorAll(".faq-item");
+
+    accordions.forEach(function (item) {
+
+        item.addEventListener("toggle", function () {
+
+            if (this.open) {
+
+                accordions.forEach(function (other) {
+
+                    if (other !== item) {
+                        other.removeAttribute("open");
+                    }
+
+                });
+
+            }
+
+        });
+
+    });
+
+});
+</script>

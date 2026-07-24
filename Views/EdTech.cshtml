@@ -1,0 +1,12 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.EdTech>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@{
+	Layout = "master.cshtml";
+}
+<div class="page-content">
+    @if (Model.HasValue("edTechContent"))
+    {
+        @await Html.GetBlockListHtmlAsync(Model, "edTechContent")
+    }
+</div>

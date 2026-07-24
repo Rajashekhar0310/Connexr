@@ -1,0 +1,152 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Extensions
+
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var eyebrowText = content.Value<string>("eyebrowText");
+    var headingWhite = content.Value<string>("headingWhite");
+    var headingOrange = content.Value<string>("headingOrange");
+
+    var partnerItems =
+        content.Value<BlockListModel>("partnerItems");
+}
+
+<section class="ecosystem-section">
+
+    <div class="ecosystem-container">
+
+        <div class="ecosystem-header">
+
+            <span class="ecosystem-eyebrow">
+                @eyebrowText
+            </span>
+
+            <h2 class="ecosystem-heading">
+                @headingWhite
+
+                <span>
+                    @headingOrange
+                </span>
+            </h2>
+
+        </div>
+
+        @if (partnerItems != null && partnerItems.Any())
+        {
+            var firstPartner = partnerItems.First();
+
+            var firstImage =
+                firstPartner.Content
+                    .Value<IPublishedContent>("partnerImage");
+
+            var firstName =
+                firstPartner.Content
+                    .Value<string>("partnerName");
+
+
+            <div class="ecosystem-grid">
+
+                <div class="ecosystem-image-wrapper">
+
+                    @if (firstImage != null)
+                    {
+                        <img class="ecosystem-main-image"
+                             src="@firstImage.Url()"
+                             alt="@firstName" />
+                    }
+
+                </div>
+
+
+                <div class="ecosystem-accordion">
+
+                    @{
+                        var index = 0;
+                    }
+
+                    @foreach (var block in partnerItems)
+                    {
+                        var item = block.Content;
+
+                        var number =
+                            item.Value<string>("partnerNumber");
+
+                        var name =
+                            item.Value<string>("partnerName");
+
+                        var category =
+                            item.Value<string>("partnerCategory");
+
+                        var description =
+                            item.Value<string>("partnerDescription");
+
+                        var image =
+                            item.Value<IPublishedContent>("partnerImage");
+
+                        var activeClass =
+                            index == 0 ? "active" : "";
+
+                        var icon =
+                            index == 0 ? "−" : "+";
+
+
+                        <div class="ecosystem-item @activeClass"
+                             data-image="@(image?.Url() ?? "")">
+
+                            <button type="button"
+                                    class="ecosystem-item-header">
+
+                                <span class="ecosystem-number">
+                                    @number
+                                </span>
+
+                                <span class="ecosystem-item-name">
+                                    @name
+                                </span>
+
+                                <span class="ecosystem-icon">
+                                    @icon
+                                </span>
+
+                            </button>
+
+
+                            <div class="ecosystem-item-content">
+
+                                <div class="ecosystem-category">
+                                    @category
+                                </div>
+
+                                <h3>
+                                    @name
+                                </h3>
+
+                                <p>
+                                    @description
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        index++;
+                    }
+
+                </div>
+
+            </div>
+        }
+        else
+        {
+            <p>No partner items have been added.</p>
+        }
+
+    </div>
+
+</section>
+<script src="Scripts/Partners/PartnersEcosystem.js"></script>

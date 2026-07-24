@@ -1,0 +1,120 @@
+﻿@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Web.Common.PublishedModels
+
+@model BlockListItem<AiSpeedContentBlock, IPublishedElement>
+
+@{
+var content = Model.Content;
+
+var line1      = content.Value<string>("titleLine1");
+var line2Pre   = content.Value<string>("titleLine2Prefix");
+var highlight  = content.Value<string>("titleHighlight");
+var line3      = content.Value<string>("titleLine3");
+var subHeading = content.Value<string>("subHeading");
+var bodyText   = content.Value<string>("bodyText");
+var buttonText = content.Value<string>("buttonText");
+
+var buttonLink = content.Value<IEnumerable<Link>>("buttonLink")?.FirstOrDefault();
+
+var bgImage = content.Value<IPublishedContent>("backgroundImage");
+var bgUrl   = bgImage?.Url() ?? "";
+
+}
+
+<section class="ai-speed-hero">
+
+<div class="ai-speed-stage">
+
+    <div class="ai-speed-bg"
+         style="background-image:url('@bgUrl')">
+    </div>
+
+    <div class="ai-speed-sheen"></div>
+
+    <div class="ai-speed-scrim"></div>
+
+    <div class="ai-speed-edge"></div>
+
+</div>
+
+
+<div class="ai-speed-wrapper">
+
+    <div class="ai-speed-content">
+
+        <h1 class="ai-speed-title">
+
+            <span class="ai-speed-line ai-speed-line-one">
+                <span class="ai-speed-navy">
+                    @line1
+                </span>
+            </span>
+
+
+            <span class="ai-speed-line ai-speed-line-two">
+
+                <span class="ai-speed-navy">
+                    @line2Pre
+                </span>
+
+                <span class="ai-speed-highlight">
+                    @highlight
+                </span>
+
+            </span>
+
+
+            <span class="ai-speed-line ai-speed-line-three">
+
+                <span class="ai-speed-ai-text">
+                    @line3
+                </span>
+
+            </span>
+
+        </h1>
+
+
+        @if (!string.IsNullOrWhiteSpace(subHeading))
+        {
+            <span class="ai-speed-subheading">
+                @subHeading
+            </span>
+        }
+
+
+        @if (!string.IsNullOrWhiteSpace(bodyText))
+        {
+            <p class="ai-speed-body">
+                @bodyText
+            </p>
+        }
+
+
+        @if (buttonLink != null)
+        {
+            var label = string.IsNullOrWhiteSpace(buttonText)
+                ? buttonLink.Name
+                : buttonText;
+
+            <a class="ai-speed-btn"
+               href="@buttonLink.Url"
+               target="@(buttonLink.Target ?? "_self")"
+               rel="@(buttonLink.Target == "_blank" ? "noopener" : null)">
+
+                @label
+
+                <span class="ai-speed-btn-arrow">
+                    →
+                </span>
+
+            </a>
+        }
+
+    </div>
+
+</div>
+
+</section>

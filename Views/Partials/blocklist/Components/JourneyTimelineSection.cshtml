@@ -1,0 +1,181 @@
+﻿@using System.Text.Json
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Extensions
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+
+@*
+    TEMPLATE version.
+    Use this when the About Us page ITSELF is the timeline
+    (the page's Document Type has: heading, highlightWord, intro, items[Block List]).
+    Assign this template to the About Us page.
+*@
+
+@{
+    Layout = "Master.cshtml"; // change to your site's layout, or null for no layout
+
+    var heading   = Model.Value<string>("heading");
+    var highlight = Model.Value<string>("highlightWord");
+    var intro     = Model.Value<string>("intro");
+
+    var blocks = Model.Value<BlockListModel>("items");
+
+    var data = new List<object>();
+
+    if (blocks != null)
+    {
+        foreach (var block in blocks)
+        {
+            var el = block.Content;
+
+            var imageUrl = string.Empty;
+            var mediaV3 = el.Value<MediaWithCrops>("image");
+            if (mediaV3 != null)
+            {
+                imageUrl = mediaV3.Url(mode: UrlMode.Absolute);
+            }
+            else
+            {
+                var media = el.Value<IPublishedContent>("image");
+                if (media != null)
+                {
+                    imageUrl = media.Url(mode: UrlMode.Absolute);
+                }
+            }
+
+            data.Add(new
+            {
+                year    = Convert.ToString(el.Value("year")),
+                percent = Convert.ToString(el.Value("percent")),
+                image   = imageUrl,
+                text    = Convert.ToString(el.Value("text"))
+            });
+        }
+    }
+
+    var json  = JsonSerializer.Serialize(data);
+    var start = data.Count >= 5 ? 2 : 0;
+}
+
+<section class="journey-timeline" data-start="@start">
+    <div class="jt-grid">
+
+        <div class="left">
+            <h1>@heading <span>@highlight</span></h1>
+
+            @if (!string.IsNullOrWhiteSpace(intro))
+            {
+                <p>@intro</p>
+            }
+
+            <div class="timeline-wrapper">
+                <button class="arrow prev" type="button" aria-label="Previous year">&#10094;</button>
+
+                <div class="timeline">
+                    <div class="years">
+                        <div class="year"></div>
+                        <div class="year"></div>
+                        <div class="year active"></div>
+                        <div class="year"></div>
+                        <div class="year"></div>
+                    </div>
+                    <div class="dot"></div>
+                </div>
+
+                <button class="arrow next" type="button" aria-label="Next year">&#10095;</button>
+            </div>
+        </div>
+
+        <div class="middle-right">
+            <div class="middle">
+                <img class="jt-image" src="" alt="" />
+            </div>
+
+            <div class="right">
+                <div class="top">
+                    <h3 class="jt-year"></h3>
+                </div>
+                <div class="bottom">
+                    <h2 class="jt-percent"></h2>
+                    <p class="jt-desc"></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="application/json" class="jt-data">@Html.Raw(json)</script>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', jtBoot);
+if (document.readyState !== 'loading') { jtBoot(); }
+
+function jtBoot() {
+    document.querySelectorAll('.journey-timeline').forEach(function (el) {
+        if (el.dataset.jtInit) return;
+        el.dataset.jtInit = '1';
+        initJourneyTimeline(el);
+    });
+}
+
+function initJourneyTimeline(root) {
+
+    var data;
+    try {
+        data = JSON.parse(root.querySelector('.jt-data').textContent);
+    } catch (e) {
+        return;
+    }
+    if (!data || !data.length) return;
+
+    var current = parseInt(root.getAttribute('data-start') || '0', 10);
+    if (isNaN(current) || current < 0 || current >= data.length) current = 0;
+
+    var y         = Array.prototype.slice.call(root.querySelectorAll('.year'));
+    var prev      = root.querySelector('.prev');
+    var next      = root.querySelector('.next');
+    var yearEl    = root.querySelector('.jt-year');
+    var percentEl = root.querySelector('.jt-percent');
+    var descEl    = root.querySelector('.jt-desc');
+    var imageEl   = root.querySelector('.jt-image');
+
+    function render() {
+
+        y[0].innerText = data[current - 2] ? data[current - 2].year : "";
+        y[1].innerText = data[current - 1] ? data[current - 1].year : "";
+        y[2].innerText = data[current].year;
+        y[3].innerText = data[current + 1] ? data[current + 1].year : "";
+        y[4].innerText = data[current + 2] ? data[current + 2].year : "";
+
+        y.forEach(function (el) { el.classList.remove('active'); });
+        y[2].classList.add('active');
+
+        yearEl.innerText    = data[current].year;
+        percentEl.innerText = data[current].percent;
+        descEl.innerText    = data[current].text;
+        imageEl.src         = data[current].image;
+        imageEl.alt         = data[current].year;
+
+        prev.disabled = current === 0;
+        next.disabled = current === data.length - 1;
+    }
+
+    y.forEach(function (el, i) {
+        el.onclick = function () {
+            var target = current + (i - 2);
+            if (target >= 0 && target < data.length && target !== current) {
+                current = target;
+                render();
+            }
+        };
+    });
+
+    next.onclick = function () { if (current < data.length - 1) { current++; render(); } };
+    prev.onclick = function () { if (current > 0) { current--; render(); } };
+
+    render();
+}
+</script>
+
+

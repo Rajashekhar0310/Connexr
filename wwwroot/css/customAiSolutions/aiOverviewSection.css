@@ -1,0 +1,198 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=DM+Sans:wght@400;500&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'DM Sans',sans-serif;
+    overflow-x:hidden;
+    background:#fff;
+}
+
+/*==========================
+    SECTION
+===========================*/
+
+.overview-section{
+    width:100%;
+    padding:90px 0;
+    background:#f4f6ff;
+    position:relative;
+    overflow:hidden;
+}
+
+/* Orange Glow */
+
+.overview-section::before{
+    content:"";
+    position:absolute;
+    width:550px;
+    height:550px;
+    top:-180px;
+    right:-180px;
+    border-radius:50%;
+    background:
+        radial-gradient(circle,
+        rgba(245,139,46,.28) 0%,
+        rgba(245,139,46,.12) 45%,
+        transparent 75%);
+    pointer-events:none;
+}
+
+/*==========================
+    GRID  (left → right)
+===========================*/
+
+.overview-inner{
+    max-width:1600px;
+    margin:0 auto;
+    padding:0 120px;
+
+    display:grid;
+    grid-template-columns:90px 0.85fr 1.35fr;
+    gap:60px;
+    align-items:start;
+
+    position:relative;
+    z-index:2;
+}
+
+/*==========================
+    LEFT — OVERVIEW LABEL
+===========================*/
+
+.section-tag{
+    display:block;
+    font-family:'Poppins',sans-serif;
+    font-size:14px;
+    font-weight:600;
+    letter-spacing:2px;
+    color:#1B2F72;
+    text-transform:uppercase;
+    padding-top:14px;
+    white-space:nowrap;
+}
+
+/*==========================
+    MIDDLE — HEADING
+===========================*/
+
+.overview-heading h2{
+    font-family:'Poppins',sans-serif;
+    font-size:48px;
+    line-height:1.18;
+    font-weight:700;
+    color:#1B2F72;
+    margin:0;
+        padding-top: 14px;
+}
+
+.overview-heading h2 .ovorange{
+    display:block;
+    color:#F58B2E;
+}
+
+/*==========================
+    RIGHT — PARAGRAPHS
+===========================*/
+
+.overview-description{
+    padding-top:10px;
+}
+
+.overview-description p{
+    font-size:18px;
+    line-height:1.9;
+    color:#333;
+    margin-bottom:26px;
+}
+
+.overview-description p:last-child{
+    margin-bottom:0;
+}
+
+.overview-description .desc-lead{
+    font-weight:500;
+}
+
+
+/*==========================
+    RESPONSIVE
+===========================*/
+
+@media(max-width:1400px){
+
+.overview-inner{
+    padding:0 80px;
+    gap:45px;
+}
+
+.overview-heading h2{
+    font-size:44px;
+}
+
+}
+
+@media(max-width:1200px){
+
+.overview-inner{
+    grid-template-columns:90px 0.9fr 1.2fr;
+    padding:0 50px;
+    gap:35px;
+}
+
+.overview-heading h2{
+    font-size:38px;
+}
+
+.overview-description p{
+    font-size:16px;
+}
+
+}
+
+@media(max-width:991px){
+
+.overview-section{
+    padding:60px 0;
+}
+
+.overview-inner{
+    grid-template-columns:1fr;
+    gap:24px;
+    padding:0 40px;
+}
+
+.section-tag{
+    padding-top:0;
+    margin-bottom:0;
+}
+
+.overview-heading h2{
+    font-size:40px;
+}
+
+.overview-description{
+    padding-top:0;
+}
+
+}
+
+@media(max-width:767px){
+
+.overview-inner{
+    padding:0 24px;
+}
+
+.overview-heading h2{
+    font-size:32px;
+}
+
+.overview-description p{
+    font-size:16px;
+}
+
+}

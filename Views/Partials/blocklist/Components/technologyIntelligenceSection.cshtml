@@ -1,0 +1,173 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.PropertyEditors.ValueConverters
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+@*
+    ============================================================================
+    Technology & Intelligence section  —  single-file Block List view
+    ----------------------------------------------------------------------------
+    Save as: Views/Partials/blocklist/Components/techIntelligenceSection.cshtml
+             (file name must match the element type alias exactly)
+
+    Element type: techIntelligenceSection
+        eyebrow         Textstring
+        headlineStart   Textstring
+        headlineAccent  Textstring   -> rendered in orange
+        headlineEnd     Textstring
+        cards           Block List   -> blocks of type techCard
+
+    Element type: techCard
+        title           Textstring (mandatory)
+        subtitle        Textstring
+        description     Textarea
+        image           Media Picker (single, images only)
+        imageAlt        Textstring
+        icon            Dropdown: sparkle | cloud | network | shield
+
+    Cards alternate columns: 1st/3rd/5th -> offset middle stack,
+                             2nd/4th/6th -> right stack.
+    ============================================================================
+*@
+@{
+    var section = Model.Content;
+
+    var eyebrow        = section.Value<string>("eyebrow");
+    var headlineStart  = section.Value<string>("headlineStart");
+    var headlineAccent = section.Value<string>("headlineAccent");
+    var headlineEnd    = section.Value<string>("headlineEnd");
+
+    var cards = section.Value<BlockListModel>("cards")?.ToList() ?? new List<BlockListItem>();
+
+  
+}
+
+
+<section class="tech">
+    <div class="tech__inner">
+
+        <div class="intro">
+            @if (!string.IsNullOrWhiteSpace(eyebrow))
+            {
+                <p class="eyebrow">@eyebrow</p>
+            }
+            <h2 class="headline">
+                @headlineStart
+                @if (!string.IsNullOrWhiteSpace(headlineAccent))
+                {
+                    <span class="accent">@headlineAccent</span>
+                }
+                @headlineEnd
+            </h2>
+        </div>
+
+        @for (var column = 0; column < 2; column++)
+        {
+            var columnIndex = column;
+            var columnCards = cards.Where((c, i) => i % 2 == columnIndex).ToList();
+
+            <div class="stack @(columnIndex == 0 ? "stack--offset" : null)">
+                @foreach (var block in columnCards)
+                {
+                    var card        = block.Content;
+                    var title       = card.Value<string>("title");
+                    var subtitle    = card.Value<string>("subtitle");
+                    var description = card.Value<string>("description");
+                    var icon        = card.Value<string>("icon")?.ToLowerInvariant();
+                    var image       = card.Value<MediaWithCrops>("image");
+                    var alt         = card.Value<string>("imageAlt");
+
+                    if (string.IsNullOrWhiteSpace(alt))
+                    {
+                        alt = image?.Content?.Name ?? string.Empty;
+                    }
+
+                    <article class="card" tabindex="0">
+
+                        @if (image is not null)
+                        {
+                            <img class="card__media"
+                                 src="@image.GetCropUrl(width: 800, height: 620, imageCropMode: ImageCropMode.Crop)"
+                                 srcset="@image.GetCropUrl(width: 800, height: 620, imageCropMode: ImageCropMode.Crop) 800w, @image.GetCropUrl(width: 1200, height: 930, imageCropMode: ImageCropMode.Crop) 1200w"
+                                 sizes="(max-width: 760px) 100vw, 33vw"
+                                 alt="@alt"
+                                 loading="lazy"
+                                 decoding="async" />
+                        }
+                        else
+                        {
+                            <span class="card__media card__media--empty" aria-hidden="true"></span>
+                        }
+
+                        <div class="card__label">
+                            <h3 class="card__title">@title</h3>
+                            @if (!string.IsNullOrWhiteSpace(subtitle))
+                            {
+                                <p class="card__sub">@subtitle</p>
+                            }
+                        </div>
+
+                        <div class="card__panel">
+
+                            @switch (icon)
+                            {
+                                case "sparkle":
+                                    <svg class="card__icon" width="30" height="30" viewBox="0 0 24 24" fill="none"
+                                         stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M11 3.5l1.4 3.6 3.6 1.4-3.6 1.4L11 13.5 9.6 9.9 6 8.5l3.6-1.4L11 3.5z" />
+                                        <path d="M18.5 12.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7.7-1.8z" />
+                                        <path d="M4 15.5c2.6 0 4.5 1.9 4.5 4.5" />
+                                    </svg>
+                                    break;
+
+                                case "cloud":
+                                    <svg class="card__icon" width="30" height="30" viewBox="0 0 24 24" fill="none"
+                                         stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M7 18h10a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.1 9.2 3.9 3.9 0 0 0 7 18z" />
+                                        <path d="M12 21v-4M9.5 19.5 12 21l2.5-1.5" />
+                                    </svg>
+                                    break;
+
+                                case "network":
+                                    <svg class="card__icon" width="30" height="30" viewBox="0 0 24 24" fill="none"
+                                         stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <circle cx="6" cy="6" r="2.5" />
+                                        <circle cx="18" cy="6" r="2.5" />
+                                        <circle cx="12" cy="18" r="2.5" />
+                                        <path d="M8.2 7.4 10.6 15.8M15.8 7.4 13.4 15.8M8.5 6h7" />
+                                    </svg>
+                                    break;
+
+                                case "shield":
+                                    <svg class="card__icon" width="30" height="30" viewBox="0 0 24 24" fill="none"
+                                         stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M12 3 5 6v6c0 4.4 2.9 7.9 7 9 4.1-1.1 7-4.6 7-9V6l-7-3z" />
+                                        <path d="M9.2 12.2 11.2 14.4 15 10.4" />
+                                    </svg>
+                                    break;
+
+                                default:
+                                    <span class="card__icon card__icon--none" aria-hidden="true"></span>
+                                    break;
+                            }
+
+                            <h3 class="card__title">@title</h3>
+
+                            @if (!string.IsNullOrWhiteSpace(subtitle))
+                            {
+                                <p class="card__sub">@subtitle</p>
+                            }
+
+                            @if (!string.IsNullOrWhiteSpace(description))
+                            {
+                                <p class="card__text">@description</p>
+                            }
+
+                        </div>
+
+                    </article>
+                }
+            </div>
+        }
+
+    </div>
+</section>

@@ -1,0 +1,35 @@
+﻿@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Extensions
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var smallTitle = content.Value<string>("smallTitle");
+    var headingLine1 = content.Value<string>("headingLine1");
+    var headingHighlight = content.Value<string>("headingHighlight");
+    var description = content.Value<string>("description");
+}
+
+<section class="industry-overview">
+
+    <div class="industry-overview-container">
+
+        <div class="overview-small">
+            @smallTitle
+        </div>
+
+        <div class="overview-heading">
+            <h2>
+                @headingLine1
+                <span>@headingHighlight</span>
+            </h2>
+        </div>
+
+        <div class="overview-content">
+            @Html.Raw(description)
+        </div>
+
+    </div>
+
+</section>

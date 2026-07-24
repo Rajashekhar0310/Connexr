@@ -1,0 +1,162 @@
+/* ==========================================================
+   BREADCRUMB
+   ========================================================== */
+
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    padding-top: 110px;
+    margin-bottom: 40px;
+
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+
+    position: relative;
+    z-index: 10;
+}
+
+.breadcrumb a {
+    text-decoration: none;
+    transition: all .3s ease;
+}
+
+.breadcrumb-separator {
+    opacity: .5;
+}
+
+.breadcrumb-current {
+    font-weight: 600;
+}
+
+/* ==========================================================
+   DARK NAVY THEME
+   ========================================================== */
+
+.breadcrumb--dark-navy a,
+.breadcrumb--darknavy a {
+    color: rgba(255,255,255,.65);
+}
+
+.breadcrumb--dark-navy .breadcrumb-current,
+.breadcrumb--darknavy .breadcrumb-current {
+    color: #ffffff;
+}
+
+.breadcrumb--dark-navy .breadcrumb-separator,
+.breadcrumb--darknavy .breadcrumb-separator {
+    color: rgba(255,255,255,.5);
+}
+
+.breadcrumb--dark-navy a:hover,
+.breadcrumb--darknavy a:hover {
+    color: #f7933b;
+}
+
+/* ==========================================================
+   WHITE THEME
+   ========================================================== */
+
+.breadcrumb--white a {
+    color: rgba(15,27,60,.65);
+}
+
+.breadcrumb--white .breadcrumb-current {
+    color: #0f1b3c;
+}
+
+.breadcrumb--white .breadcrumb-separator {
+    color: rgba(15,27,60,.4);
+}
+
+.breadcrumb--white a:hover {
+    color: #f7933b;
+}
+
+
+
+
+/* ==============
+Breadcrumb for partners page
+============= */
+/* ======================================================
+   PARTNERS PAGE - BREADCRUMB OVERRIDE
+====================================================== */
+/* PARTNERS PAGE - COMPLETE BREADCRUMB RESET */
+
+.partners-page .breadcrumb-wrapper {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+
+    background: transparent !important;
+    opacity: 1 !important;
+
+    z-index: auto !important;
+
+    transform: none !important;
+}
+
+
+.partners-page .breadcrumb-wrapper::before,
+.partners-page .breadcrumb-wrapper::after {
+    content: none !important;
+    display: none !important;
+}
+
+
+.partners-page .breadcrumb-wrapper .breadcrumb {
+    position: relative !important;
+
+    top: auto !important;
+    left: auto !important;
+
+    width: calc(100% - 140px) !important;
+    max-width: 1450px;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    margin: 0 auto !important;
+    padding: 30px 0 !important;
+
+    background: transparent !important;
+
+    opacity: 1 !important;
+    transform: none !important;
+}
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+
+@media (max-width: 768px) {
+
+    .breadcrumb {
+        padding-top: 90px;
+        margin-bottom: 30px;
+
+        font-size: 10px;
+        gap: 6px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .breadcrumb {
+        padding-top: 80px;
+        margin-bottom: 24px;
+
+        font-size: 9px;
+        letter-spacing: 1px;
+    }
+}

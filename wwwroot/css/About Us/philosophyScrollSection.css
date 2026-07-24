@@ -1,0 +1,376 @@
+/* =========================================
+   PHILOSOPHY SECTION
+========================================= */
+
+.philosophy-section {
+    position: relative;
+    min-height: 300vh;
+    background: #f8f8f8;
+}
+
+
+/* =========================================
+   STICKY CONTAINER
+========================================= */
+
+.philosophy-sticky {
+    position: sticky;
+    top: 0;
+
+    width: 100%;
+    height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 5vw;
+
+    overflow: hidden;
+}
+
+
+/* =========================================
+   CONTENT
+========================================= */
+
+.philosophy-content {
+    width: 100%;
+    max-width: 1400px;
+
+    margin: 0 auto;
+}
+
+
+/* =========================================
+   QUOTE
+========================================= */
+
+.philosophy-section .quote {
+    margin-bottom: 30px;
+}
+
+.philosophy-section .quote img {
+    display: block;
+
+    width: auto;
+    max-width: 120px;
+    height: auto;
+}
+
+
+/* =========================================
+   HEADING
+========================================= */
+
+.philosophy-heading {
+    margin: 0;
+
+    font-family: Arial, sans-serif;
+
+    font-size: clamp(50px, 6vw, 88px);
+    line-height: 1.12;
+
+    font-weight: 700;
+
+    letter-spacing: -2px;
+}
+
+
+/* =========================================
+   WORDS
+========================================= */
+
+.philosophy-heading .word {
+    display: inline;
+
+    color: #cfcfcf;
+
+    transition: color 0.3s ease;
+}
+
+.philosophy-heading .word.active {
+    color: #1e3173;
+}
+
+
+/* =========================================
+   INLINE MEDIA
+========================================= */
+
+.philosophy-heading .inline-image {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    vertical-align: middle;
+
+    overflow: hidden;
+
+    margin-left: 0.15em;
+    margin-right: 0.15em;
+
+    opacity: 0;
+
+    transform:
+        translateY(40px)
+        scale(0.8);
+
+    transform-origin: center center;
+}
+
+
+/* =========================================
+   IMAGE / VIDEO
+========================================= */
+
+.philosophy-heading .inline-image img,
+.philosophy-heading .inline-image video {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    border-radius: 18px;
+}
+
+
+/* =========================================
+   ICON
+========================================= */
+
+.philosophy-heading .inline-image.icon {
+    width: 90px;
+    height: 90px;
+}
+
+
+/* =========================================
+   BLOCKS
+========================================= */
+
+.philosophy-heading .inline-image.blocks {
+    width: 220px;
+    height: 95px;
+}
+
+
+/* =========================================
+   CHESS
+========================================= */
+
+.philosophy-heading .inline-image.chess {
+    width: 170px;
+    height: 95px;
+}
+
+
+/* =========================================
+   FOOTER LABEL
+========================================= */
+
+.philosophy-section .footer-label {
+    display: flex;
+
+    align-items: center;
+
+    gap: 20px;
+
+    margin-top: 50px;
+}
+
+
+/* =========================================
+   FOOTER LINE
+========================================= */
+
+.philosophy-section .footer-dot {
+    position: relative;
+
+    display: block;
+
+    width: 120px;
+    height: 2px;
+
+    flex-shrink: 0;
+
+    background: #ff8f3d;
+}
+
+
+.philosophy-section .footer-dot::after {
+    content: "";
+
+    position: absolute;
+
+    right: -6px;
+    top: 50%;
+
+    width: 12px;
+    height: 12px;
+
+    border-radius: 50%;
+
+    background: #ff8f3d;
+
+    transform: translateY(-50%);
+}
+
+
+/* =========================================
+   FOOTER TEXT
+========================================= */
+
+.philosophy-section .footer-text {
+    color: #1e3173;
+
+    font-size: 28px;
+    font-weight: 500;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 991px) {
+
+    .philosophy-sticky {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+
+    .philosophy-section .quote img {
+        max-width: 80px;
+    }
+
+
+    .philosophy-heading {
+        font-size: 48px;
+
+        line-height: 1.2;
+
+        letter-spacing: -1px;
+    }
+
+
+    .philosophy-heading .inline-image {
+        margin-left: 8px;
+        margin-right: 8px;
+    }
+
+
+    .philosophy-heading .inline-image img,
+    .philosophy-heading .inline-image video {
+        border-radius: 12px;
+    }
+
+
+    .philosophy-heading .inline-image.icon {
+        width: 60px;
+        height: 60px;
+    }
+
+
+    .philosophy-heading .inline-image.blocks {
+        width: 140px;
+        height: 70px;
+    }
+
+
+    .philosophy-heading .inline-image.chess {
+        width: 120px;
+        height: 70px;
+    }
+
+
+    .philosophy-section .footer-label {
+        margin-top: 40px;
+    }
+
+
+    .philosophy-section .footer-dot {
+        flex: 1;
+    }
+
+
+    .philosophy-section .footer-text {
+        font-size: 24px;
+    }
+
+}
+/* =========================================
+   LAPTOP / SMALL DESKTOP
+========================================= */
+
+@media (max-width: 1440px) {
+
+    .philosophy-heading {
+        font-size: clamp(44px, 5.4vw, 74px);
+    }
+
+    .philosophy-heading .inline-image.icon {
+        width: 76px;
+        height: 76px;
+    }
+
+    .philosophy-heading .inline-image.blocks {
+        width: 185px;
+        height: 82px;
+    }
+
+    .philosophy-heading .inline-image.chess {
+        width: 145px;
+        height: 82px;
+    }
+
+    .philosophy-section .footer-text {
+        font-size: 26px;
+    }
+}
+
+
+/* =========================================
+   SMALL LAPTOP / LARGE TABLET
+========================================= */
+
+@media (max-width: 1200px) {
+
+    .philosophy-sticky {
+        padding: 0 40px;
+    }
+
+    .philosophy-heading {
+        font-size: clamp(38px, 5.2vw, 60px);
+        letter-spacing: -1px;
+    }
+
+    .philosophy-heading .inline-image.icon {
+        width: 66px;
+        height: 66px;
+    }
+
+    .philosophy-heading .inline-image.blocks {
+        width: 160px;
+        height: 76px;
+    }
+
+    .philosophy-heading .inline-image.chess {
+        width: 130px;
+        height: 76px;
+    }
+
+    .philosophy-section .quote img {
+        max-width: 100px;
+    }
+
+    .philosophy-section .footer-text {
+        font-size: 25px;
+    }
+}

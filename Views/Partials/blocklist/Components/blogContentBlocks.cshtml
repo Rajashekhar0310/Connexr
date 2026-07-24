@@ -1,0 +1,14 @@
+﻿@using Umbraco.Cms.Core.Models.Blocks
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+    if (content is null) { return; }
+
+    var inner = content.Value<BlockListModel>("contentBlocks");
+}
+
+@if (inner?.Any() == true)
+{
+    @await Html.GetBlockListHtmlAsync(inner)
+}

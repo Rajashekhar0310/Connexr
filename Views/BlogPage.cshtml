@@ -1,0 +1,224 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Extensions
+
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+
+@{
+    Layout = "master.cshtml";
+
+    var title = Model.Value<string>("blogTitle");
+    var shortDescription = Model.Value<string>("shortDescription");
+
+    var author = Model.Value<string>("author");
+    var readingTime = Model.Value<string>("readingTime");
+    var publishDate = Model.Value<DateTime>("publishDate");
+
+    var category = Model.Value<string>("category");
+
+    var heroImage = Model.Value<IPublishedContent>("heroImage2");
+}
+
+<section class="insight-blog-hero">
+
+    <div class="insight-blog-container">
+
+        @if (!string.IsNullOrWhiteSpace(category))
+        {
+            <span class="insight-blog-category">
+                @category
+            </span>
+        }
+
+        <h1 class="insight-blog-title">
+            @title
+        </h1>
+
+        @if (!string.IsNullOrWhiteSpace(shortDescription))
+        {
+            <p class="insight-blog-description">
+                @shortDescription
+            </p>
+        }
+
+        <div class="insight-blog-meta">
+
+            @if (!string.IsNullOrWhiteSpace(author))
+            {
+                <div class="insight-blog-meta-item">
+
+                    <span class="insight-blog-meta-label">
+                        Author
+                    </span>
+
+                    <span>
+                        @author
+                    </span>
+
+                </div>
+            }
+
+            <div class="insight-blog-meta-item">
+
+                <span class="insight-blog-meta-label">
+                    Published
+                </span>
+
+                <span>
+                    @publishDate.ToString("dd MMM yyyy")
+                </span>
+
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(readingTime))
+            {
+                <div class="insight-blog-meta-item">
+
+                    <span class="insight-blog-meta-label">
+                        Reading Time
+                    </span>
+
+                    <span>
+                        @readingTime
+                    </span>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</section>
+
+@if (heroImage != null)
+{
+    <section class="insight-blog-hero-image-section">
+
+        <div class="insight-blog-container">
+
+            <img src="@heroImage.Url()"
+                 alt="@title"
+                 class="insight-blog-hero-image" />
+
+        </div>
+
+    </section>
+}
+
+@{
+    var bodyContent = Model.Value<Microsoft.AspNetCore.Html.IHtmlContent>("bodyContent");
+}
+
+<section class="insight-blog-content-section">
+
+    <div class="insight-blog-container">
+
+        <div class="insight-blog-content">
+
+            @if (bodyContent != null)
+            {
+                @bodyContent
+            }
+
+        </div>
+
+    </div>
+
+</section>
+
+@{
+    var relatedBlogs = Model.Parent()?
+        .ChildrenOfType("blogsPage")
+        .Where(x => x.Id != Model.Id)
+        .OrderByDescending(x => x.Value<DateTime>("publishDate"))
+        .Take(4)
+        .ToList() ?? new List<IPublishedContent>();
+}
+
+@if (relatedBlogs.Any())
+{
+    <section class="insight-blog-related-section">
+
+        <div class="insight-blog-container">
+
+            <div class="insight-blog-section-header">
+
+                <h2>Related Insights</h2>
+
+                <p>
+                    Continue reading our latest insights and articles.
+                </p>
+
+            </div>
+
+            <div class="insight-blog-related-grid">
+
+                @foreach (var blog in relatedBlogs)
+                {
+                    var blogTitle = blog.Value<string>("blogTitle");
+                    var blogDescription = blog.Value<string>("shortDescription");
+                    var blogImage = blog.Value<IPublishedContent>("image");
+                    var blogCategory = blog.Value<string>("category");
+                    var blogDate = blog.Value<DateTime>("publishDate");
+                    var blogReadingTime = blog.Value<string>("readingTime");
+
+                    <a href="@blog.Url()"
+                       class="insight-blog-related-card">
+
+                        @if (blogImage != null)
+                        {
+                            <div class="insight-blog-related-image">
+
+                                <img src="@blogImage.Url()"
+                                     alt="@blogTitle" />
+
+                            </div>
+                        }
+
+                        <div class="insight-blog-related-content">
+
+                            @if (!string.IsNullOrWhiteSpace(blogCategory))
+                            {
+                                <span class="insight-blog-related-category">
+                                    @blogCategory
+                                </span>
+                            }
+
+                            <h3>
+                                @blogTitle
+                            </h3>
+
+                            @if (!string.IsNullOrWhiteSpace(blogDescription))
+                            {
+                                <p>
+                                    @blogDescription
+                                </p>
+                            }
+
+                            <div class="insight-blog-related-meta">
+
+                                <span>
+                                    @blogDate.ToString("dd MMM yyyy")
+                                </span>
+
+                                @if (!string.IsNullOrWhiteSpace(blogReadingTime))
+                                {
+                                    <span>
+                                        • @blogReadingTime
+                                    </span>
+                                }
+
+                            </div>
+
+                        </div>
+
+                    </a>
+                }
+
+            </div>
+
+        </div>
+
+    </section>
+}

@@ -1,0 +1,183 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Extensions
+
+@inherits UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var cards = content.Value<BlockListModel>("cards");
+
+    var firstBackgroundUrl = "";
+
+    if (cards != null && cards.Any())
+    {
+        var firstImage =
+            cards.First().Content.Value<MediaWithCrops>("cardImage");
+
+        if (firstImage != null)
+        {
+            firstBackgroundUrl = firstImage.Url();
+        }
+    }
+}
+
+
+<section class="pmv-section"
+         data-pmv-section
+         style="--pmv-bg:url('@firstBackgroundUrl')">
+
+    <div class="pmv-bg-layer"></div>
+
+    <div class="pmv-container"
+         data-pmv-container
+         data-active="0">
+
+        @if (cards != null)
+        {
+            var cardIndex = 0;
+
+            foreach (var cardBlock in cards)
+            {
+                var card = cardBlock.Content;
+
+                var title =
+                    card.Value<string>("title");
+
+                var cardImage =
+                    card.Value<MediaWithCrops>("cardImage");
+
+                var imageUrl =
+                    cardImage != null
+                        ? cardImage.Url()
+                        : "";
+
+                var descriptionTitleOne =
+                    card.Value<string>("descriptionTitleOne");
+
+                var descriptionOne =
+                    card.Value<string>("descriptionOne");
+
+                var descriptionTitleTwo =
+                    card.Value<string>("descriptionTitleTwo");
+
+                var descriptionTwo =
+                    card.Value<string>("descriptionTwo");
+
+                var statistics =
+                    card.Value<BlockListModel>("statistics");
+
+
+                <article class="pmv-card @(cardIndex == 0 ? "active" : "")"
+                         data-pmv-card
+                         data-index="@cardIndex"
+                         data-background="@imageUrl">
+
+
+                    <div class="pmv-card-image"
+                         style="background-image:url('@imageUrl')">
+                    </div>
+
+
+                    <h2 class="pmv-closed-title">
+                        @title
+                    </h2>
+
+
+                    <div class="pmv-content">
+
+                        <h2 class="pmv-main-title">
+                            @title
+                        </h2>
+
+
+                        @if (!string.IsNullOrWhiteSpace(descriptionTitleOne)
+                            || !string.IsNullOrWhiteSpace(descriptionOne))
+                        {
+                            <div class="pmv-text-block">
+
+                                @if (!string.IsNullOrWhiteSpace(descriptionTitleOne))
+                                {
+                                    <h3>
+                                        @descriptionTitleOne
+                                    </h3>
+                                }
+
+                                @if (!string.IsNullOrWhiteSpace(descriptionOne))
+                                {
+                                    <p>
+                                        @descriptionOne
+                                    </p>
+                                }
+
+                            </div>
+                        }
+
+
+                        @if (!string.IsNullOrWhiteSpace(descriptionTitleTwo)
+                            || !string.IsNullOrWhiteSpace(descriptionTwo))
+                        {
+                            <div class="pmv-text-block">
+
+                                @if (!string.IsNullOrWhiteSpace(descriptionTitleTwo))
+                                {
+                                    <h3>
+                                        @descriptionTitleTwo
+                                    </h3>
+                                }
+
+                                @if (!string.IsNullOrWhiteSpace(descriptionTwo))
+                                {
+                                    <p>
+                                        @descriptionTwo
+                                    </p>
+                                }
+
+                            </div>
+                        }
+
+
+                        @if (statistics != null && statistics.Any())
+                        {
+                            <div class="pmv-stats">
+
+                                @foreach (var statisticBlock in statistics)
+                                {
+                                    var statistic = statisticBlock.Content;
+
+                                    var value =
+                                        statistic.Value<string>("statisticValue");
+
+                                    var label =
+                                        statistic.Value<string>("statisticLabel");
+
+
+                                    <div class="pmv-stat">
+
+                                        <strong>
+                                            @value
+                                        </strong>
+
+                                        <span>
+                                            @label
+                                        </span>
+
+                                    </div>
+                                }
+
+                            </div>
+                        }
+
+                    </div>
+
+                </article>
+
+                cardIndex++;
+            }
+        }
+
+    </div>
+
+</section>
+<script src="/scripts/About Us/promiseMissionVisionSection.js"></script>

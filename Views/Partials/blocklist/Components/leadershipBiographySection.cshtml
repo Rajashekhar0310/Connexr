@@ -1,0 +1,29 @@
+﻿@using Umbraco.Cms.Core.Models.Blocks
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var biography = content.Value<string>("biography");
+
+    var startColor = content.Value<string>("backgroundStartColor") ?? "#EEF2F7";
+    var endColor = content.Value<string>("backgroundEndColor") ?? "#F5B27A";
+}
+
+<section class="leadership-bio-section"
+         style="background:linear-gradient(90deg,@startColor 0%, @endColor 100%);">
+
+    <div class="leadership-bio-container">
+
+        <div class="leadership-bio-card">
+
+            @if (!string.IsNullOrWhiteSpace(biography))
+            {
+                @Html.Raw(biography)
+            }
+
+        </div>
+
+    </div>
+
+</section>

@@ -111,16 +111,16 @@ body{
 }
 
 .engineering-services-component .eyebrow{
-    font-size:12px;
+    font-size:14px;
     font-weight:600;
-    color:#173b7a;
-    margin-bottom:12px;
+    color:#fff;
+    margin-bottom:50px;
 }
 
 .engineering-services-component .heading-primary,
 .heading-secondary{
     font-family:'Poppins',sans-serif;
-    font-size:64px;
+    font-size:45px;
     line-height:1;
 }
 
@@ -129,7 +129,7 @@ body{
 }
 
 .engineering-services-component .heading-secondary{
-    color:#173b7a;
+    color:#fff;
 }
 
 /* ========================================
@@ -139,14 +139,14 @@ body{
 .engineering-services-component .title-block{
     width:100%;
     padding-left:32%;
-    margin-bottom:45px;
+    margin-bottom:-25px;
 }
 
 .engineering-services-component .title{
     font-family:'Poppins',sans-serif;
-    font-size:42px;
+    font-size:28px;
     font-weight:600;
-    color:#173b7a;
+    color:#fff;
 }
 
 /* ========================================
@@ -162,8 +162,8 @@ body{
     max-width:420px;
     font-size:15px;
     line-height:1.7;
-    color:#1f1f1f;
-    margin-bottom:24px;
+    color:#fff;
+    margin-bottom:-227px;
 }
 
 /* ========================================

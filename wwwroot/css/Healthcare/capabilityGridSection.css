@@ -1,0 +1,193 @@
+/* ==========================================================================
+   Capability Grid section — full-bleed band
+   Cards are 394 x 246 at full size and scale down proportionally below that.
+
+   The maths: 4 cards x 394px + 3 gaps x 24px = 1648px content well.
+   .cg__inner is 1648 + (2 x 40px padding) = 1728px, so at 1728px viewport
+   and above each column resolves to exactly 394px, and aspect-ratio gives
+   exactly 246px of height.
+   ========================================================================== */
+
+.cg {
+    --cg-navy: #1B3A8C;
+    --cg-navy-deep: #12306F;
+    --cg-orange: #F58634;
+    --cg-ink: #24406E;
+    --cg-card-w: 394px;
+    --cg-card-h: 246px;
+    --cg-gap: 24px;
+
+    background: #fff;
+    padding: clamp(64px, 8vw, 128px) 0;
+    font-family: 'Poppins', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+    /* break out of any max-width wrapper the page template puts around blocks */
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+}
+
+.cg *,
+.cg *::before,
+.cg *::after {
+    box-sizing: border-box;
+}
+
+.cg__inner {
+    width: 100%;
+    max-width: 1728px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+/* ---------- heading ---------- */
+.cg__eyebrow {
+    margin: 0 0 22px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--cg-navy);
+}
+
+.cg__headline {
+    margin: 0 0 clamp(44px, 4vw, 64px);
+    max-width: 18ch;
+    font-size: clamp(30px, 3.4vw, 52px);
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -.015em;
+    color: var(--cg-navy-deep);
+   
+    text-decoration-thickness: 3px;
+    text-underline-offset: 10px;
+    text-decoration-color: currentColor;
+}
+
+.cg__headline em {
+    font-style: normal;
+    color: var(--cg-orange);
+    text-decoration-color: var(--cg-orange);
+}
+
+/* ---------- cards ---------- */
+.cg__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, var(--cg-card-w)));
+    gap: var(--cg-gap);
+}
+
+.cg__card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: 246px;
+    max-width: var(--cg-card-w);
+    aspect-ratio: var(--cg-card-w) / var(--cg-card-h);
+    padding: 28px 30px;
+    border-radius: 6px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #FAF6F2 0%, #F1F3FA 45%, #EAF0F7 100%);
+    transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.cg__card:nth-child(2) {
+    background: linear-gradient(135deg, #F6F2FA 0%, #EFF2FA 50%, #EAF2F6 100%);
+}
+
+.cg__card:nth-child(3) {
+    background: linear-gradient(135deg, #F2F6FB 0%, #EEF1FA 50%, #F6F1F6 100%);
+}
+
+.cg__card:nth-child(4) {
+    background: linear-gradient(135deg, #F1F7F3 0%, #EEF3F8 50%, #F7F3EE 100%);
+}
+
+.cg__card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 36px rgba(27, 58, 140, .12);
+}
+
+.cg__dots {
+    display: flex;
+    gap: 7px;
+}
+
+.cg__dots span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--cg-orange);
+}
+
+.cg__cardTitle {
+    margin: 0;
+    max-width: 15ch;
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--cg-ink);
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 1200px) {
+    .cg__inner {
+        padding: 0 32px;
+    }
+
+    .cg__card {
+        padding: 24px 24px;
+    }
+
+    .cg__cardTitle {
+        font-size: 17px;
+    }
+}
+
+@media (max-width: 900px) {
+    .cg__grid {
+        grid-template-columns: repeat(2, minmax(0, var(--cg-card-w)));
+        justify-content: center;
+    }
+
+    .cg__headline {
+        max-width: none;
+    }
+}
+
+@media (max-width: 540px) {
+    .cg__inner {
+        padding: 0 20px;
+    }
+
+    .cg__grid {
+        grid-template-columns: minmax(0, var(--cg-card-w));
+        justify-content: stretch;
+        gap: 14px;
+    }
+
+    .cg__card {
+        max-width: none;
+        aspect-ratio: auto;
+        min-height: 170px;
+        padding: 22px;
+    }
+
+    .cg__cardTitle {
+        font-size: 16px;
+    }
+
+    .cg__headline {
+        text-decoration-thickness: 2px;
+        text-underline-offset: 7px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cg__card {
+        transition: none;
+    }
+}

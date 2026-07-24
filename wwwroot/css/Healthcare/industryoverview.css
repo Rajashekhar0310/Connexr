@@ -1,0 +1,70 @@
+.industry-overview{
+    padding:100px 0;
+    background:#fff;
+}
+
+.industry-overview-container{
+
+    max-width:1500px;
+    margin:auto;
+
+    padding:0 70px;
+
+    display:grid;
+
+    grid-template-columns:
+        180px
+        470px
+        1fr;
+
+    column-gap:80px;
+
+    align-items:start;
+}
+
+.overview-small{
+
+    font-size:18px;
+font-family: poppins;
+    color:#FF9A48;
+
+    font-weight:600;
+
+    margin-top:10px;
+}
+
+.overview-heading h2{
+
+    margin:0;
+font-family: poppins;
+    font-size:38px;
+
+    line-height:1.08;
+
+    font-weight:700;
+
+    color:#173A7A;
+}
+
+.overview-heading span{
+
+    display:block;
+
+    color:#FF9A48;
+}
+
+.overview-content{
+
+    max-width:600px;
+}
+
+.overview-content p{
+
+    margin:0 0 24px;
+
+    font-size:18px;
+font-family: sans-serif;
+    line-height:1.9;
+
+    color:#555;
+}

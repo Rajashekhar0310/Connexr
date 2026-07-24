@@ -1,0 +1,88 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Extensions
+
+@{
+    var titleHighlight = Model.Value<string>("titleHighlight");
+    var title = Model.Value<string>("title");
+    var description = Model.Value<string>("description");
+
+    var cards = Model.Value<BlockListModel>("cards");
+}
+
+<section class="enterprise-solutions about-page">
+
+    <!-- Header -->
+    <div class="enterprise-header">
+
+        <div class="enterprise-heading">
+            <h1>
+                @if (!string.IsNullOrWhiteSpace(titleHighlight))
+                {
+                    <span class="enterprise-accent">
+                        @titleHighlight
+                    </span>
+                }
+
+                @title
+            </h1>
+        </div>
+
+        <div class="enterprise-description">
+            @Html.Raw(description)
+        </div>
+
+    </div>
+
+    <!-- Cards -->
+    @if (cards != null && cards.Any())
+    {
+        <div class="enterprise-cards">
+
+            @foreach (var item in cards)
+            {
+                var card = item.Content;
+
+                var image = card.Value<IPublishedContent>("image");
+                var cardTitle = card.Value<string>("title");
+                var label = card.Value<string>("label");
+                var cardDescription = card.Value<string>("description");
+
+                <div class="enterprise-card">
+
+                    @if (image != null)
+                    {
+                        <div class="enterprise-card-image"
+                             style="background-image:url('@image.Url()')">
+                        </div>
+                    }
+
+                    <h3 class="enterprise-card-title">
+                        @cardTitle
+                    </h3>
+
+                    <div class="enterprise-card-content">
+
+                        @if (!string.IsNullOrWhiteSpace(label))
+                        {
+                            <p class="enterprise-card-label">
+                                @label
+                            </p>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(cardDescription))
+                        {
+                            <p class="enterprise-card-description">
+                                @cardDescription
+                            </p>
+                        }
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+
+</section>

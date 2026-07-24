@@ -1,0 +1,146 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var heading = content.Value<string>("heading");
+    var leftOrangeText = content.Value<string>("leftOrangeText");
+    var leftBlueText = content.Value<string>("leftBlueText");
+    var rightDescription = content.Value<string>("rightDescription");
+
+    var backgroundImage = content.Value<MediaWithCrops>("backgroundImage");
+    var cards = content.Value<BlockListModel>("cards");
+
+    var backgroundUrl = backgroundImage?.MediaUrl() ?? "";
+}
+
+<section class="business-impact-section">
+
+    @if (backgroundImage != null)
+    {
+        <video class="business-impact-video"
+               autoplay
+               muted
+               loop
+               playsinline>
+
+            <source src="@backgroundImage.MediaUrl()"
+                    type="video/mp4">
+
+        </video>
+    }
+
+    <div class="business-impact-overlay"></div>
+
+    <div class="business-impact-container">
+
+        <!-- =========================
+             HEADER
+        ========================== -->
+
+        <div class="business-impact-header">
+
+            <div class="business-impact-left">
+
+               <div class="business-impact-top">
+
+    <div class="business-impact-dots">
+
+        <span class="business-impact-dot"></span>
+        <span class="business-impact-dot"></span>
+
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(heading))
+    {
+        <div class="business-impact-small-title">
+            @heading
+        </div>
+    }
+
+</div>
+
+                <h2 class="business-impact-title">
+
+                    <span class="business-impact-orange">
+                        @leftOrangeText
+                    </span>
+
+                    <span class="business-impact-blue">
+                        @leftBlueText
+                    </span>
+
+                </h2>
+
+            </div>
+
+            <div class="business-impact-right">
+
+                @if (!string.IsNullOrWhiteSpace(rightDescription))
+                {
+                    <p>
+                        @rightDescription
+                    </p>
+                }
+
+            </div>
+
+        </div>
+
+        <!-- =========================
+             CARDS
+        ========================== -->
+
+        <div class="business-impact-grid">
+
+            @if (cards != null)
+            {
+                foreach (var item in cards)
+                {
+                    var card = item.Content;
+
+                    var icon = card.Value<MediaWithCrops>("image");
+                    var title = card.Value<string>("title");
+                    var description = card.Value<string>("description");
+
+                    <div class="business-impact-card">
+
+                        @if (icon != null)
+                        {
+                            <div class="business-impact-icon">
+
+                                <img src="@icon.MediaUrl()"
+                                     alt="@title">
+
+                            </div>
+                        }
+
+                        <div class="business-impact-content">
+
+                            @if (!string.IsNullOrWhiteSpace(title))
+                            {
+                                <h3>
+                                    @title
+                                </h3>
+                            }
+
+                            @if (!string.IsNullOrWhiteSpace(description))
+                            {
+                                <p>
+                                    @description
+                                </p>
+                            }
+
+                        </div>
+
+                    </div>
+                }
+            }
+
+        </div>
+
+    </div>
+
+</section>

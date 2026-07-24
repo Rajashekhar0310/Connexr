@@ -1,0 +1,254 @@
+/* ========================================
+   ENTERPRISE SOLUTIONS SECTION
+   ======================================== */
+
+.enterprise-solutions {
+    position: relative;
+    padding: 100px 60px;
+    background: #122560;
+    overflow: hidden;
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+
+.enterprise-header {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 60px;
+    align-items: flex-start;
+    margin-bottom: 80px;
+}
+
+.enterprise-heading h1 {
+    margin: 0;
+    font-size: 50px;
+    font-weight: 600;
+    line-height: 1.1;
+    color: #fff;
+}
+
+.enterprise-accent {
+    display: block;
+    color: #f7933b;
+}
+
+.enterprise-description {
+    font-size: 18px;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.8);
+}
+
+/* ========================================
+   CARDS GRID
+   ======================================== */
+
+.enterprise-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+/* ========================================
+   CARD
+   ======================================== */
+
+.enterprise-card {
+    position: relative;
+    height: 420px;
+    /* border-radius: 16px; */
+    overflow: hidden;
+}
+
+.enterprise-card-image {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.enterprise-card-image::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        180deg,
+        rgba(0,0,0,0.15) 0%,
+        rgba(0,0,0,0.3) 35%,
+        rgba(0,0,0,0.8) 100%
+    );
+}
+
+/* ========================================
+   CARD TITLE
+   ======================================== */
+
+.enterprise-card-title {
+    position: relative;
+    z-index: 2;
+    margin: 0;
+    padding: 40px 35px 0;
+    color: #fff;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+/* ========================================
+   CARD CONTENT
+   ======================================== */
+
+.enterprise-card-content {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    padding: 35px;
+}
+
+.enterprise-card-label {
+    margin: 0 0 10px;
+    color: #fff;
+    font-family: Poppins;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.enterprise-card-description {
+    margin: 0;
+    color: rgba(255,255,255,0.9);
+    font-size: 18px;
+    line-height: 1.6;
+    font-family: sans-serif;
+}
+
+/*
+======
+card content 
+===========
+*/
+.enterprise-card-title {
+    position: relative;
+    z-index: 2;
+    padding: 40px 35px 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-family: poppins;
+}
+
+.enterprise-card-prefix {
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.8);
+    text-transform: none;
+    line-height: 1;
+    font-family: poppins;
+}
+
+.enterprise-card-main {
+    font-size: 35px;
+    font-weight: 600;
+    line-height: 1;
+    color: #fff;
+    font-family: poppins;
+}
+
+/* ========================================
+   HOVER EFFECT
+   ======================================== */
+
+.enterprise-card-image {
+    transition: transform 0.6s ease;
+}
+
+.enterprise-card:hover .enterprise-card-image {
+    transform: scale(1.08);
+}
+
+body.about-page {
+    background: #1e3173;
+}
+
+body.about-page .enterprise-solutions {
+    background: #1e3173;
+}
+
+body.about-page .site-header {
+    background: transparent;
+}
+
+/* ========================================
+   TABLET
+   ======================================== */
+
+@media (max-width: 1024px) {
+
+    .enterprise-solutions {
+        padding: 80px 40px;
+    }
+
+    .enterprise-header {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .enterprise-heading h1 {
+        font-size: 42px;
+    }
+
+    .enterprise-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .enterprise-card {
+        height: 380px;
+    }
+}
+
+/* ========================================
+   MOBILE
+   ======================================== */
+
+@media (max-width: 768px) {
+
+    .enterprise-solutions {
+        padding: 60px 20px;
+    }
+
+    .enterprise-header {
+        margin-bottom: 40px;
+    }
+
+    .enterprise-heading h1 {
+        font-size: 32px;
+    }
+
+    .enterprise-description {
+        font-size: 14px;
+    }
+
+    .enterprise-cards {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .enterprise-card {
+        height: 340px;
+    }
+
+    .enterprise-card-title {
+        font-size: 24px;
+        padding: 30px 25px 0;
+    }
+
+    .enterprise-card-content {
+        padding: 25px;
+    }
+}

@@ -1,0 +1,308 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Extensions
+
+@model BlockListItem
+
+@{
+    var content = Model.Content;
+
+    var eyebrowText = content.Value<string>("eyebrowText");
+    var heading = content.Value<string>("heading");
+    var highlightedHeading = content.Value<string>("highlightedHeading");
+
+    var latestThinkingCards =
+        content.Value<BlockListModel>("latestThinkingCards");
+
+    var categories = latestThinkingCards?
+        .Select(x => x.Content.Value<string>("category"))
+        .Where(x => !string.IsNullOrWhiteSpace(x))
+        .Distinct(StringComparer.OrdinalIgnoreCase)
+        .ToList();
+}
+
+
+<section class="latest-thinking-section"
+         data-latest-thinking>
+
+    <div class="latest-thinking-container">
+
+
+        <!-- ==========================================
+             HEADER
+        =========================================== -->
+
+        <div class="latest-thinking-header">
+
+
+            <div class="latest-thinking-heading-area">
+
+
+                <!-- ORANGE DOTS -->
+
+                <div class="latest-thinking-dots">
+                    <span></span>
+                    <span></span>
+                </div>
+
+
+                <!-- EYEBROW -->
+
+                @if (!string.IsNullOrWhiteSpace(eyebrowText))
+                {
+                    <div class="latest-thinking-eyebrow">
+                        @eyebrowText
+                    </div>
+                }
+
+
+                <!-- MAIN TITLE -->
+
+                <h2 class="latest-thinking-title">
+
+                    @heading
+
+                    @if (!string.IsNullOrWhiteSpace(highlightedHeading))
+                    {
+                        <span>
+                            @highlightedHeading
+                        </span>
+                    }
+
+                </h2>
+
+            </div>
+
+
+
+            <!-- ======================================
+                 FILTER TABS
+            ======================================= -->
+
+            @if (latestThinkingCards != null &&
+                 latestThinkingCards.Any())
+            {
+                <div class="latest-thinking-filters">
+
+
+                    <button type="button"
+                            class="latest-thinking-filter active"
+                            data-filter="all">
+
+                        All
+
+                    </button>
+
+
+                    @if (categories != null)
+                    {
+                        foreach (var category in categories)
+                        {
+                            var categorySlug =
+                                category!
+                                .Trim()
+                                .ToLowerInvariant()
+                                .Replace(" ", "-");
+
+
+                            <button type="button"
+                                    class="latest-thinking-filter"
+                                    data-filter="@categorySlug">
+
+                                @category
+
+                            </button>
+                        }
+                    }
+
+                </div>
+            }
+
+        </div>
+
+
+
+        <!-- ==========================================
+             CARDS
+        =========================================== -->
+
+        @if (latestThinkingCards != null &&
+             latestThinkingCards.Any())
+        {
+            <div class="latest-thinking-grid">
+
+
+                @{
+                    var cardIndex = 0;
+                }
+
+
+                @foreach (var cardBlock in latestThinkingCards)
+                {
+                    cardIndex++;
+
+
+                    var cardContent = cardBlock.Content;
+
+
+                    var category =
+                        cardContent.Value<string>("category");
+
+
+                    var title =
+                        cardContent.Value<string>("title");
+
+
+                    var description =
+                        cardContent.Value<string>("description");
+
+
+                    var image =
+                        cardContent.Value<IPublishedContent>("image");
+                     
+
+                    var video = cardContent.Value<IPublishedContent>("video");
+
+                    var cardLinks =
+                        cardContent.Value<IEnumerable<Link>>("link");
+
+
+                    var cardLink =
+                        cardLinks?.FirstOrDefault();
+
+
+                    var categorySlug =
+                        string.IsNullOrWhiteSpace(category)
+
+                        ? "uncategorized"
+
+                        : category
+                            .Trim()
+                            .ToLowerInvariant()
+                            .Replace(" ", "-");
+
+
+                    var activeClass =
+                        cardIndex == 1
+                        ? "active"
+                        : "";
+
+
+                    <article class="latest-thinking-card latest-thinking-card-@cardIndex @activeClass"
+                             data-category="@categorySlug">
+
+
+                        <!-- IMAGE -->
+
+                        @if (video != null)
+                        {
+                            <video class="latest-thinking-card-image"
+                                autoplay
+                                muted
+                                loop
+                                playsinline>
+
+                                <source src="@video.Url()" type="video/mp4" />
+
+                            </video>
+                        }
+                        else if (image != null)
+                        {
+                            <img src="@image.Url()"
+                                alt="@title"
+                                class="latest-thinking-card-image" />
+                        }
+
+
+
+                        <!-- ==================================
+                             NORMAL CONTENT
+                        =================================== -->
+
+                        <div class="latest-thinking-normal-content">
+
+
+                            @if (!string.IsNullOrWhiteSpace(category))
+                            {
+                                <span class="latest-thinking-category">
+                                    @category
+                                </span>
+                            }
+
+
+                            @if (!string.IsNullOrWhiteSpace(title))
+                            {
+                                <h3 class="latest-thinking-normal-title">
+                                    @title
+                                </h3>
+                            }
+
+                        </div>
+
+
+
+                        <!-- ==================================
+                             ACTIVE CONTENT
+                        =================================== -->
+
+                        <div class="latest-thinking-active-content">
+
+
+                            @if (!string.IsNullOrWhiteSpace(category))
+                            {
+                                <span class="latest-thinking-active-category">
+                                    @category
+                                </span>
+                            }
+
+
+                            @if (!string.IsNullOrWhiteSpace(title))
+                            {
+                                <h3 class="latest-thinking-active-title">
+                                    @title
+                                </h3>
+                            }
+
+
+                            @if (!string.IsNullOrWhiteSpace(description))
+                            {
+                                <p class="latest-thinking-description">
+                                    @description
+                                </p>
+                            }
+
+
+                            @if (cardLink != null)
+                            {
+                                <a href="@cardLink.Url"
+                                   target="@cardLink.Target"
+                                   class="latest-thinking-arrow"
+                                   aria-label="Read more about @title">
+
+                                    <span>→</span>
+
+                                </a>
+                            }
+
+                        </div>
+
+                    </article>
+                }
+
+            </div>
+
+
+            <!-- NO RESULTS -->
+
+            <div class="latest-thinking-no-results">
+
+                No items available in this category.
+
+            </div>
+        }
+
+    </div>
+
+</section>
+<script src="/Scripts/Home/latestthinking.js"></script>

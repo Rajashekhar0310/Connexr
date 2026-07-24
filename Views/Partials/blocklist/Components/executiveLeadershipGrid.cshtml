@@ -1,0 +1,94 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Extensions
+
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var heading = content.Value<string>("heading");
+
+    var members = content.Value<BlockListModel>("teamMembers");
+}
+
+<section class="connexr-executive-section">
+
+    <div class="connexr-executive-container">
+
+        @if (!string.IsNullOrWhiteSpace(heading))
+        {
+            <div class="connexr-executive-heading">
+                <h2>@heading</h2>
+            </div>
+        }
+
+        @if (members != null && members.Any())
+        {
+            <div class="connexr-executive-grid">
+
+                @foreach (var item in members)
+                {
+                    var member = item.Content;
+
+                    var image = member.Value<IPublishedContent>("executiveLeaderImage");
+
+                    var name = member.Value<string>("executiveLeaderName");
+
+                    var designation = member.Value<string>("executiveLeaderDesignation");
+
+                    var link = member.Value<IEnumerable<Link>>("executiveLeaderLink")?.FirstOrDefault();
+
+                    <article class="connexr-executive-card">
+
+                        <div class="connexr-executive-image">
+
+                            @if (image != null)
+                            {
+                                <img src="@image.Url()" alt="@name" />
+                            }
+
+                        </div>
+
+                        <div class="connexr-executive-content">
+
+                            <div class="connexr-executive-details">
+
+                                <h3 class="connexr-executive-name">
+                                    @name
+                                </h3>
+
+                                <p class="connexr-executive-designation">
+                                    @designation
+                                </p>
+
+                            </div>
+
+                            @if (link != null)
+                            {
+                                <a href="@link.Url"
+                                   target="@(string.IsNullOrWhiteSpace(link.Target) ? "_self" : link.Target)"
+                                   class="connexr-executive-arrow">
+
+                                    →
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="connexr-executive-arrow">
+                                    →
+                                </span>
+                            }
+
+                        </div>
+
+                    </article>
+                }
+
+            </div>
+        }
+
+    </div>
+
+</section>

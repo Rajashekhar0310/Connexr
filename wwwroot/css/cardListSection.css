@@ -3,13 +3,13 @@
 ========================================== */
 
 .about-cards-section {
-    padding: 80px 0;
+    padding: 100px ;
 }
 
 .about-cards-section .container {
     max-width: 1600px;
     margin: 0 auto;
-    padding: 0 40px;
+    
 }
 
 .section-header {
@@ -550,194 +550,382 @@
 /* ==========================================
    STYLE 3 - OUR PRODUCTS
 ========================================== */
-
+/* ==========================================
+   STYLE 3 - OUR PRODUCTS
+========================================== */
 .about-cards-section.Style3 {
-   
-    padding: 120px 0;
+    /* padding: 90px 0; */
+    background: #fff;
 }
 
-
-.about-cards-section.Style3 .section-label {
-    display: block;
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: #111;
-    margin-bottom: 20px;
-}
+/* Header */
 
 .about-cards-section.Style3 .section-header {
-    margin-bottom: 70px;
+    position: relative;
+    padding-top: 22px;
+    max-width: 620px;
+    margin-bottom: 40px;
 }
 
+/* Orange Dots */
+
+.about-cards-section.Style3 .section-header::before,
+.about-cards-section.Style3 .section-header::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #f7943d;
+}
+
+.about-cards-section.Style3 .section-header::before {
+    left: 0;
+}
+
+.about-cards-section.Style3 .section-header::after {
+    left: 16px;
+}
+
+/* Small Label */
+
+.about-cards-section.Style3 .section-label {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #17315D;
+    margin-bottom: 12px;
+}
+
+/* Heading */
+
 .about-cards-section.Style3 .section-header h2 {
-    font-size: 72px;
-    line-height: 1.1;
-    color: #000;
-    max-width: 650px;
+    font-size: 46px;
+    font-weight: 700;
+    line-height: 1.15;
+    color: #17315D;
+    margin: 0 0 18px;
 }
 
 .about-cards-section.Style3 .section-header h2 span {
-    color: #f39a4a;
+    color: #f7943d;
 }
+
+/* Description */
 
 .about-cards-section.Style3 .section-header p {
-    font-size: 22px;
-    line-height: 1.6;
-    max-width: 450px;
-    color: #222;
-    margin-top: 20px;
+    font-size: 18px;
+    font-weight: 400;
+    font-style: poppins;
+    line-height: 1.8;
+    color: #122560;
+    max-width: 620px;
+    margin: 0;
 }
 
-/* Grid */
+/* ==========================
+   Products
+========================== */
 
-.about-cards-section.Style3 .card-grid {
+.about-cards-section.Style3 .products-grid {
     display: grid;
-    grid-template-columns: repeat(2,1fr);
-    gap: 24px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
 }
 
-/* Card */
-
-.about-cards-section.Style3 .card-item {
+.about-cards-section.Style3 .products-item {
     position: relative;
     overflow: hidden;
+    height: 450px;
 }
 
-.about-cards-section.Style3 .card-item img {
+.about-cards-section.Style3 .products-media {
     width: 100%;
-    height: 520px;
+    height: 100%;
     object-fit: cover;
     display: block;
+    transition: .5s ease;
 }
 
-.about-cards-section.Style3 .card-overlay {
+.about-cards-section.Style3 .products-item:hover .products-media {
+    transform: scale(1.08);
+}
+
+.about-cards-section.Style3 .products-overlay {
     position: absolute;
     inset: 0;
     display: flex;
     align-items: flex-end;
-    padding: 40px;
+    padding: 24px;
+    background: linear-gradient(
+        to top,
+        rgba(0,0,0,.75) 0%,
+        rgba(0,0,0,.35) 45%,
+        rgba(0,0,0,0) 100%
+    );
 }
 
-.about-cards-section.Style3 .card-content {
-    background: transparent;
-    padding: 0;
+.about-cards-section.Style3 .products-content {
+    width: 100%;
 }
 
-.about-cards-section.Style3 .card-content h3 {
+.about-cards-section.Style3 .products-content h3 {
     color: #fff;
-    font-size: 58px;
-    line-height: 1;
-    margin-bottom: 12px;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 8px;
 }
 
-.about-cards-section.Style3 .card-content p {
-    color: #fff;
-    font-size: 22px;
-    line-height: 1.4;
-    max-width: 500px;
+.about-cards-section.Style3 .products-content p {
+    color: rgba(255,255,255,.92);
+    font-size: 18px;
+    font-weight: 500;
+    font-style: poppins;
+    line-height: 1.6;
+    margin: 0;
+    max-width: 370px;
 }
 
-.about-cards-section.Style3 .card-btn {
-    display: none;
-}
+/* Hide unused elements */
 
+.about-cards-section.Style3 .card-btn,
 .about-cards-section.Style3 .card-stat {
     display: none;
 }
 
-/* Certifications */
+/* ==========================
+   Certifications
+========================== */
 
-.about-cards-section.Style3 .certification-row {
+.about-cards-section.Style3 .products-certifications {
     display: flex;
     align-items: center;
-    gap: 50px;
-    margin-top: 70px;
     flex-wrap: wrap;
+    gap: 45px;
+    margin-top: 55px;
 }
 
-.about-cards-section.Style3 .certification-item {
-    width: 120px !important;
-    height: 120px !important;
-    flex: 0 0 120px !important;
+.about-cards-section.Style3 .products-certification {
+    width: 90px;
 }
 
-.about-cards-section.Style3 .certification-item img {
-    display: block !important;
-    width: 88px !important;
-    height: 88px !important;
-    /* min-width: 120px !important;
-    min-height: 120px !important; */
-    max-width: 120px !important;
-    max-height: 120px !important;
-    object-fit: contain !important;
+.about-cards-section.Style3 .products-certification img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
 }
 
-/* Bottom Line */
+/* ==========================
+   Bottom Line
+========================== */
 
 .about-cards-section.Style3 .bottom-line {
-    margin-top: 50px;
     position: relative;
+    margin-top: 55px;
     height: 1px;
-    background: #f39a4a;
+    background: #f7943d;
 }
 
 .about-cards-section.Style3 .bottom-line::before {
     content: "";
-    width: 10px;
-    height: 10px;
-    background: #f39a4a;
-    border-radius: 50%;
     position: absolute;
     left: 0;
-    top: -5px;
+    top: -4px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #f7943d;
 }
 
-/* Responsive */
+/* ==========================
+   Responsive
+========================== */
 
-@media(max-width:991px){
+@media (max-width: 991px) {
 
-    .about-cards-section.Style3 .card-grid{
-        grid-template-columns:1fr;
+    .about-cards-section.Style3 {
+        padding: 70px 0;
     }
 
-    .about-cards-section.Style3 .section-header h2{
-        font-size:50px;
+    .about-cards-section.Style3 .products-grid {
+        grid-template-columns: 1fr;
     }
 
-    .about-cards-section.Style3 .card-content h3{
-        font-size:40px;
-    }
-}
-
-@media(max-width:767px){
-
-    .about-cards-section.Style3 .section-header h2{
-        font-size:36px;
+    .about-cards-section.Style3 .section-header h2 {
+        font-size: 36px;
     }
 
-    .about-cards-section.Style3 .card-item img{
-        height:280px;
-    }
-
-    .about-cards-section.Style3 .card-overlay{
-        padding:20px;
-    }
-
-    .about-cards-section.Style3 .card-content h3{
-        font-size:28px;
-    }
-
-    .about-cards-section.Style3 .card-content p{
-        font-size:15px;
+    .about-cards-section.Style3 .products-item {
+        height: 280px;
     }
 }
-.test-css-check {
-    border: 10px solid red !important;
+/* ======================================================
+   STYLE 3 - MOBILE PRODUCTS SLIDER
+====================================================== */
+/* ======================================================
+   STYLE 3 - MOBILE VERSION
+   Horizontal swipe cards like screenshot
+====================================================== */
+/* ======================================================
+   STYLE 3 MOBILE - FINAL HORIZONTAL SWIPE FIX
+   KEEP THIS AT THE END OF THE CSS FILE
+====================================================== */
+
+@media (max-width: 767px) {
+
+    .about-cards-section.Style3 {
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden;
+        padding: 45px 0 55px;
+    }
+
+    /* Header only */
+    .about-cards-section.Style3 .section-header {
+        width: auto;
+        max-width: none;
+        /* margin: 0 20px 25px; */
+        left: 17px;
+    }
+
+    .about-cards-section.Style3 .section-header h2 {
+        font-size: 40px;
+        line-height: 1.1;
+        margin: 0 0 22px;
+    }
+
+    .about-cards-section.Style3 .section-header p {
+        font-size: 18px;
+        line-height: 1.8;
+        margin: 0;
+    }
+
+
+    /* ==============================================
+       SCROLL CONTAINER
+    ============================================== */
+
+    .about-cards-section.Style3 .products-grid {
+        display: flex !important;
+        grid-template-columns: none !important;
+
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+
+        width: 100% !important;
+        max-width: 100% !important;
+
+        gap: 20px;
+
+        margin: 0;
+
+        padding: 0 20px 10px;
+
+        overflow-x: scroll !important;
+        overflow-y: hidden !important;
+
+        scroll-snap-type: x mandatory;
+
+        -webkit-overflow-scrolling: touch;
+
+        touch-action: pan-x;
+
+        scrollbar-width: none;
+    }
+
+    .about-cards-section.Style3
+    .products-grid::-webkit-scrollbar {
+        display: none;
+    }
+
+
+    /* ==============================================
+       CARDS
+    ============================================== */
+
+    .about-cards-section.Style3 .products-item {
+        position: relative;
+
+        flex: 0 0 85vw !important;
+
+        width: 85vw !important;
+        min-width: 85vw !important;
+        max-width: 85vw !important;
+
+        height: 485px !important;
+
+        scroll-snap-align: start;
+
+        overflow: hidden;
+    }
+
+
+    /* IMAGE / VIDEO */
+
+    .about-cards-section.Style3 .products-media {
+        display: block;
+
+        width: 100%;
+        height: 100%;
+
+        object-fit: cover;
+
+        pointer-events: none;
+    }
+
+
+    /* OVERLAY */
+
+    .about-cards-section.Style3 .products-overlay {
+        position: absolute;
+
+        inset: 0;
+
+        display: flex;
+
+        align-items: flex-end;
+
+        padding: 24px 22px 28px;
+
+        pointer-events: none;
+
+        background:
+            linear-gradient(
+                to top,
+                rgba(7, 28, 80, 0.9) 0%,
+                rgba(7, 28, 80, 0.45) 30%,
+                transparent 65%
+            );
+    }
+
+
+    /* CONTENT */
+
+    .about-cards-section.Style3
+    .products-content h3 {
+        margin: 0 0 8px;
+
+        color: #ffffff;
+
+        font-size: 27px;
+        line-height: 1.2;
+    }
+
+    .about-cards-section.Style3
+    .products-content p {
+        margin: 0;
+
+        color: #ffffff;
+
+        font-size: 17px;
+        line-height: 1.4;
+    }
 }
-
-
 /*
 ==========
 Style4

@@ -1,0 +1,199 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var smallLabel = Model.Content.Value<string>("smallLabel");
+    var heading = Model.Content.Value<string>("heading");
+    var highlightWord = Model.Content.Value<string>("highlightWord");
+
+    var mountainImage = Model.Content.Value<IPublishedContent>("mountainImage");
+    var routeSvg = Model.Content.Value<IPublishedContent>("routeSvg");
+    var climberIcon = Model.Content.Value<IPublishedContent>("climberIcon");
+
+    var steps = Model.Content.Value<BlockListModel>("journeySteps");
+
+    if (!string.IsNullOrWhiteSpace(highlightWord) &&
+        !string.IsNullOrWhiteSpace(heading))
+    {
+        heading = heading.Replace(
+            highlightWord,
+            $"<span>{highlightWord}</span>",
+            StringComparison.OrdinalIgnoreCase);
+    }
+
+    var firstStep = steps?.FirstOrDefault();
+}
+
+<section class="mj-section">
+
+    <div class="mj-background">
+
+        <div class="mj-overlay"></div>
+
+        <div class="mj-stars"></div>
+
+    </div>
+
+    <div class="container">
+
+        <div class="mj-container">
+
+            <!--==========================
+                LEFT CONTENT
+            ==========================-->
+
+            <div class="mj-left">
+
+                @if (!string.IsNullOrWhiteSpace(smallLabel))
+                {
+                    <div class="mj-small-title">
+
+                        <span></span>
+
+                        <span></span>
+
+                        @smallLabel
+
+                    </div>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(heading))
+                {
+                    <h1>
+
+                        @Html.Raw(heading)
+
+                    </h1>
+                }
+
+                <div class="mj-content">
+
+                    <div class="mj-step" id="journeyStep">
+
+                        @(firstStep?.Content.Value<string>("stepLabel"))
+
+                    </div>
+
+                    <h2 id="journeyTitle">
+
+                        @(firstStep?.Content.Value<string>("title"))
+
+                    </h2>
+
+                    <p id="journeyDescription">
+
+                        @(firstStep?.Content.Value<string>("description"))
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!--==========================
+                RIGHT
+            ==========================-->
+
+            <div class="mj-right">
+
+                @if (mountainImage != null)
+                {
+                    <img class="mj-mountain"
+
+                         src="@mountainImage.Url()"
+
+                         alt="@mountainImage.Name" />
+                }
+
+                @if (routeSvg != null)
+                {
+                    <img class="mj-route"
+
+                         src="@routeSvg.Url()"
+
+                         alt="@routeSvg.Name" />
+                }
+
+                @if (steps != null)
+                {
+                    var index = 1;
+
+                    foreach (var item in steps)
+                    {
+                        var left = item.Content.Value<string>("positionLeft");
+                        var right = item.Content.Value<string>("positionRight");
+                        var top = item.Content.Value<string>("positionTop");
+                        var bottom = item.Content.Value<string>("positionBottom");
+
+                        var style = "";
+
+                        if (!string.IsNullOrWhiteSpace(left))
+                        {
+                            style += $"left:{left};";
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(right))
+                        {
+                            style += $"right:{right};";
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(top))
+                        {
+                            style += $"top:{top};";
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(bottom))
+                        {
+                            style += $"bottom:{bottom};";
+                        }
+
+                        <div class="mj-node @(index == 1 ? "active" : "")"
+
+                             style="@style"
+
+                             data-step="@item.Content.Value("stepLabel")"
+
+                             data-title="@item.Content.Value("title")"
+
+                             data-description="@item.Content.Value("description")">
+
+                            <div class="circle">
+
+                                @item.Content.Value("stepNumber")
+
+                            </div>
+
+                            <span>
+
+                                @item.Content.Value("title")
+
+                            </span>
+
+                        </div>
+
+                        index++;
+                    }
+                }
+
+                <div class="mj-climber">
+
+                    @if (climberIcon != null)
+                    {
+                        <img src="@climberIcon.Url()"
+
+                             alt="@climberIcon.Name" />
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<script src="/Scripts/Industries/mountainJourneySection.js"></script>

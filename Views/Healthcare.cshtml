@@ -1,0 +1,15 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Healthcare>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@{
+	Layout = "master.cshtml";
+}
+
+
+<!-- Page Components -->
+<div class="page-content">
+    @if (Model.HasValue("healthcareContent"))
+    {
+        @await Html.GetBlockListHtmlAsync(Model, "healthcareContent")
+    }
+</div>

@@ -1,0 +1,112 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Extensions
+
+@inherits UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var locationCards =
+        content.Value<BlockListModel>("locationCards");
+}
+
+@if (locationCards != null && locationCards.Any())
+{
+    <section class="office-locations-section">
+
+        <div class="office-locations-container">
+
+            <div class="office-locations-grid">
+
+                @foreach (var block in locationCards)
+                {
+                    var card = block.Content;
+
+                    var label = card.Value<string>("label");
+                    var title = card.Value<string>("title");
+
+                    var image =
+                        card.Value<MediaWithCrops>("image");
+
+                    var imageUrl = image?.MediaUrl();
+
+                    <article class="office-location-card">
+
+                        @if (!string.IsNullOrWhiteSpace(imageUrl))
+                        {
+                            <img
+                                src="@imageUrl"
+                                alt="@title"
+                                class="office-location-image"
+                                loading="lazy" />
+                        }
+
+                        <div class="office-location-overlay"></div>
+
+                        <div class="office-location-content">
+
+                            @if (!string.IsNullOrWhiteSpace(label))
+                            {
+                                <span class="office-location-label">
+                                    @label
+                                </span>
+                            }
+
+                            @if (!string.IsNullOrWhiteSpace(title))
+                            {
+                                <h3 class="office-location-title">
+                                    @title
+                                </h3>
+                            }
+
+                        </div>
+
+                    </article>
+                }
+
+            </div>
+
+        </div>
+
+    </section>
+}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+    const cards =
+        document.querySelectorAll(".office-location-card");
+
+    if (!cards.length) return;
+
+    const observer = new IntersectionObserver(
+        (entries) => {
+
+            entries.forEach((entry) => {
+
+                if (entry.isIntersecting) {
+
+                    entry.target.classList.add("is-visible");
+
+                    observer.unobserve(entry.target);
+                }
+
+            });
+
+        },
+        {
+            threshold: 0.15
+        }
+    );
+
+    cards.forEach((card, index) => {
+
+        card.style.transitionDelay =
+            `${index * 120}ms`;
+
+        observer.observe(card);
+
+    });
+
+});
+</script>

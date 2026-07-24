@@ -1,0 +1,182 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.PropertyEditors.ValueConverters
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+@*
+    ============================================================================
+    CNX Results Banner  —  single file: markup, CSS and JS
+    ----------------------------------------------------------------------------
+    Save as: Views/Partials/blocklist/Components/cnxResultsBanner.cshtml
+             (file name must match the element type alias exactly)
+
+    Element type: cnxResultsBanner
+        kicker         Textstring     "Business Impact"
+        titleLead      Textstring     "Technology That Delivers Measurable"
+        titleFocus     Textstring     "Outcomes"   -> rendered in orange
+        titleTail      Textstring     optional trailing words
+        sceneImage     Media Picker   single, images only
+        sceneCaption   Textstring     describes the photo
+        points         Block List     blocks of type cnxResultsPoint
+
+    Element type: cnxResultsPoint
+        heading        Textstring (mandatory)
+        detail         Textarea
+        glyph          Media Picker   single. One icon per point.
+
+    About the glyph: it is drawn as a CSS mask, so the same upload is painted
+    white when the bar is closed and orange when it is open. Upload a
+    transparent SVG or PNG (the shape is used, its own colours are not).
+    If no glyph is picked, a built-in arrow renders instead.
+
+    The first point renders open.
+    ============================================================================
+*@
+@{
+    var banner = Model.Content;
+
+    var kicker    = banner.Value<string>("kicker");
+    var titleLead = banner.Value<string>("titleLead");
+    var titleFocus= banner.Value<string>("titleFocus");
+    var titleTail = banner.Value<string>("titleTail");
+
+    var scene        = banner.Value<MediaWithCrops>("sceneImage");
+    var sceneCaption = banner.Value<string>("sceneCaption");
+    var sceneUrl     = scene?.GetCropUrl(width: 1920, height: 1000, imageCropMode: ImageCropMode.Crop);
+
+    var points = banner.Value<BlockListModel>("points")?.ToList() ?? new List<BlockListItem>();
+
+    // unique per block instance, so two banners on one page can't share body ids
+    var bannerKey = banner.Key.ToString("N").Substring(0, 8);
+
+   
+}
+
+<section class="results-banner">
+
+    @if (!string.IsNullOrWhiteSpace(sceneUrl))
+    {
+        <div class="results-banner__scene" style="background-image:url('@sceneUrl')" role="img" aria-label="@sceneCaption"></div>
+    }
+    else
+    {
+        <div class="results-banner__scene" aria-hidden="true"></div>
+    }
+
+    <div class="results-banner__scrim"></div>
+
+    <div class="results-banner__wrap">
+        <div class="results-banner__col">
+
+            @if (!string.IsNullOrWhiteSpace(kicker))
+            {
+                <p class="results-banner__kicker">@kicker</p>
+            }
+
+            <h2 class="results-banner__title">
+                @titleLead
+                @if (!string.IsNullOrWhiteSpace(titleFocus))
+                {
+                    <span class="results-banner__title-focus">@titleFocus</span>
+                }
+                @titleTail
+            </h2>
+
+            @if (points.Any())
+            {
+                <div class="point-stack" data-point-stack>
+                    @for (var i = 0; i < points.Count; i++)
+                    {
+                        var point   = points[i].Content;
+                        var heading = point.Value<string>("heading");
+                        var detail  = point.Value<string>("detail");
+                        var glyph   = point.Value<MediaWithCrops>("glyph");
+                        var isOpen  = i == 0;
+                        var bodyId  = $"point-{bannerKey}-{i}";
+
+                        <div class="point @(isOpen ? "point--open" : null)">
+
+                            <button class="point__bar" type="button"
+                                    aria-expanded="@(isOpen ? "true" : "false")"
+                                    aria-controls="@bodyId">
+
+                                <span class="point__heading">@heading</span>
+
+                                @if (glyph is not null)
+                                {
+                                    <span class="point__glyph point__glyph--image"
+                                          style="--glyph:url('@glyph.Url()')" aria-hidden="true"></span>
+                                }
+                                else
+                                {
+                                    <svg class="point__glyph" viewBox="0 0 24 24" fill="none"
+                                         stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <polyline points="3 7 9 13 13 9 21 17" />
+                                        <polyline points="15 17 21 17 21 11" />
+                                    </svg>
+                                }
+
+                            </button>
+
+                            <div class="point__body" id="@bodyId" role="region">
+                                @if (!string.IsNullOrWhiteSpace(detail))
+                                {
+                                    <p class="point__detail">@detail</p>
+                                }
+                            </div>
+
+                        </div>
+                    }
+                </div>
+            }
+
+        </div>
+    </div>
+</section>
+
+
+    <script>
+        (function () {
+            var stacks = document.querySelectorAll('[data-point-stack]');
+            if (!stacks.length) return;
+
+            Array.prototype.forEach.call(stacks, function (stack) {
+                var points = Array.prototype.slice.call(stack.querySelectorAll('.point'));
+
+                function bodyOf(point) { return point.querySelector('.point__body'); }
+
+                function expand(point) {
+                    point.classList.add('point--open');
+                    point.querySelector('.point__bar').setAttribute('aria-expanded', 'true');
+                    bodyOf(point).style.maxHeight = bodyOf(point).scrollHeight + 'px';
+                }
+
+                function collapse(point) {
+                    point.classList.remove('point--open');
+                    point.querySelector('.point__bar').setAttribute('aria-expanded', 'false');
+                    bodyOf(point).style.maxHeight = '0px';
+                }
+
+                points.forEach(function (point) {
+                    point.querySelector('.point__bar').addEventListener('click', function () {
+                        var wasOpen = point.classList.contains('point--open');
+                        points.forEach(collapse);
+                        if (!wasOpen) expand(point);
+                    });
+                });
+
+                points.forEach(function (point) {
+                    if (point.classList.contains('point--open')) { expand(point); } else { collapse(point); }
+                });
+
+                var timer;
+                window.addEventListener('resize', function () {
+                    clearTimeout(timer);
+                    timer = setTimeout(function () {
+                        var current = stack.querySelector('.point--open');
+                        if (current) { bodyOf(current).style.maxHeight = bodyOf(current).scrollHeight + 'px'; }
+                    }, 120);
+                });
+            });
+        })();
+    </script>
+

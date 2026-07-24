@@ -1,0 +1,261 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using System.Collections.Generic
+@using Umbraco.Cms.Core
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Extensions
+@{
+    // Standalone page. To use your master layout instead, set Layout = "YourLayout.cshtml"
+    // and move the <head>/<style>/<script> blocks into that layout.
+    Layout = null;
+
+    // 🔧 Block List property alias on the Insights Page ("Home insights" -> "homeInsights").
+    const string blockListAlias = "homeInsights";
+
+    // --- Header copy: taken straight from Umbraco (no defaults) ---
+    var eyebrow       = Model.Value<string>("eyebrow");
+    var pageHeading   = Model.Value<string>("pageHeading");
+    var headingAccent = Model.Value<string>("headingAccent");
+
+    // --- UI microcopy: also from Umbraco (add these two Textstring props to the page) ---
+    var allLabel     = Model.Value<string>("allLabel");       // e.g. "All"
+    var emptyMessage = Model.Value<string>("emptyMessage");   // e.g. "No insights in this category yet."
+
+    // --- Cards come from the Block List; each block is a "Home Insight Item" element ---
+    var blocks = Model.Value<BlockListModel>(blockListAlias);
+    var items = (blocks == null)
+        ? new List<IPublishedElement>()
+        : blocks.Where(b => b.Content != null).Select(b => b.Content).ToList();
+
+    // --- Filter nav is built from the categories actually used, in first-seen order ---
+    var categories = new List<string>();
+    foreach (var it in items)
+    {
+        var c = it.Value<string>("category");
+        if (!string.IsNullOrWhiteSpace(c) &&
+            !categories.Any(x => x.Equals(c, StringComparison.OrdinalIgnoreCase)))
+        {
+            categories.Add(c);
+        }
+    }
+}
+
+
+    <section class="insights">
+        <div class="insights__wrap">
+
+            <div class="insights__dots"><span></span><span></span></div>
+
+            @if (!string.IsNullOrWhiteSpace(eyebrow))
+            {
+                <p class="insights__eyebrow">@eyebrow</p>
+            }
+
+            <div class="insights__head">
+                <h1 class="insights__title">@pageHeading @if (!string.IsNullOrWhiteSpace(headingAccent)) { <em>@headingAccent</em> }</h1>
+
+                @if (categories.Any())
+                {
+                    <nav id="insights-nav" class="insights__nav">
+                        @if (!string.IsNullOrWhiteSpace(allLabel))
+                        {
+                            <button class="is-active" data-filter="all">@allLabel</button>
+                        }
+                        @foreach (var cat in categories)
+                        {
+                            var slug = cat.ToLowerInvariant().Replace(" ", "-");
+                            <button data-filter="@slug">@cat</button>
+                        }
+                    </nav>
+                }
+            </div>
+
+            <div class="grid" id="grid" data-empty="@emptyMessage">
+                @foreach (var item in items)
+                {
+                    var title = item.Value<string>("heading");
+                    var category = item.Value<string>("category");
+                    var cardSlug = string.IsNullOrWhiteSpace(category) ? "" : category.ToLowerInvariant().Replace(" ", "-");
+
+                    var summary = item.Value<string>("summary");
+
+                    var size = (item.Value<string>("cardSize") ?? "").ToLowerInvariant();
+                    var sizeClass = size switch
+                    {
+                        "small" => "size-s",
+                        "large" => "size-l",
+                        "featured" => "size-xl",
+                        _ => "size-m"   // layout height fallback (not display text)
+                    };
+
+                    string imageUrl = null;
+                    var mediaCrops = item.Value<MediaWithCrops>("image");
+                    if (mediaCrops != null) { imageUrl = mediaCrops.Url(); }
+                    if (imageUrl == null)
+                    {
+                        var single = item.Value<IPublishedContent>("image");
+                        if (single != null) { imageUrl = single.Url(); }
+                    }
+                    if (imageUrl == null)
+                    {
+                        var many = item.Value<IEnumerable<MediaWithCrops>>("image");
+                        imageUrl = many?.FirstOrDefault()?.Url();
+                    }
+
+                    var link = item.Value<IEnumerable<Link>>("link")?.FirstOrDefault()?.Url;
+                    if (string.IsNullOrWhiteSpace(link)) { link = item.Value<Link>("link")?.Url; }
+
+                    var isNews = cardSlug == "news";
+                    var location = item.Value<string>("eventLocation");
+                    var eventDate = item.Value<string>("eventDate");
+                    var bgStyle = (!isNews && imageUrl != null) ? $"background-image:url('{imageUrl}')" : "";
+
+                    <a class="card @sizeClass @(isNews ? "news" : "")" href="@(string.IsNullOrWhiteSpace(link) ? "#" : link)" data-cat="@cardSlug">
+                        @if (!string.IsNullOrWhiteSpace(category))
+                        {
+                            <span class="tag">@category</span>
+                        }
+                        @if (isNews)
+                        {
+                            <div class="wedge" aria-hidden="true"></div>
+                            @if (!string.IsNullOrWhiteSpace(location))
+                            {
+                                <span class="place">@location</span>
+                            }
+                            <div class="content">
+                                @if (!string.IsNullOrWhiteSpace(eventDate))
+                                {
+                                    <div class="date">@eventDate</div>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(title))
+                                {
+                                    <h3>@title</h3>
+                                }
+                                <div class="reveal">
+                                    @if (!string.IsNullOrWhiteSpace(summary))
+                                    {
+                                        <p class="desc">@summary</p>
+                                    }
+                                    <span class="arrow" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8" /></svg>
+                                    </span>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="media" style="@bgStyle">
+                                <div class="scrim"></div>
+                                <div class="content">
+                                    @if (!string.IsNullOrWhiteSpace(title))
+                                    {
+                                        <h3>@title</h3>
+                                    }
+                                    <div class="reveal">
+                                        @if (!string.IsNullOrWhiteSpace(summary))
+                                        {
+                                            <p class="desc">@summary</p>
+                                        }
+                                        <span class="arrow" aria-hidden="true">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8" /></svg>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </a>
+                }
+            </div>
+
+        </div>
+    </section>
+
+    <script>
+        (function () {
+            "use strict";
+            var grid = document.getElementById("grid");
+            var nav = document.getElementById("insights-nav");
+            if (!grid) return;
+
+            var cards = Array.prototype.slice.call(grid.querySelectorAll(".card"));
+            var emptyMessage = grid.getAttribute("data-empty") || "";
+            var activeFilter = "all";
+            var currentCols = -1;
+            var GAP = 22;
+
+            function columnCount() {
+                var w = window.innerWidth;
+                if (w <= 560) return 1;
+                if (w <= 860) return 2;
+                return 3;
+            }
+
+            function replay(card) {
+                card.style.animation = "none";
+                void card.offsetWidth;
+                card.style.animation = "";
+            }
+
+            function layout() {
+                var cols = columnCount();
+                currentCols = cols;
+                grid.innerHTML = "";
+
+                var colEls = [], heights = [];
+                for (var i = 0; i < cols; i++) {
+                    var c = document.createElement("div");
+                    c.className = "grid__col";
+                    grid.appendChild(c);
+                    colEls.push(c);
+                    heights.push(0);
+                }
+
+                var visible = cards.filter(function (c) {
+                    return activeFilter === "all" || c.dataset.cat === activeFilter;
+                });
+
+                if (visible.length === 0) {
+                    if (emptyMessage) {
+                        var empty = document.createElement("p");
+                        empty.className = "grid__empty";
+                        empty.textContent = emptyMessage;
+                        grid.appendChild(empty);
+                    }
+                    return;
+                }
+
+                visible.forEach(function (card, idx) {
+                    var shortest = heights.indexOf(Math.min.apply(null, heights));
+                    card.classList.remove("is-hidden");
+                    colEls[shortest].appendChild(card);
+                    heights[shortest] += card.offsetHeight + GAP;
+                    card.style.animationDelay = (idx * 0.05) + "s";
+                    replay(card);
+                });
+            }
+
+            if (nav) {
+                nav.addEventListener("click", function (e) {
+                    var btn = e.target.closest("button");
+                    if (!btn) return;
+                    nav.querySelectorAll("button").forEach(function (b) { b.classList.remove("is-active"); });
+                    btn.classList.add("is-active");
+                    activeFilter = btn.dataset.filter || "all";
+                    layout();
+                });
+            }
+
+            var resizeTimer;
+            window.addEventListener("resize", function () {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function () {
+                    if (columnCount() !== currentCols) layout();
+                }, 150);
+            });
+
+            layout();
+        })();
+    </script>
+
+

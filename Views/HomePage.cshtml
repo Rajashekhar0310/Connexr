@@ -6,23 +6,16 @@
 @{
     Layout = "master.cshtml";
 
-    // ✅ ADD THIS LINE (your block list alias must be correct)
-    var blocks = Model.Value<BlockListModel>("featureTabsSection");
+  
+   
 }
 
 <!-- Hero Banner Slider -->
-@await Html.PartialAsync("blocklist/Components/heroBannerSlide")<!-- tabsection on video banner -->
+@await Html.PartialAsync("blocklist/Components/HeroBannerSlider")<!-- tabsection on video banner -->
 
 
 
-@if (blocks != null && blocks.Any())
-{
-    foreach (var block in blocks)
-    {
-        var alias = block.Content.ContentType.Alias;
-        @await Html.PartialAsync($"~/Views/Partials/blockList/Components/{alias}.cshtml", block)
-    }
-}
+
 
 <!-- Page Components -->
 <div class="page-content">

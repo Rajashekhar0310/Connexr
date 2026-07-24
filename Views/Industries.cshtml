@@ -1,6 +1,17 @@
-﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Web.Common.PublishedModels
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Industries>
-@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels
+
 @{
-	Layout = "master.cshtml";
+    Layout = "master.cshtml";
 }
+
+<!-- Page Components -->
+<div class="page-content">
+    @if (Model.HasValue("industryContent"))
+    {
+        @await Html.GetBlockListHtmlAsync(Model, "industryContent")
+    }
+</div>

@@ -1,0 +1,180 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>
+
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Extensions
+
+@{
+    var content = Model.Content;
+
+    var eyebrow = content.Value<string>("challengesEyebrow");
+    var heading = content.Value<string>("challengesHeading");
+    var headingAccent = content.Value<string>("challengesHeadingAccent");
+
+    var image = content.Value<MediaWithCrops>("challengesImage");
+
+    var tabs = content.Value<BlockListModel>("challengesTabs");
+
+    var imageUrl = image?.Url() ?? "";
+
+    var imageAlt = image?.Value<string>("altText")
+                   ?? heading
+                   ?? "";
+}
+
+<link rel="stylesheet" href="/css/challengesSection.css">
+
+<section class="hh-section">
+
+    <div class="hh" data-hh-hero>
+
+        @if (!string.IsNullOrWhiteSpace(imageUrl))
+        {
+            <img class="hh__photo"
+                 src="@imageUrl"
+                 alt="@imageAlt" />
+        }
+
+        <div class="hh__scrim"></div>
+
+        <div class="hh__copy">
+
+            @if (!string.IsNullOrWhiteSpace(eyebrow))
+            {
+                <p class="hh__eyebrow">
+                    @eyebrow
+                </p>
+            }
+
+            <h2 class="hh__headline">
+
+                @heading
+
+                @if (!string.IsNullOrWhiteSpace(headingAccent))
+                {
+                    <em>@headingAccent</em>
+                }
+
+            </h2>
+
+        </div>
+        @if (tabs != null && tabs.Any())
+{
+    <div class="hh__cards">
+
+        @{
+            var index = 0;
+        }
+
+  @foreach (var item in tabs)
+{
+    var tab = item.Content;
+
+    var accent = tab.Value<string>("tabLabelAccent");
+    var label = tab.Value<string>("tabLabel");
+    var description = tab.Value<string>("tabDescription");
+
+    bool active = index == 0;
+
+    <div class="hh__card @(active ? "is-active" : "")">
+
+        <button class="hh__cardButton"
+                type="button"
+                aria-expanded="@(active.ToString().ToLower())">
+
+            <!-- Expanded Content -->
+
+            <div class="hh__cardContent">
+
+                <div class="hh__cardHeader">
+
+                    <div class="hh__cardTitle">
+
+                        @if (!string.IsNullOrWhiteSpace(accent))
+                        {
+                            <span class="hh__accent">@accent</span>
+                        }
+
+                        @label
+
+                    </div>
+
+                    <span class="hh__circle">
+
+                        <svg width="14"
+                             height="14"
+                             viewBox="0 0 24 24"
+                             fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+
+                            <path d="M8 5L16 12L8 19"
+                                  stroke="white"
+                                  stroke-width="2"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round" />
+
+                        </svg>
+
+                    </span>
+
+                </div>
+
+                <p class="hh__cardDescription">
+
+                    @description
+
+                </p>
+
+            </div>
+
+            <!-- Default Footer -->
+
+            <div class="hh__cardFooter">
+
+                <div class="hh__cardTitle">
+
+                    @if (!string.IsNullOrWhiteSpace(accent))
+                    {
+                        <span class="hh__accent">@accent</span>
+                    }
+
+                    @label
+
+                </div>
+
+                <span class="hh__circle">
+
+                    <svg width="14"
+                         height="14"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         xmlns="http://www.w3.org/2000/svg">
+
+                        <path d="M8 5L16 12L8 19"
+                              stroke="white"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round" />
+
+                    </svg>
+
+                </span>
+
+            </div>
+
+        </button>
+
+    </div>
+
+    index++;
+}
+
+    </div>
+}
+
+    </div>
+
+</section>
+
+<script src="/Scripts/Helathcare/challengesSection.js"></script>

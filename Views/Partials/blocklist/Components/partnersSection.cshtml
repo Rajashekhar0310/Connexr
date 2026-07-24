@@ -1,6 +1,4 @@
-﻿
-
-       @using Umbraco.Cms.Core.Models
+﻿@using Umbraco.Cms.Core.Models
 @using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Cms.Core.Models.PublishedContent
 @using Umbraco.Extensions
@@ -16,40 +14,49 @@
     var description = content.Value<string>("description") ?? "";
     var buttonText = content.Value<string>("buttonText") ?? "";
     var buttonLink = content.Value<IEnumerable<Link>>("buttonLink")?.FirstOrDefault();
+
     var partners = content.Value<BlockListModel>("partnerLogos");
-}  
+
+    var partnerList = partners?.ToList() ?? new List<BlockListItem>();
+
+    var firstRow = partnerList.Take(3).ToList();
+
+    var secondRow = partnerList.Skip(3).Take(3).ToList();
+}
+
 <section class="ps-section">
+
     <div class="container">
-<div class="ps-inner">
 
+        <div class="ps-inner">
 
-            @* LEFT: Text content *@
-              <div class="ps-text">
+            <!-- ================= Left Content ================= -->
+
+            <div class="ps-text">
 
                 @if (!string.IsNullOrWhiteSpace(eyebrowText))
                 {
                     <p class="ps-eyebrow">@eyebrowText</p>
                 }
 
-                @if (!string.IsNullOrWhiteSpace(heading) || !string.IsNullOrWhiteSpace(highlightText))
-                {
-                    <h2 class="ps-heading">
-                        @if (!string.IsNullOrWhiteSpace(heading))
-                        {
-                            <span class="ps-heading__main">@heading</span>
-                        }
+                <h2 class="ps-heading">
 
-                        @if (!string.IsNullOrWhiteSpace(highlightText))
-                        {
-                            <span class="ps-heading__highlight">@highlightText</span>
-                        }
-                    </h2>
-                }
+                    <span class="ps-heading__main">
+                        @heading
+                    </span>
+
+                    <span class="ps-heading__highlight">
+                        @highlightText
+                    </span>
+
+                </h2>
 
                 @if (!string.IsNullOrWhiteSpace(description))
                 {
                     <div class="ps-description">
+
                         @Html.Raw(description)
+
                     </div>
                 }
 
@@ -61,68 +68,152 @@
 
                         <span>@buttonText</span>
 
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                             xmlns="http://www.w3.org/2000/svg">
-                            <path d="M3 8H13M13 8L9 4M13 8L9 12"
-                                  stroke="currentColor"
-                                  stroke-width="1.5"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round" />
+                        <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none">
+
+                            <path
+                                d="M5 12H19M19 12L13 6M19 12L13 18"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"/>
+
                         </svg>
+
                     </a>
                 }
 
             </div>
 
-            @* RIGHT: Logo cards *@
+            <!-- ================= Right Logos ================= -->
+
             <div class="ps-logos-wrapper">
 
-                @if (partners != null && partners.Any())
-                {
-                    foreach (var block in partners)
-                    {
-                        var logo = block.Content.Value<IPublishedContent>("partnerLogo");
-                        var bgColor = block.Content.Value<string>("backgroundColor") ?? "";
-                        var cardWidth = block.Content.Value<int?>("cardWidth") ?? 0;
-                        var cardHeight = block.Content.Value<int?>("cardHeight") ?? 0;
-                        var posLeft = block.Content.Value<int?>("positionLeft") ?? 0;
-                        var posTop = block.Content.Value<int?>("positionTop") ?? 0;
-                        var cssClass = block.Content.Value<string>("customCssClass") ?? "";
+                <!-- ================= ROW 1 ================= -->
 
-                        var styleStr = $"left:{posLeft}px;top:{posTop}px;position:absolute;";
+                <div class="ps-row ps-row-one">
 
-                        if (cardWidth > 0)
+                    <div class="ps-track">
+
+                        @foreach (var block in firstRow.Concat(firstRow))
                         {
-                            styleStr += $"width:{cardWidth}px;";
-                        }
+                            var logo = block.Content.Value<IPublishedContent>("partnerLogo");
+                            var bgColor = block.Content.Value<string>("backgroundColor") ?? "#fff";
 
-                        if (cardHeight > 0)
-                        {
-                            styleStr += $"height:{cardHeight}px;";
-                        }
+                            <div class="ps-card"
+                                 style="background:@bgColor;">
 
-                        if (!string.IsNullOrWhiteSpace(bgColor))
-                        {
-                            styleStr += $"background-color:{bgColor};";
-                        }
-
-                        if (logo != null)
-                        {
-                            <div class="ps-card @cssClass" style="@styleStr">
-
-                                <img src="@logo.Url()"
-                                     alt="@logo.Name"
-                                     loading="lazy" />
+                                @if (logo != null)
+                                {
+                                    <img src="@logo.Url()"
+                                         alt="@logo.Name"
+                                         loading="lazy" />
+                                }
 
                             </div>
                         }
 
-                    }
-                }
+                    </div>
+
+                </div>
+
+                <!-- ================= ROW 2 ================= -->
+
+                <div class="ps-row ps-row-two">
+
+                    <div class="ps-track">
+
+                        @foreach (var block in secondRow.Concat(secondRow))
+                        {
+                            var logo = block.Content.Value<IPublishedContent>("partnerLogo");
+                            var bgColor = block.Content.Value<string>("backgroundColor") ?? "#fff";
+
+                            <div class="ps-card"
+                                 style="background:@bgColor;">
+
+                                @if (logo != null)
+                                {
+                                    <img src="@logo.Url()"
+                                         alt="@logo.Name"
+                                         loading="lazy" />
+                                }
+
+                            </div>
+                        }
+
+                    </div>
+
+                </div>
 
             </div>
 
-
         </div>
+
     </div>
-</section> 
+
+</section>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+    // Row 1: Right → Left
+    marqueeLeft(".ps-row-one .ps-track", 45);
+
+    // Row 2: Left → Right
+    marqueeRight(".ps-row-two .ps-track", 45);
+
+});
+
+function marqueeLeft(selector, speed) {
+
+    const track = document.querySelector(selector);
+
+    if (!track) return;
+
+    const distance = track.scrollWidth / 2;
+
+    gsap.set(track, {
+        x: 0
+    });
+
+    gsap.to(track, {
+        x: -distance,
+        duration: speed,
+        ease: "none",
+        repeat: -1,
+        modifiers: {
+            x: gsap.utils.unitize(x => parseFloat(x) % distance)
+        }
+    });
+
+}
+
+function marqueeRight(selector, speed) {
+
+    const track = document.querySelector(selector);
+
+    if (!track) return;
+
+    const distance = track.scrollWidth / 2;
+
+    gsap.set(track, {
+        x: -distance
+    });
+
+    gsap.to(track, {
+        x: 0,
+        duration: speed,
+        ease: "none",
+        repeat: -1,
+        modifiers: {
+            x: gsap.utils.unitize(x => {
+                let value = parseFloat(x);
+                return ((value + distance) % distance) - distance;
+            })
+        }
+    });
+
+}
+</script>

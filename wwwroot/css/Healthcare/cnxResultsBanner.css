@@ -1,0 +1,203 @@
+ .results-banner {
+            --deep: #152a63;
+            --deeper: #122459;
+            --flame: #f68b3c;
+            --ink: #0f2050;
+            --body-text: #dce4f5;
+            position: relative;
+            min-height: 760px;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            isolation: isolate;
+            font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", sans-serif;
+            color: var(--ink);
+        }
+
+        .results-banner__scene {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: 65% center;
+            background-color: #dbeaf7;
+            z-index: -2;
+        }
+
+        /* warm scrim on the left so the copy stays readable over the photo */
+        .results-banner__scrim {
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background: linear-gradient(90deg,
+                #f4a259 0%,
+                #f8c795 6%,
+                rgba(250,250,253,.97) 20%,
+                rgba(250,250,253,.86) 32%,
+                rgba(250,250,253,.35) 41%,
+                rgba(250,250,253,0) 48%);
+        }
+
+        .results-banner__wrap {
+            width: 100%;
+            max-width: 1900px;
+            margin: 0 auto;
+            padding: 90px 40px 90px 10.5%;
+        }
+
+        .results-banner__col { max-width: 560px; }
+
+        .results-banner__kicker {
+            margin: 0 0 24px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--deep);
+        }
+
+        .results-banner__title {
+            margin: 0 0 38px;
+            font-size: clamp(32px, 3vw, 46px);
+            font-weight: 700;
+            line-height: 1.42;
+            letter-spacing: -.01em;
+            color: var(--deep);
+        }
+
+        .results-banner__title-focus { color: var(--flame); }
+
+        /* stack of points */
+        .point-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+            max-width: 560px;
+        }
+
+        .point {
+            position: relative;
+            border-radius: 2px;
+            overflow: hidden;
+            background: linear-gradient(90deg,
+                rgba(120,124,130,.68) 0%,
+                rgba(150,154,160,.5) 55%,
+                rgba(190,196,205,.18) 100%);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            transition: background .45s ease, box-shadow .45s ease;
+        }
+
+        .point--open {
+            background: var(--deeper);
+            box-shadow: 0 20px 44px rgba(15,32,80,.22);
+        }
+
+        .point__bar {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            padding: 26px 30px;
+            background: none;
+            border: 0;
+            cursor: pointer;
+            font: inherit;
+            text-align: left;
+            color: #fff;
+        }
+
+        .point__bar:focus-visible {
+            outline: 2px solid var(--flame);
+            outline-offset: -4px;
+        }
+
+        .point--open .point__bar { padding-bottom: 16px; }
+
+        .point__heading {
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: -.01em;
+            color: #fff;
+        }
+
+        /* one uploaded glyph, painted by CSS: white when closed, orange when open */
+        .point__glyph {
+            flex: none;
+            display: block;
+            width: 26px;
+            height: 26px;
+            color: #fff;
+            transition: color .4s ease, background-color .4s ease, transform .4s cubic-bezier(.22,.7,.28,1);
+        }
+
+        .point__glyph--image {
+            background-color: #fff;
+            -webkit-mask-image: var(--glyph);
+            mask-image: var(--glyph);
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            -webkit-mask-position: center;
+            mask-position: center;
+            -webkit-mask-size: contain;
+            mask-size: contain;
+        }
+
+        .point--open .point__glyph { color: var(--flame); }
+        .point--open .point__glyph--image { background-color: var(--flame); }
+        .point__bar:hover .point__glyph { transform: translateX(3px); }
+
+        /* body height is set from JS so it matches the real content */
+        .point__body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .5s cubic-bezier(.22,.7,.28,1);
+        }
+
+        .point__detail {
+            margin: 0;
+            padding: 0 30px 30px;
+            font-size: 16px;
+            line-height: 1.75;
+            color: var(--body-text);
+            max-width: 52ch;
+        }
+
+        /* responsive */
+        @@media (max-width: 1280px) {
+            .results-banner__wrap { padding-left: 6%; }
+            .results-banner__scrim {
+                background: linear-gradient(90deg,
+                    #f4a259 0%,
+                    #f8c795 5%,
+                    rgba(250,250,253,.97) 24%,
+                    rgba(250,250,253,.8) 40%,
+                    rgba(250,250,253,0) 56%);
+            }
+        }
+
+        @@media (max-width: 860px) {
+            .results-banner { min-height: 0; }
+            .results-banner__scene { background-position: 70% top; }
+            .results-banner__scrim {
+                background:
+                    linear-gradient(180deg,
+                        rgba(250,250,253,.4) 0%,
+                        rgba(250,250,253,.92) 26%,
+                        rgba(250,250,253,.97) 100%),
+                    linear-gradient(90deg, #f4a259 0%, rgba(244,162,89,0) 30%);
+            }
+            .results-banner__wrap { padding: 56px 20px 64px; }
+            .results-banner__col,
+            .point-stack { max-width: none; }
+            .results-banner__title { margin-bottom: 28px; }
+            .point__bar { padding: 20px 22px; }
+            .point__heading { font-size: 19px; }
+            .point__detail { padding: 0 22px 24px; font-size: 15px; }
+        }
+
+        @@media (prefers-reduced-motion: reduce) {
+            .point,
+            .point__body,
+            .point__glyph { transition: none; }
+        }

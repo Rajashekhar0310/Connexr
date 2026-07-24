@@ -1,0 +1,26 @@
+﻿@using Umbraco.Cms.Core.Models
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>
+
+@{
+    var media = Model.Content.Value<MediaWithCrops>("media");
+}
+
+@if (media != null)
+{
+    var extension = System.IO.Path.GetExtension(media.Url())?.ToLower();
+
+    <section class="media-section">
+
+        @if (extension == ".mp4" || extension == ".webm" || extension == ".ogg")
+        {
+            <video autoplay muted loop playsinline controls>
+                <source src="@media.Url()" type="video/mp4" />
+            </video>
+        }
+        else
+        {
+            <img src="@media.Url()" alt="" loading="lazy" />
+        }
+
+    </section>
+}

@@ -1,0 +1,109 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+    var cards = content.Value<BlockListModel>("cards");
+}
+
+<section class="hc-solutions">
+
+    <div class="hc-solutions__grid">
+
+        @foreach (var item in cards)
+        {
+            var card = item.Content;
+
+            var type = card.Value<string>("cardType");
+            var icon = card.Value<IPublishedContent>("icon");
+            var title = card.Value<string>("title");
+            var highlight = card.Value<string>("highlightText");
+            var desc = card.Value<string>("description");
+            var btnText = card.Value<string>("buttonText");
+             var btnLinks = card.Value<IEnumerable<Link>>("buttonLink");
+    var btnLink = btnLinks?.FirstOrDefault();
+            if (type == "Featured")
+            {
+                <div class="hc-solutions__card hc-solutions__card--featured">
+
+                    <h2 class="hc-solutions__featured-title">
+                        @title
+                        <br />
+                        @highlight
+                    </h2>
+
+                    <p class="hc-solutions__featured-text">@desc</p>
+
+                </div>
+            }
+            else if (type == "CTA")
+            {
+                <div class="hc-solutions__card hc-solutions__card--cta">
+
+                    <h2 class="hc-solutions__cta-title">@title</h2>
+
+                    @if (btnLink != null)
+                    {
+                         <a class="hc-solutions__button" href="@btnLink.Url" target="@btnLink.Target">
+        @btnText →
+    </a>
+                    }
+                    
+
+                </div>
+            }
+            else
+            {
+                <div class="hc-solutions__card">
+
+                    @if (icon != null)
+                    {
+                        <div class="hc-solutions__icon">
+                            <img src="@icon.Url()" alt="@title">
+                        </div>
+                    }
+
+                    <h3 class="hc-solutions__title">
+                        @title
+                        <span>@highlight</span>
+                    </h3>
+
+                    <p class="hc-solutions__description">
+                        @desc
+                    </p>
+
+                </div>
+            }
+        }
+
+    </div>
+
+</section>
+
+<script>
+document.querySelectorAll(".hc-solutions__card").forEach(card => {
+
+    card.addEventListener("mousemove", e => {
+
+        const rect = card.getBoundingClientRect();
+
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        card.style.background =
+        `radial-gradient(circle at ${x}px ${y}px,
+        rgba(245,130,32,.08),
+        transparent 60%),
+        ${getComputedStyle(card).backgroundColor}`;
+
+    });
+
+    card.addEventListener("mouseleave", () => {
+
+        card.style.background = "";
+
+    });
+
+});
+</script>

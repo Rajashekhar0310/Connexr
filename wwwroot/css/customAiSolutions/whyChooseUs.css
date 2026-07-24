@@ -1,0 +1,375 @@
+/* ==========================================
+   CUSTOM AI - WHY CHOOSE US
+========================================== */
+
+.custom-ai-why-section {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding: 120px ;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.custom-ai-why-overlay {
+    position: absolute;
+    inset: 0;
+    
+}
+
+.custom-ai-why-container {
+    position: relative;
+    z-index: 2;
+    width: 92%;
+    max-width: 1400px;
+ 
+}
+
+/* ==========================================
+   HEADING
+========================================== */
+
+.custom-ai-why-heading {
+    margin-bottom: 60px;
+}
+
+.custom-ai-why-heading-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.custom-ai-why-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #F68B2D;
+}
+
+.custom-ai-why-subtitle {
+    color: #ffffff;
+    font-size: 14px;
+    font-family: "DM Sans", sans-serif;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.custom-ai-why-title {
+    margin: 0;
+    line-height: 1.05;
+    font-family: "Poppins", sans-serif;
+    font-size: 64px;
+    font-weight: 700;
+}
+
+.custom-ai-why-title .custom-ai-why-orange {
+    color: #F68B2D;
+}
+
+.custom-ai-why-title .custom-ai-why-white {
+    color: #ffffff;
+}
+
+/* ==========================================
+   GRID
+========================================== */
+
+.custom-ai-why-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+/* ==========================================
+   CARD
+========================================== */
+
+.custom-ai-why-card {
+    position: relative;
+    overflow: hidden;
+    min-height: 200px;
+    width: 500px;
+    padding: 35px;
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.12);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    transition: all .45s ease;
+}
+
+.custom-ai-why-card-content {
+    position: relative;
+    z-index: 2;
+}
+
+.custom-ai-why-card h3 {
+    margin: 0 0 18px;
+    color: #fff;
+    font-family: "Poppins", sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.3;
+    transition: .4s;
+}
+
+.custom-ai-why-card p {
+    margin: 0;
+    color: rgba(255,255,255,.85);
+    font-family: "DM Sans", sans-serif;
+    font-size: 17px;
+    line-height: 1.8;
+    transition: .4s;
+}
+/* ==========================================
+   HOVER EFFECT
+========================================== */
+
+.custom-ai-why-card:not(.custom-ai-why-cta)::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        135deg,
+        #FFD9BF 0%,
+        #F7BE8B 45%,
+        #F08A29 100%
+    );
+    opacity: 0;
+    transition: opacity .45s ease;
+    z-index: 0;
+}
+
+.custom-ai-why-card:not(.custom-ai-why-cta):hover::before {
+    opacity: 1;
+}
+
+.custom-ai-why-card:not(.custom-ai-why-cta):hover {
+    transform: translateY(-8px);
+    border-color: transparent;
+    box-shadow: 0 20px 50px rgba(0,0,0,.25);
+}
+
+.custom-ai-why-card:not(.custom-ai-why-cta):hover h3 {
+    color: #14306F;
+}
+
+.custom-ai-why-card:not(.custom-ai-why-cta):hover p {
+    color: #343434;
+}
+
+/* ==========================================
+   CTA CARD
+========================================== */
+
+
+
+
+.custom-ai-why-card.custom-ai-why-cta {
+    background: #132A73;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: left;
+}
+
+.custom-ai-why-card.custom-ai-why-cta:hover {
+    transform: translateY(-8px);
+    background: #19368F;
+}
+
+.custom-ai-why-card.custom-ai-why-cta h3 {
+    color: #fff;
+}
+
+.custom-ai-why-card.custom-ai-why-cta p {
+    color: rgba(255,255,255,.82);
+}
+
+/* ==========================================
+   BUTTON
+========================================== */
+
+.custom-ai-why-btn {
+   
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 24px;
+    background: #F68B2D;
+    color: #111;
+    border-radius: 50px;
+    text-decoration: none;
+    font-family: "Poppins", sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all .35s ease;
+}
+
+.custom-ai-why-btn svg {
+    transition: transform .35s ease;
+}
+
+.custom-ai-why-btn:hover {
+    background: #ffb062;
+}
+
+.custom-ai-why-btn:hover svg {
+    transform: translateX(5px);
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width:1200px) {
+
+    .custom-ai-why-title {
+        font-size: 56px;
+    }
+
+    .custom-ai-why-card h3 {
+        font-size: 24px;
+    }
+
+}
+
+@media (max-width:991px) {
+
+    .custom-ai-why-section {
+        padding: 70px 0;
+    }
+
+    .custom-ai-why-title {
+        font-size: 46px;
+    }
+
+    .custom-ai-why-grid {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+}
+
+@media (max-width:767px) {
+
+    .custom-ai-why-section {
+        padding: 60px 0;
+    }
+
+    .custom-ai-why-heading {
+        margin-bottom: 40px;
+    }
+
+    .custom-ai-why-title {
+        font-size: 34px;
+        line-height: 1.2;
+    }
+
+    .custom-ai-why-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .custom-ai-why-card {
+        min-height: auto;
+        padding: 28px;
+    }
+
+    .custom-ai-why-card h3 {
+        font-size: 22px;
+    }
+
+    .custom-ai-why-card p {
+        font-size: 15px;
+    }
+
+    .custom-ai-why-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+}
+
+
+
+
+/* ==========================================================
+   CUSTOM AI — WHY CHOOSE US — RESPONSIVE
+   Drop-in replacement for your @media section, plus 3 base fixes.
+========================================================== */
+
+/* ----------------------------------------------------------
+   BASE FIXES (apply to your existing rules)
+---------------------------------------------------------- */
+
+/* 1. Fixed 500px width breaks the grid — let the grid size the cards. */
+.custom-ai-why-card {
+    width: 100%;
+}
+
+/* 2. Center the container (it was left-drifting with no auto margin). */
+.custom-ai-why-container {
+    margin: 0 auto;
+}
+
+/* 3. 120px on ALL sides eats horizontal space; keep it controllable.
+      (Cards still stay bounded by the max-width:1400px container.) */
+.custom-ai-why-section {
+    padding: 120px 40px;
+}
+
+
+/* ==========================================================
+   LARGE LAPTOP  (≤1280px)
+========================================================== */
+@media (max-width: 1280px) {
+    .custom-ai-why-section  { padding: 100px 40px; }
+    .custom-ai-why-heading  { margin-bottom: 52px; }
+    .custom-ai-why-title    { font-size: 56px; }
+    .custom-ai-why-card     { padding: 32px; }
+    .custom-ai-why-card h3  { font-size: 24px; }
+}
+
+
+/* ==========================================================
+   TABLET  (≤1024px) — 2 columns
+========================================================== */
+@media (max-width: 1024px) {
+    .custom-ai-why-section { padding: 90px 32px; }
+    .custom-ai-why-heading { margin-bottom: 48px; }
+    .custom-ai-why-title   { font-size: 46px; }
+    .custom-ai-why-grid    { grid-template-columns: repeat(2, 1fr); }
+    .custom-ai-why-card    { min-height: 190px; }
+}
+
+
+/* ==========================================================
+   MOBILE  (≤768px) — 1 column
+========================================================== */
+@media (max-width: 768px) {
+    .custom-ai-why-section { padding: 70px 24px; }
+    .custom-ai-why-heading { margin-bottom: 40px; }
+    .custom-ai-why-title   { font-size: 34px; line-height: 1.2; }
+    .custom-ai-why-grid    { grid-template-columns: 1fr; gap: 18px; }
+    .custom-ai-why-card    { min-height: auto; padding: 28px; }
+    .custom-ai-why-card h3 { font-size: 22px; }
+    .custom-ai-why-card p  { font-size: 15px; }
+    .custom-ai-why-btn     { width: 100%; justify-content: center; }
+}
+
+
+/* ==========================================================
+   SMALL MOBILE  (≤480px)
+========================================================== */
+@media (max-width: 480px) {
+    .custom-ai-why-section   { padding: 56px 16px; }
+    .custom-ai-why-container { width: 100%; }
+    .custom-ai-why-heading   { margin-bottom: 32px; }
+    .custom-ai-why-subtitle  { font-size: 12px; letter-spacing: 1.5px; }
+    .custom-ai-why-title     { font-size: 28px; }
+    .custom-ai-why-card      { padding: 24px; }
+    .custom-ai-why-card h3   { font-size: 20px; margin-bottom: 14px; }
+    .custom-ai-why-card p    { font-size: 14px; line-height: 1.7; }
+    .custom-ai-why-btn       { padding: 13px 20px; font-size: 14px; }
+}

@@ -1,0 +1,84 @@
+﻿@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Extensions
+
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var explore = content.Value<string>("exploreHeading");
+    var heading = content.Value<string>("mainHeading");
+    var description = content.Value<string>("description");
+
+    var resources = content.Value<BlockListModel>("resources");
+}
+
+<section class="resources-section">
+
+    <div class="container">
+
+        <div class="resources-header">
+
+            <h5>@explore</h5>
+
+            <h2>@heading</h2>
+
+            <p>@description</p>
+
+        </div>
+
+        <div class="resources-grid">
+
+            @if (resources != null)
+            {
+                var index = 0;
+
+                foreach (var item in resources)
+                {
+                    var card = item.Content;
+
+                    var title = card.Value<string>("title");
+                    var desc = card.Value<string>("description");
+                    var button = card.Value<string>("buttonText");
+
+                    var pdf = card.Value<IPublishedContent>("pdfFile");
+
+                    var cardClass = index % 2 == 0
+                        ? "white-card"
+                        : "orange-card";
+
+                    <div class="resource-card @cardClass">
+
+                        <div class="dots">
+                            <span></span>
+                            <span></span>
+                        </div>
+
+                        <h3>@title</h3>
+
+                        <p>@desc</p>
+
+                        @if(pdf != null)
+                        {
+                            <a href="@pdf.Url()"
+                               target="_blank"
+                               class="download-btn">
+
+                                @button
+
+                                <span>➜</span>
+
+                            </a>
+                        }
+
+                    </div>
+
+                    index++;
+                }
+            }
+
+        </div>
+
+    </div>
+
+</section>

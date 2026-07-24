@@ -1,4 +1,6 @@
-﻿@using Umbraco.Cms.Core.Models.Blocks
+﻿<!-- Proven outcomes section -->
+
+@using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Cms.Core.Models.PublishedContent
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
 
@@ -28,7 +30,8 @@
     <div class="impact-content">
 
         <h2 class="impact-title">
-            @title <span>@highlightText</span>
+            @Html.Raw(title?.Replace(Environment.NewLine, "<br />"))
+            <span>@Html.Raw(highlightText?.Replace(Environment.NewLine, "<br />"))</span>
         </h2>
 
         @if (stats != null && stats.Any())
@@ -43,15 +46,20 @@
                         var heading = stat.Value<string>("heading");
                         var description = stat.Value<string>("description");
                         var bgColor = stat.Value<string>("backgroundColor");
+var text = number ?? "";
+var numericValue = new string(text.Where(char.IsDigit).ToArray());
 
-                        var numericValue = new string((number ?? "").Where(char.IsDigit).ToArray());
-                        var suffix = (number ?? "").Replace(numericValue, "");
+var index = text.IndexOf(numericValue);
 
-                        <div class="impact-card" style="background:@bgColor;">
+var prefix = index >= 0 ? text.Substring(0, index) : "";
+var suffix = index >= 0 ? text.Substring(index + numericValue.Length) : "";
+
+                        <div class="impact-card" style=" backdrop-filter: blur(387.5px);">   
+                                               <!-- background:@bgColor;      -->
 
                             <div class="impact-number">
-                                <span class="counter" data-target="@numericValue">0</span>@suffix
-                            </div>
+    @prefix<span class="counter" data-target="@numericValue">0</span>@suffix
+</div>
 
                             <div class="impact-info">
                                 <h3>@heading</h3>

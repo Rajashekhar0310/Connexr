@@ -7,6 +7,7 @@
         .FirstOrDefault(x => x.Name == "favicon");
 
     var favicon = mediaFolder?.Children()?.FirstOrDefault();
+    
 }
 
 
@@ -22,6 +23,8 @@
           href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css">
 
 <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
   
 @if (favicon != null)
 {
@@ -30,9 +33,10 @@
     <meta name="description" content="@Model.Value("metaDescription")" />
        
 <link rel="stylesheet" href="/css/site.css" /> 
+<link rel="stylesheet" href="/css/Breadcrumb.css" /> 
 <link rel="stylesheet" href="/css/hero-banner.css" />
 <link rel="stylesheet" href="/css/Header.css"/>
-<link rel="stylesheet" href="/css/featureTabsSection.css"/>
+<!-- <link rel="stylesheet" href="/css/featureTabsSection.css"/> -->
 <link rel="stylesheet" href="/css/Footer.css"/>
 <link rel="stylesheet" href="/css/cardListSection.css"/>
 <link rel="stylesheet" href="/css/faqSection.css"/>
@@ -43,16 +47,71 @@
 <link rel="stylesheet" href="/css/Home/insights.css"/>
 <link rel="stylesheet" href="/css/Home/videobanner.css"/>
 <link rel="stylesheet" href="/css/Home/services.css"/>
+<link rel="stylesheet" href="/css/Home/HomeInsights.css"/>
+<link rel="stylesheet" href="/css/About Us/solution.css"/>
+<link rel="stylesheet" href="/css/About Us/statisticsSection.css"/>
+<link rel="stylesheet" href="/css/About Us/principles-section.css"/>
+<link rel="stylesheet" href="/css/About Us/philosophyScrollSection.css"/>
+<link rel="stylesheet" href="/css/Home/aiSpeedContentBlock.css"/>
+<link rel="stylesheet" href="/css/Home/expertise-section.css"/>
+<link rel="stylesheet" href="/css/About Us/valuesection.css"/>
+<link rel="stylesheet" href="/css/About Us/leader.css"/>
+<link rel="stylesheet" href="/css/About Us/officeLocationsSection.css"/>
+<link rel="stylesheet" href="/css/About Us/life-at-connexr.css"/>
+<link rel="stylesheet" href="/css/About Us/promiseMissionVisionSection.css"/>
+<link rel="stylesheet" href="/css/About Us/evolutionTimelineSection.css"/>
+<link rel="stylesheet" href="/css/About Us/aboutHero.css"/>
+<link rel="stylesheet" href="/css/Home/latestthinking.css"/>
+<link rel="stylesheet" href="/css/Home/what-we-deliver.css"/>
+<link rel="stylesheet" href="/css/Partners/PartnersEcosystem.css"/>
+<link rel="stylesheet" href="/css/customAiSolutions/customAiSolutionshero.css"/>
+<link rel="stylesheet" href="/css/customAiSolutions/aiOverviewSection.css"/>
+<link rel="stylesheet" href="/css/customAiSolutions/customAiSolutionsWhatWeDeliver.css"/>
+<link rel="stylesheet" href="/css/customAiSolutions/development-process.css"/>
+<link rel="stylesheet" href="/css/customAiSolutions/businessImpact.css"/>
+<link rel="stylesheet" href="/css/customAiSolutions/whyChooseUs.css"/>
+<link rel="stylesheet" href="/css/customAiSolutions/contentNewsSection.css"/>
+<link rel="stylesheet" href="/css/Industries/industryHeroSection.css"/>
+<link rel="stylesheet" href="/css/Industries/industryShowcaseSection.css"/>
+<link rel="stylesheet" href="/css/Industries/successMetricsSection.css"/>
+<link rel="stylesheet" href="/css/Industries/mountainJourneySection.css"/>
+<link rel="stylesheet" href="/css/What We Build/service-panels.css"/>
+<link rel="stylesheet" href="/css/What We Build/why-partner.css"/>
+<link rel="stylesheet" href="/css/Careers/careers.css"/>
+<link rel="stylesheet" href="/css/Insights/insights.css"/>
+<link rel="stylesheet" href="/css/Industries sub Pages/newsletterBlock.css"/>
+<link rel="stylesheet" href="/css/Insights/blogs-page.css"/>
+<link rel="stylesheet" href="/css/Healthcare/healthcare-hero.css"/>
+<link rel="stylesheet" href="/css/Healthcare/industryoverview.css"/>
+<link rel="stylesheet" href="/css/Healthcare/healthcareSolutions.css"/>
+<link rel="stylesheet" href="/css/Healthcare/healthcarechallenges.css"/>
+<link rel="stylesheet" href="/css/Healthcare/capabilityGridSection.css"/>
+<link rel="stylesheet" href="/css/Healthcare/caseStudySection.css"/>
+<link rel="stylesheet" href="/css/Healthcare/technologyIntelligenceSection.css"/>
+<link rel="stylesheet" href="/css/Healthcare/cnxResultsBanner.css"/>
+<link rel="stylesheet" href="/css/Contact Us/resourcesSection.css"/>
+<link rel="stylesheet" href="/css/Contact Us/talkToPeopleSection.css"/>
+<link rel="stylesheet" href="/css/leadership/leadershipHero.css"/>
+<link rel="stylesheet" href="/css/leadership/leadershipBiographySection.css"/>
+<link rel="stylesheet" href="/css/leadership/connexrExecutiveGridSection.css"/>
+<link rel="stylesheet" href="/css/Insights/blogHero.css"/>
+<link rel="stylesheet" href="/css/Insights/blogHeroMedia.css"/>
+
+
+
+
 
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Racing+Sans+One&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="@ViewData["bodyClass"]">
  
 
   
  @await Html.PartialAsync("Header")
-  @await Html.PartialAsync("Breadcrumb")
-    <main>
+<div class="breadcrumb-wrapper">
+    @await Html.PartialAsync("Breadcrumb")
+</div>    <main>
         @RenderBody()
         
     </main>

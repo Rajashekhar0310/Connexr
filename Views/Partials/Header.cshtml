@@ -3,74 +3,129 @@
 @inherits UmbracoViewPage
 
 @{
-    // Get home/root page
     IPublishedContent home = Model.Root();
-    
-    // Get navigation items (exclude siteData and hidden items)
-    var navItems = home.Children()
-        .Where(x => x.IsVisible() && x.ContentType.Alias != "siteData")
+
+     var navItems = home.Children()
+        .Where(x =>
+            x.IsVisible() &&
+            x.ContentType.Alias != "siteData" &&
+            x.ContentType.Alias != "santthoshPurmani" &&
+            x.ContentType.Alias != "sriniRagipally" &&
+            x.ContentType.Alias != "suhaibAhmed" &&
+            x.ContentType.Alias != "udayaVanteru" &&
+            x.ContentType.Alias != "blogs" &&
+            x.ContentType.Alias != "vijaySimhachalam" &&
+            x.ContentType.Alias != "page404")
         .ToList();
-    
-    // Get header logo
+
+    <!-- IPublishedContent logo = home.Value<IPublishedContent>("logo");
+
+    string ctaText = home.Value<string>("headerCtaText") ?? "Get in Touch";
+    Link ctaLink = home.Value<Link>("headerCtaLink"); -->
+        
+
+
     IPublishedContent logo = home.Value<IPublishedContent>("logo");
-    
-    // Get CTA text and link
+
     string ctaText = home.Value<string>("headerCtaText") ?? "Get in Touch";
     Link ctaLink = home.Value<Link>("headerCtaLink");
 }
 
 <header class="site-header visible">
-    
+
     <div class="header-wrapper">
-        
-        @* ── LOGO ── *@
-        <div class="logo">
-            @if (logo != null)
-            {
-                <a href="@home.Url()" title="Go to homepage">
-                    <img src="@logo.Url()" 
-                         alt="@(logo.Value<string>("umbracoAltText") ?? logo.Name ?? "Logo")" />
-                </a>
-            }
-        </div>
-        
-        @* ── NAVIGATION & CTA ── *@
+
         <div class="nav-container">
-            
-            @* Main Navigation *@
+
+            <!-- Logo -->
+            <div class="logo">
+                @if (logo != null)
+                {
+                    <a href="@home.Url()" title="Go to homepage">
+                        <img src="@logo.Url()"
+                             alt="@(logo.Value<string>("umbracoAltText") ?? logo.Name ?? "Logo")" />
+                    </a>
+                }
+            </div>
+
+            <!-- Navigation -->
             @if (navItems.Any())
             {
-                <nav class="main-nav">
+                <nav class="main-nav" id="mainNav">
                     <ul>
                         @foreach (var item in navItems)
                         {
-                            <li>
+                            var childItems = item.Children()
+                                .Where(x => x.IsVisible())
+                                .ToList();
+
+                            <li class="@(childItems.Any() ? "has-submenu" : "")">
+
                                 <a href="@item.Url()">
                                     @item.Name
+
+                                    @if (childItems.Any())
+                                    {
+                                        <span class="submenu-arrow">⌄</span>
+                                    }
                                 </a>
+
+                                @if (childItems.Any())
+                                {
+                                    <button class="submenu-toggle"
+                                            type="button"
+                                            aria-label="Toggle submenu"
+                                            aria-expanded="false">⌄</button>
+
+                                    <ul class="submenu">
+                                        @for (var i = 0; i < childItems.Count; i++)
+                                        {
+                                            <li style="--i:@i">
+                                                <a href="@childItems[i].Url()">
+                                                    @childItems[i].Name
+                                                </a>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+
                             </li>
                         }
                     </ul>
                 </nav>
             }
-            
-            @* CTA Button *@
+
+            <!-- CTA -->
             @if (ctaLink != null && !string.IsNullOrWhiteSpace(ctaText))
             {
                 <a href="@ctaLink.Url"
                    target="@(string.IsNullOrWhiteSpace(ctaLink.Target) ? "_self" : ctaLink.Target)"
-                   class="header-btn"
-                   title="@ctaText">
+                   class="header-btn">
+
                     <span>@ctaText</span>
-                    <span>→</span>
+                    <span>↗</span>
+
                 </a>
             }
-            
+
+            <!-- Burger -->
+            <button class="nav-burger"
+                    id="navBurger"
+                    type="button"
+                    aria-label="Open menu"
+                    aria-expanded="false"
+                    aria-controls="mainNav">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
         </div>
-        
+
     </div>
-    
+
 </header>
 
-@* Include scroll behavior script *@
+<div class="nav-overlay" id="navOverlay"></div>
+
 <script src="~/scripts/Home/Header.js" defer></script>

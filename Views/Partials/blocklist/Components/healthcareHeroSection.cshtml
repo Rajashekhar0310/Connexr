@@ -1,0 +1,76 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using System.Linq
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>
+@{
+    var content = Model.Content;
+
+    var background = content.Value<IPublishedContent>("backgroundImage");
+    var bg = background?.Url() ?? "";
+
+    var label = content.Value<string>("topLabel");
+    var heading = content.Value<string>("mainHeading");
+
+    var ctaText = content.Value<string>("ctaText");
+var ctaLink = content.Value<IEnumerable<Link>>("ctaLink")?.FirstOrDefault();
+    var stat1 = content.Value<string>("statistic1Number");
+    var statLabel1 = content.Value<string>("statistic1Label");
+
+    var stat2 = content.Value<string>("statistic2Number");
+    var statLabel2 = content.Value<string>("statistic2Label");
+}
+
+<section class="hc-banner">
+
+    <div class="hc-banner__bg">
+        <img src="@bg" alt="@heading">
+    </div>
+
+    <div class="hc-banner__overlay"></div>
+
+    <div class="hc-banner__container">
+
+        <div class="hc-banner__content">
+
+            <span class="hc-banner__label">
+                @label
+            </span>
+
+            <h1 class="hc-banner__title">
+                @Html.Raw(heading)
+            </h1>
+
+            @if (ctaLink != null)
+            {
+                <a href="@ctaLink.Url"
+       target="@ctaLink.Target"
+       class="hc-banner__button">
+        @ctaText
+    </a>
+            }
+
+            <div class="hc-banner__stats">
+
+                <div class="hc-banner__stat">
+
+                    <h2 class="hc-banner__number">@stat1</h2>
+
+                    <span class="hc-banner__text">@statLabel1</span>
+
+                </div>
+
+                <div class="hc-banner__stat">
+
+                    <h2 class="hc-banner__number">@stat2</h2>
+
+                    <span class="hc-banner__text">@statLabel2</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>

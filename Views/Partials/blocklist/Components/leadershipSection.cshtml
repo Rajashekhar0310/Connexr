@@ -1,0 +1,265 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Extensions
+
+@inherits UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var smallTitle = content.Value<string>("smallTitle");
+    var title = content.Value<string>("title");
+    var highlightText = content.Value<string>("highlightText");
+    var description = content.Value<string>("description");
+
+    var leadershipCards =
+        content.Value<BlockListModel>("leadershipCards");
+}
+
+<section class="leadership-section">
+
+    <!-- TOP CONTENT -->
+    <div class="leadership-container">
+
+        <div class="leadership-header">
+
+            <!-- LEFT -->
+            <div class="leadership-heading">
+
+                @if (!string.IsNullOrWhiteSpace(smallTitle))
+                {
+                    <div class="leadership-small-title">
+                        @smallTitle
+                    </div>
+                }
+
+                <h2 class="leadership-title">
+
+                    @title
+
+                    @if (!string.IsNullOrWhiteSpace(highlightText))
+                    {
+                        <span class="leadership-highlight">
+                            @highlightText
+                        </span>
+                    }
+
+                </h2>
+
+            </div>
+
+
+            <!-- RIGHT -->
+            @if (!string.IsNullOrWhiteSpace(description))
+            {
+                <div class="leadership-description">
+                    <p>@description</p>
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+
+    <!-- CARDS -->
+    @if (leadershipCards != null && leadershipCards.Any())
+    {
+        <div class="leadership-slider">
+
+            <div class="leadership-track">
+
+                @foreach (var block in leadershipCards)
+                {
+                    var card = block.Content;
+
+                    var image =
+                        card.Value<MediaWithCrops>("leaderImage");
+
+                    var leaderName =
+                        card.Value<string>("leaderName");
+
+                    var designation =
+                        card.Value<string>("leaderDesignation");
+
+                    var profileLinks =
+                        card.Value<IEnumerable<Link>>("leaderProfileLink");
+
+                    var profileLink =
+                        profileLinks?.FirstOrDefault();
+
+
+                    <article class="leadership-card">
+
+                        <!-- IMAGE -->
+                        <div class="leadership-image">
+
+                            @if (image != null)
+                            {
+                                <img src="@image.Url()"
+                                     alt="@leaderName"
+                                     loading="lazy" />
+                            }
+
+                        </div>
+
+
+                        <!-- CARD FOOTER -->
+                        <div class="leadership-card-footer">
+
+                            <div class="leadership-person-info">
+
+                                @if (!string.IsNullOrWhiteSpace(leaderName))
+                                {
+                                    <h3>@leaderName</h3>
+                                }
+
+                                @if (!string.IsNullOrWhiteSpace(designation))
+                                {
+                                    <p>@designation</p>
+                                }
+
+                            </div>
+
+
+                            @if (profileLink != null)
+                            {
+                                <a href="@profileLink.Url"
+                                   target="@profileLink.Target"
+                                   class="leadership-card-arrow"
+                                   aria-label="View @leaderName profile">
+
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M9 18L15 12L9 6" />
+                                    </svg>
+
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="leadership-card-arrow">
+
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M9 18L15 12L9 6" />
+                                    </svg>
+
+                                </span>
+                            }
+
+                        </div>
+
+                    </article>
+                }
+
+            </div>
+
+
+            <!-- NAVIGATION -->
+            <div class="leadership-navigation">
+
+                <button type="button"
+                        class="leadership-nav leadership-prev"
+                        aria-label="Previous">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M15 18L9 12L15 6" />
+                    </svg>
+
+                </button>
+
+
+                <button type="button"
+                        class="leadership-nav leadership-next"
+                        aria-label="Next">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M9 18L15 12L9 6" />
+                    </svg>
+
+                </button>
+
+            </div>
+
+        </div>
+    }
+
+</section>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+    const leadershipSections =
+        document.querySelectorAll(".leadership-section");
+
+
+    leadershipSections.forEach(function (section) {
+
+        const track =
+            section.querySelector(".leadership-track");
+
+        const prevButton =
+            section.querySelector(".leadership-prev");
+
+        const nextButton =
+            section.querySelector(".leadership-next");
+
+
+        if (!track || !prevButton || !nextButton) {
+            return;
+        }
+
+
+        function getScrollDistance() {
+
+            const card =
+                track.querySelector(".leadership-card");
+
+            if (!card) {
+                return 336;
+            }
+
+
+            const trackStyles =
+                window.getComputedStyle(track);
+
+
+            const gap =
+                parseFloat(
+                    trackStyles.columnGap ||
+                    trackStyles.gap ||
+                    "0"
+                );
+
+
+            return card.getBoundingClientRect().width + gap;
+        }
+
+
+        nextButton.addEventListener("click", function () {
+
+            track.scrollBy({
+
+                left: getScrollDistance(),
+
+                behavior: "smooth"
+
+            });
+
+        });
+
+
+        prevButton.addEventListener("click", function () {
+
+            track.scrollBy({
+
+                left: -getScrollDistance(),
+
+                behavior: "smooth"
+
+            });
+
+        });
+
+    });
+
+});
+</script>

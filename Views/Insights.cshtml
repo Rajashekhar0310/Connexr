@@ -1,6 +1,505 @@
-﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Cms.Web.Common.PublishedModels
+@using Umbraco.Extensions
+
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Insights>
+
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+
 @{
-	Layout = "master.cshtml";
+    Layout = "master.cshtml";
+
+    /* ==========================================
+       PAGE CONTENT
+    ========================================== */
+
+    var eyebrow = Model.Value<string>("eyebrowText");
+    var heading = Model.Value<string>("heading");
+    var highlightedHeading = Model.Value<string>("highlightedHeading");
+
+    /* ==========================================
+       BLOGS FOLDER
+    ========================================== */
+
+    var blogsFolder = Model.Parent()?
+        .Children()
+        .FirstOrDefault(x => x.ContentType.Alias == "blogs");
+
+    /* ==========================================
+       ALL BLOGS
+    ========================================== */
+
+    var blogs = blogsFolder?
+        .ChildrenOfType("blogsPage")
+        .OrderByDescending(x => x.Value<DateTime>("publishDate"))
+        .ToList()
+
+        ?? new List<IPublishedContent>();
+
+    /* ==========================================
+       FEATURED BLOG
+    ========================================== */
+
+    var featuredBlog = blogs
+        .FirstOrDefault(x => x.Value<bool>("featured"))
+
+        ?? blogs.FirstOrDefault();
+
+    /* ==========================================
+       REMAINING BLOGS
+    ========================================== */
+
+    var remainingBlogs = blogs
+        .Where(x => x != featuredBlog)
+        .ToList();
+
+    /* ==========================================
+       RIGHT COLUMN
+    ========================================== */
+
+    var rightBlogs = remainingBlogs
+        .Take(3)
+        .ToList();
+
+    /* ==========================================
+       GRID BLOGS
+    ========================================== */
+
+    var gridBlogs = remainingBlogs
+        .Skip(3)
+        .ToList();
+
+    /* ==========================================
+       CATEGORIES
+    ========================================== */
+
+    var categories = blogs
+        .Select(x => x.Value<string>("category"))
+        .Where(x => !string.IsNullOrWhiteSpace(x))
+        .Distinct(StringComparer.OrdinalIgnoreCase)
+        .OrderBy(x => x)
+        .ToList();
 }
+<section class="insights-page">
+
+    <div class="insights-container">
+
+        <!-- ==========================================
+             PAGE HEADER
+        ========================================== -->
+
+        <div class="insights-page-header">
+
+            <!-- LEFT -->
+
+            <div class="insights-header-left">
+
+                @if (!string.IsNullOrWhiteSpace(eyebrow))
+                {
+                    <div class="insights-eyebrow">
+
+                        <span class="eyebrow-dot"></span>
+                        <span class="eyebrow-dot"></span>
+
+                        <span class="eyebrow-text">
+
+                            @eyebrow
+
+                        </span>
+
+                    </div>
+                }
+
+                <h1 class="insights-title">
+
+                    @heading
+
+                    @if (!string.IsNullOrWhiteSpace(highlightedHeading))
+                    {
+                        <span>
+
+                            @highlightedHeading
+
+                        </span>
+                    }
+
+                </h1>
+
+            </div>
+
+            <!-- RIGHT -->
+
+            <div class="insights-header-right">
+
+                <div class="insights-filters">
+
+                    <button class="insights-filter active"
+                            data-filter="all">
+
+                        ALL
+
+                    </button>
+
+                    @foreach (var category in categories)
+                    {
+                        var slug = category!
+                            .Trim()
+                            .ToLowerInvariant()
+                            .Replace(" ", "-");
+
+                        <button class="insights-filter"
+                                data-filter="@slug">
+
+                            @category.ToUpper()
+
+                        </button>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+        <!-- ==========================================
+     FEATURED HERO CARD
+========================================== -->
+
+<div class="insights-top-layout">
+
+@if (featuredBlog != null)
+{
+    var title = featuredBlog.Value<string>("blogTitle");
+    var description = featuredBlog.Value<string>("shortDescription");
+
+    var image = featuredBlog.Value<IPublishedContent>("image");
+    var video = featuredBlog.Value<IPublishedContent>("video");
+
+    var category = featuredBlog.Value<string>("category");
+    var publishDate = featuredBlog.Value<DateTime>("publishDate");
+
+    <a href="@featuredBlog.Url()"
+       class="featured-blog-card"
+       data-category="@(category?.ToLower().Replace(" ","-"))">
+
+        <!-- ==========================
+             IMAGE / VIDEO
+        =========================== -->
+
+        <div class="featured-blog-media">
+
+            @if (video != null)
+            {
+                <video class="featured-blog-video"
+                       autoplay
+                       muted
+                       loop
+                       playsinline>
+
+                    <source src="@video.Url()" type="video/mp4"/>
+
+                </video>
+            }
+            else if (image != null)
+            {
+                <img src="@image.Url()"
+                     alt="@title"
+                     class="featured-blog-image"/>
+            }
+
+            <!-- DARK OVERLAY -->
+
+            <div class="featured-blog-overlay">
+
+                <div class="featured-blog-content">
+
+                    @if (!string.IsNullOrWhiteSpace(category))
+                    {
+                        <span class="featured-category">
+
+                            @category
+
+                        </span>
+                    }
+
+                    <h2>
+
+                        @title
+
+                    </h2>
+
+                    <p class="featured-description">
+
+                        @description
+
+                    </p>
+
+                    <div class="featured-footer">
+
+                        <span class="featured-date">
+
+                            @publishDate.ToString("dd MMM yyyy")
+
+                        </span>
+
+                        <div class="featured-arrow">
+
+                            →
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </a>
+}
+<!-- ==========================================
+     RIGHT COLUMN
+========================================== -->
+
+<div class="insights-right-column">
+
+    @foreach (var blog in rightBlogs)
+    {
+        var title = blog.Value<string>("blogTitle");
+        var description = blog.Value<string>("shortDescription");
+
+        var image = blog.Value<IPublishedContent>("image");
+        var video = blog.Value<IPublishedContent>("video");
+
+        var category = blog.Value<string>("category");
+        var publishDate = blog.Value<DateTime>("publishDate");
+
+        var categorySlug = category?
+            .Trim()
+            .ToLowerInvariant()
+            .Replace(" ", "-");
+
+        <a href="@blog.Url()"
+           class="insight-side-card"
+           data-category="@categorySlug">
+
+            <!-- ==========================
+                 IMAGE / VIDEO
+            =========================== -->
+
+            <div class="insight-side-media">
+
+                @if (video != null)
+                {
+                    <video class="insight-side-video"
+                           autoplay
+                           muted
+                           loop
+                           playsinline>
+
+                        <source src="@video.Url()" type="video/mp4"/>
+
+                    </video>
+                }
+                else if (image != null)
+                {
+                    <img src="@image.Url()"
+                         alt="@title"
+                         class="insight-side-image"/>
+                }
+
+                <!-- ==========================
+                     OVERLAY
+                =========================== -->
+
+                <div class="insight-side-overlay">
+
+                    <div class="insight-side-content">
+
+                        @if (!string.IsNullOrWhiteSpace(category))
+                        {
+                            <span class="insight-side-category">
+
+                                @category
+
+                            </span>
+                        }
+
+                        <h3>
+
+                            @title
+
+                        </h3>
+
+                        <p class="insight-side-description">
+
+                            @description
+
+                        </p>
+
+                        <div class="insight-side-footer">
+
+                            <span>
+
+                                @publishDate.ToString("dd MMM yyyy")
+
+                            </span>
+
+                            <div class="insight-side-arrow">
+
+                                →
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </a>
+    }
+
+</div>
+
+</div>
+<!-- ==========================================
+     EDITORIAL GRID
+========================================== -->
+
+<div class="insights-grid">
+
+@foreach (var blog in gridBlogs)
+{
+    var title = blog.Value<string>("blogTitle");
+    var description = blog.Value<string>("shortDescription");
+
+    var image = blog.Value<IPublishedContent>("image");
+    var video = blog.Value<IPublishedContent>("video");
+
+    var category = blog.Value<string>("category");
+    var publishDate = blog.Value<DateTime>("publishDate");
+
+    var cardSize = blog.Value<string>("cardSize");
+
+    var cardClass = (cardSize ?? "medium")
+        .Trim()
+        .ToLowerInvariant()
+        .Replace(" ", "-");
+
+    var categorySlug = category?
+        .Trim()
+        .ToLowerInvariant()
+        .Replace(" ", "-");
+
+    <a href="@blog.Url()"
+       class="insight-grid-card @cardClass"
+       data-category="@categorySlug">
+
+        <!-- ==========================
+             MEDIA
+        =========================== -->
+
+        <div class="insight-grid-media">
+
+            @if (video != null)
+            {
+                <video class="insight-grid-video"
+                       autoplay
+                       muted
+                       loop
+                       playsinline>
+
+                    <source src="@video.Url()"
+                            type="video/mp4" />
+
+                </video>
+            }
+            else if (image != null)
+            {
+                <img src="@image.Url()"
+                     alt="@title"
+                     class="insight-grid-image" />
+            }
+
+            <!-- ==========================
+                 OVERLAY
+            =========================== -->
+
+            <div class="insight-grid-overlay">
+
+                <div class="insight-grid-content">
+
+                    @if (!string.IsNullOrWhiteSpace(category))
+                    {
+                        <span class="insight-grid-category">
+
+                            @category
+
+                        </span>
+                    }
+
+                    <h3>
+
+                        @title
+
+                    </h3>
+
+                    <p class="insight-grid-description">
+
+                        @description
+
+                    </p>
+
+                    <div class="insight-grid-footer">
+
+                        <span>
+
+                            @publishDate.ToString("dd MMM yyyy")
+
+                        </span>
+
+                        <div class="insight-grid-arrow">
+
+                            →
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </a>
+
+}
+
+</div>
+
+<!-- ==========================================
+     NO RESULTS
+========================================== -->
+
+<div class="insights-no-results">
+
+    <h3>No insights found</h3>
+
+    <p>
+
+        There are no insights available for the selected category.
+
+    </p>
+
+</div>
+
+</div>
+
+</section>
+
+<script src="/Scripts/Insights/insights.js"></script>

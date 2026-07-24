@@ -1,0 +1,267 @@
+/* ==========================================================================
+   Newsletter block  —  newsletterBlock
+   Full-bleed dark banner with a frosted card holding the signup form.
+   ========================================================================== */
+
+.nl-block {
+    --nl-base: #16232e; /* section fallback behind the image   */
+    --nl-card-bg: rgba(255, 255, 255, .13);
+    --nl-card-line: rgba(255, 255, 255, .16);
+    --nl-ink: #ffffff;
+    --nl-ink-soft: rgba(255, 255, 255, .78);
+    --nl-rule: rgba(255, 255, 255, .40);
+    --nl-accent: #f5a04a; /* subscribe button                    */
+    --nl-accent-hi: #ffb567;
+    --nl-accent-ink: #16232e; /* text sitting on the accent          */
+
+    --nl-card-w: 412px;
+    --nl-pad-block: 96px;
+    --nl-pad-inline: clamp(20px, 11.5vw, 168px);
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background-color: var(--nl-base);
+}
+
+/* --- background render ---------------------------------------------------- */
+
+.nl-block__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    display: block;
+}
+
+    .nl-block__bg img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center right; /* keeps the cubes in frame as it narrows  */
+        display: block;
+    }
+
+/* --- layout --------------------------------------------------------------- */
+
+.nl-block__inner {
+    display: flex;
+    padding: var(--nl-pad-block) var(--nl-pad-inline);
+    min-height: 640px;
+    align-items: center;
+}
+
+.nl-block--left .nl-block__inner {
+    justify-content: flex-start;
+}
+
+.nl-block--center .nl-block__inner {
+    justify-content: center;
+}
+
+.nl-block--right .nl-block__inner {
+    justify-content: flex-end;
+}
+
+/* --- card ----------------------------------------------------------------- */
+
+.nl-card {
+    width: 100%;
+    max-width: var(--nl-card-w);
+    padding: 34px 32px 36px;
+    background: var(--nl-card-bg);
+    border: 1px solid var(--nl-card-line);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    display: flex;
+    flex-direction: column;
+}
+
+.nl-card__heading {
+    margin: 0;
+    color: var(--nl-ink);
+    font-size: clamp(21px, 1.9vw, 26px);
+    font-weight: 700;
+    line-height: 1.32;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+}
+
+.nl-card__body {
+    margin: 14px 0 0;
+    color: var(--nl-ink-soft);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.75;
+}
+
+/* Pushes the form to the lower third of the card, as in the comp.
+   auto margin means the card still collapses gracefully on short copy. */
+.nl-form {
+    margin-top: auto;
+    padding-top: 52px;
+}
+
+/* --- underline field ------------------------------------------------------ */
+
+.nl-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.nl-field__label {
+    color: var(--nl-ink-soft);
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.nl-field__input {
+    width: 100%;
+    padding: 4px 0 9px;
+    color: var(--nl-ink);
+    font: inherit;
+    font-size: 15px;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--nl-rule);
+    border-radius: 0;
+    transition: border-color .18s ease;
+}
+
+    .nl-field__input:hover {
+        border-bottom-color: rgba(255, 255, 255, .65);
+    }
+
+    .nl-field__input:focus {
+        outline: none;
+        border-bottom-color: var(--nl-accent);
+    }
+
+    .nl-field__input:focus-visible {
+        outline: 2px solid var(--nl-accent);
+        outline-offset: 4px;
+    }
+
+    .nl-field__input:user-invalid {
+        border-bottom-color: #ff8a7a;
+    }
+
+/* --- button --------------------------------------------------------------- */
+
+.nl-button {
+    margin-top: 26px;
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 16px;
+    color: var(--nl-accent-ink);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+    background: var(--nl-accent);
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color .18s ease, transform .18s ease;
+}
+
+    .nl-button:hover {
+        background: var(--nl-accent-hi);
+    }
+
+    .nl-button:active {
+        transform: translateY(1px);
+    }
+
+    .nl-button:focus-visible {
+        outline: 2px solid #fff;
+        outline-offset: 3px;
+    }
+
+.nl-button__icon {
+    width: 13px;
+    height: 13px;
+    flex: none;
+    transition: transform .18s ease;
+}
+
+.nl-button:hover .nl-button__icon {
+    transform: translate(2px, -2px);
+}
+
+/* --- confirmation / error message ----------------------------------------- */
+
+.nl-message {
+    margin: 16px 0 0;
+    color: var(--nl-ink);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* --- honeypot ------------------------------------------------------------- */
+
+.nl-honeypot {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+/* --- responsive ----------------------------------------------------------- */
+
+@media (max-width: 900px) {
+    .nl-block {
+        --nl-pad-block: 72px;
+    }
+
+    .nl-block__inner {
+        min-height: 540px;
+    }
+}
+
+@media (max-width: 640px) {
+    .nl-block {
+        --nl-pad-block: 56px;
+        --nl-pad-inline: 20px;
+        --nl-card-w: 100%;
+    }
+
+    .nl-block__inner {
+        min-height: 0;
+    }
+
+    .nl-card {
+        padding: 26px 22px 28px;
+    }
+
+    .nl-form {
+        padding-top: 34px;
+    }
+}
+
+/* --- preferences ---------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+    .nl-button,
+    .nl-button__icon,
+    .nl-field__input {
+        transition: none;
+    }
+
+        .nl-button:active {
+            transform: none;
+        }
+
+        .nl-button:hover .nl-button__icon {
+            transform: none;
+        }
+}
+
+@supports not (backdrop-filter: blur(6px)) {
+    .nl-card {
+        background: rgba(94, 106, 114, .62);
+    }
+}

@@ -1,0 +1,191 @@
+/*====================================
+    RESOURCES SECTION
+=====================================*/
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+.resources-section{
+    background:#FDF5ED;
+    padding:80px 0;
+    font-family:'Poppins',sans-serif;
+}
+
+.resources-section .container{
+    width:1320px;
+    max-width:95%;
+    margin:auto;
+}
+
+/*====================================
+    Heading
+=====================================*/
+
+.resources-header{
+    margin-bottom:40px;
+}
+
+.resources-header h5{
+    font-size:38px;
+    color:#163C8C;
+    font-weight:700;
+    line-height:1;
+    margin-bottom:8px;
+}
+
+.resources-header h2{
+    font-size:38px;
+    color:#FF9A48;
+    font-weight:700;
+    line-height:1.1;
+    margin-bottom:15px;
+}
+
+.resources-header p{
+    width:380px;
+    font-size:18px;
+    line-height:1.7;
+    color:#122560;
+}
+
+/*====================================
+    Grid
+=====================================*/
+
+.resources-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+}
+
+/*====================================
+    Card
+=====================================*/
+
+.resource-card{
+    min-height:210px;
+    padding:22px;
+    transition:.35s ease;
+}
+
+.white-card{
+    background:#fff;
+}
+
+.orange-card{
+    background:#FFE8D8;
+}
+
+.resource-card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 15px 30px rgba(0,0,0,.08);
+}
+
+/*====================================
+    Top Dots
+=====================================*/
+
+.dots{
+    display:flex;
+    gap:4px;
+    margin-bottom:18px;
+}
+
+.dots span{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:#F58B3A;
+}
+
+/*====================================
+    Title
+=====================================*/
+
+.resource-card h3{
+    color:#163C8C;
+    font-size:16px;
+    font-weight:600;
+    margin-bottom:15px;
+}
+
+/*====================================
+    Description
+=====================================*/
+
+.resource-card p{
+    font-size:13px;
+    line-height:1.8;
+    color:#33456C;
+    margin-bottom:28px;
+}
+
+/*====================================
+    Button
+=====================================*/
+
+.download-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:#F58B3A;
+    color:#fff;
+    text-decoration:none;
+    padding:8px 16px;
+    border-radius:30px;
+    font-size:12px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.download-btn:hover{
+    background:#e67318;
+}
+
+.download-btn span{
+    font-size:12px;
+    transition:.3s;
+}
+
+.download-btn:hover span{
+    transform:translateX(4px);
+}
+
+/*====================================
+    Responsive
+=====================================*/
+
+@media(max-width:1200px){
+
+    .resources-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:768px){
+
+    .resources-section{
+        padding:60px 0;
+    }
+
+    .resources-header h5{
+        font-size:32px;
+    }
+
+    .resources-header h2{
+        font-size:34px;
+    }
+
+    .resources-header p{
+        width:100%;
+    }
+
+    .resources-grid{
+        grid-template-columns:1fr;
+    }
+
+}

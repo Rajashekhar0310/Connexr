@@ -1,4 +1,6 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>
+﻿<!-- Home section -Engineering Measurable Impact -->
+
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>
 
 @using Umbraco.Cms.Core.Models
 @using Umbraco.Cms.Core.Models.Blocks
@@ -78,9 +80,10 @@
                     <div class="g-row">
 
                         <div class="title-block">
-                            <h4 class="title">
-                                @serviceTitle
-                            </h4>
+                           <h4 class="title">
+                                @Html.Raw(serviceTitle?.Replace("\n", "<br/>"))
+                           </h4>
+                            
                         </div>
 
                         <div class="lower-content">

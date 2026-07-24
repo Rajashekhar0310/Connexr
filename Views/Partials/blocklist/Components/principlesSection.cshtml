@@ -1,0 +1,125 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var section = Model.Content;
+
+    var eyebrow = section.Value<string>("eyebrow");
+    var heading = section.Value<string>("heading");
+    var highlightText = section.Value<string>("highlightText");
+    var description = section.Value<string>("description");
+
+    var tabs = section.Value<BlockListModel>("tabs");
+}
+
+@if (tabs != null && tabs.Any())
+{
+    <section class="principles-section">
+        <div class="container">
+
+            <div class="principles-wrapper">
+
+                <!-- LEFT SIDE -->
+
+                <div class="principles-content">
+
+                    <span class="section-label">
+                        @eyebrow
+                    </span>
+
+                    <h2 class="section-titles">
+                        @heading
+                        <span>@highlightText</span>
+                    </h2>
+
+                    <div class="section-description">
+                        @Html.Raw(description)
+                    </div>
+
+                    @for (int i = 0; i < tabs.Count; i++)
+                    {
+                        var item = tabs[i].Content;
+
+                        <div class="tab-content @(i == 0 ? "active" : "")"
+                             data-tab="@i">
+
+                            <h3>
+                                @item.GetProperty("title")?.GetValue()
+                            </h3>
+
+                            <p>
+                                @item.GetProperty("description")?.GetValue()
+                            </p>
+
+                            <div class="stats-row">
+
+                                <div class="stat-item">
+                                    <h4>@item.GetProperty("stat1Value")?.GetValue()</h4>
+                                    <span>@item.GetProperty("stat1Label")?.GetValue()</span>
+                                </div>
+
+                                <div class="stat-item">
+                                    <h4>@item.GetProperty("stat2Value")?.GetValue()</h4>
+                                    <span>@item.GetProperty("stat2Label")?.GetValue()</span>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    }
+
+                    <div class="tab-navigation">
+
+    @for (int i = 0; i < tabs.Count; i++)
+    {
+        <button class="tab-btn @(i == 0 ? "active" : "")"
+                data-tab="@i">
+
+            @((i + 1).ToString("D2"))
+
+        </button>
+    }
+
+</div>
+
+                </div>
+
+                <!-- RIGHT SIDE -->
+
+                <div class="principles-image-area">
+
+                    @for (int i = 0; i < tabs.Count; i++)
+                    {
+                        var item = tabs[i].Content;
+
+                        var image = item.Value<IPublishedContent>("image");
+
+                        <div class="image-slide @(i == 0 ? "active" : "")"
+                             data-tab="@i">
+
+                            @if (image != null)
+                            {
+                                <img src="@image.Url()" alt="" />
+                            }
+
+                            <span class="image-number">
+                                @item.GetProperty("imageNumber")?.GetValue()
+                            </span>
+
+                            <div class="image-title">
+                                @Html.Raw(item.GetProperty("imageTitle")?.GetValue())
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+}
+<script src="/Scripts/About%20Us/principles-section.js"></script>

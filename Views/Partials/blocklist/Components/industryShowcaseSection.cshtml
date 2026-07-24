@@ -1,0 +1,227 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var sectionTitle = content.Value<string>("sectionTitle");
+
+    var items = content.Value<BlockListModel>("industryItems");
+
+    var first = items?.FirstOrDefault();
+
+    string firstName = "";
+    string firstStat1 = "";
+    string firstStat2 = "";
+    string firstMedia = "";
+    string firstMediaType = "";
+    string firstLink = "#";
+
+    if (first != null)
+    {
+        var c = first.Content;
+
+        firstName = c.Value<string>("industryName");
+        firstStat1 = c.Value<string>("statOne");
+        firstStat2 = c.Value<string>("statisticsTwo");
+
+        firstMediaType = c.Value<string>("mediaType");
+
+        if (firstMediaType == "Video")
+        {
+            var video = c.Value<MediaWithCrops>("backgroundVideo");
+            firstMedia = video?.MediaUrl();
+        }
+        else
+        {
+            var image = c.Value<MediaWithCrops>("backgroundImage");
+            firstMedia = image?.MediaUrl();
+        }
+
+        var links = c.Value<IEnumerable<Link>>("viewMoreLink");
+
+        if (links != null && links.Any())
+        {
+            firstLink = links.First().Url;
+        }
+    }
+}
+<section class="industryShowcase">
+
+    <div class="industryShowcase__wrapper">
+
+        <div class="industryShowcase__preview">
+
+            <div class="industryShowcase__media">
+
+                <div class="industryShowcase__slide active">
+
+                    @if(firstMediaType == "Video")
+                    {
+                        <video autoplay muted loop playsinline>
+
+                            <source src="@firstMedia" type="video/mp4">
+
+                        </video>
+                    }
+                    else
+                    {
+                        <img src="@firstMedia" alt="@firstName" />
+                    }
+
+                </div>
+
+                <div class="industryShowcase__count">
+
+                    <span id="industryNumber">01</span>
+
+                    <small>INDUSTRY</small>
+
+                </div>
+
+            </div>
+
+            <div class="industryShowcase__info">
+
+                <div>
+
+                    <span class="industryShowcase__label">
+
+                        @sectionTitle
+
+                    </span>
+
+                    <h2 id="industryTitle">
+
+                        @firstName
+
+                    </h2>
+
+                </div>
+
+                <a id="industryViewMore"
+                   href="@firstLink"
+                   class="industryShowcase__button">
+
+                    View More
+
+                </a>
+
+            </div>
+
+            <div class="industryShowcase__stats">
+
+                <span id="industryStat1">@firstStat1</span>
+
+                <span id="industryStat2">@firstStat2</span>
+
+            </div>
+
+        </div>
+        <div class="industryShowcase__sidebar">
+
+    <ul class="industryShowcase__list">
+
+        @{
+            int i = 1;
+
+            foreach(var item in items)
+            {
+                var c = item.Content;
+
+                var name = c.Value<string>("industryName");
+
+                var desc = c.Value<string>("industryDescription");
+
+                var stat1 = c.Value<string>("statOne");
+
+                var stat2 = c.Value<string>("statisticsTwo");
+
+                var mediaType = c.Value<string>("mediaType");
+
+                string media = "";
+
+                if(mediaType == "Video")
+                {
+                    media = c.Value<MediaWithCrops>("backgroundVideo")?.MediaUrl();
+                }
+                else
+                {
+                    media = c.Value<MediaWithCrops>("backgroundImage")?.MediaUrl();
+                }
+
+                var links = c.Value<IEnumerable<Link>>("viewMoreLink");
+
+                var url = "#";
+
+                if(links != null && links.Any())
+                {
+                    url = links.First().Url;
+                }
+
+                var icon = c.Value<MediaWithCrops>("industryIcon");
+
+                var number = i.ToString("D2");
+                <li class="industryShowcase__item @(i==1?"active":"")"
+
+    data-number="@number"
+
+    data-title="@name"
+
+    data-stat1="@stat1"
+
+    data-stat2="@stat2"
+
+    data-description="@desc"
+
+    data-media="@media"
+
+    data-mediatype="@mediaType"
+
+    data-link="@url">
+
+    <span class="industryShowcase__serial">
+
+        @number
+
+    </span>
+
+    <div class="industryShowcase__content">
+
+        <div class="industryShowcase__heading">
+
+            @if(icon != null)
+            {
+                <img src="@icon.MediaUrl()"
+                     width="22"
+                     height="22"
+                     alt="@name" />
+            }
+
+            @name
+
+        </div>
+
+        <p>
+
+            @desc
+
+        </p>
+
+    </div>
+
+</li>
+
+i++;
+}
+}
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+<script src="/Scripts/Industries/industryShowcaseSection.js"></script>

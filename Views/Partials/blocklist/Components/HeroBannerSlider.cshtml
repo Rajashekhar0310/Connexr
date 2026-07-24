@@ -1,0 +1,190 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.HomePage>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+
+@{
+    var heroBannerSlider = Model.Value<BlockListModel>("heroBannerSlider");
+}
+
+@if (heroBannerSlider != null && heroBannerSlider.Any())
+{
+    <section class="hero-slider">
+
+        @foreach (var slide in heroBannerSlider)
+        {
+            var heading = slide.Content.Value<string>("heroTitle");
+            var subHeading = slide.Content.Value<string>("heroSubtitle");
+            var description = slide.Content.Value<string>("description");
+
+            var backgroundVideo = slide.Content.Value<IPublishedContent>("backgroundVideo");
+            var backgroundImage = slide.Content.Value<IPublishedContent>("backgroundImage");
+
+            var imageWidth = slide.Content.Value<int?>("backgroundImageWidth") ?? 1920;
+            var imageHeight = slide.Content.Value<int?>("backgroundImageHeight") ?? 1080;
+
+            var videoWidth = slide.Content.Value<int?>("backgroundVideoWidth") ?? 1920;
+            var videoHeight = slide.Content.Value<int?>("backgroundVideoHeight") ?? 1080;
+
+            var bannerHeight = slide.Content.Value<int?>("bannerHeight") ?? 100;
+            var overlayOpacity = slide.Content.Value<int?>("overlayOpacity") ?? 50;
+
+            var textAlignment = slide.Content.Value<string>("textAlignment") ?? "left";
+            var alignment = textAlignment?.ToLower() ?? "left";
+
+            var ctaText = slide.Content.Value<string>("ctaText");
+            var ctaLink = slide.Content.Value<IEnumerable<Link>>("ctaLink")?.FirstOrDefault();
+                var cta2Text = slide.Content.Value<string>("cta2Text");
+            var cta2Link = slide.Content.Value<IEnumerable<Link>>("cta2Link")?.FirstOrDefault();
+
+            var enableAutoplay = slide.Content.Value<bool>("enableAutoplay");
+            var enableLoop = slide.Content.Value<bool>("enableLoop");
+            var muteVideo = slide.Content.Value<bool>("muteVideo");
+
+            <div class="hero-banner" style="height:@(bannerHeight)vh;">
+
+                @* Background Media - Video Priority *@
+                @if (backgroundVideo != null)
+                {
+                    <video class="hero-video"
+                           width="@videoWidth"
+                           height="@videoHeight"
+                           autoplay
+                           muted
+                           loop
+                           playsinline
+                           preload="auto">
+                        <source src="@backgroundVideo.Url()" type="video/mp4" />
+                        Your browser does not support the video tag.
+                    </video>
+                }
+                else if (backgroundImage != null)
+                {
+                    <img src="@backgroundImage.Url()"
+                         alt="@heading"
+                         width="@imageWidth"
+                         height="@imageHeight"
+                         class="hero-image" />
+                }
+
+                @* Dark Overlay *@
+                <div class="hero-overlay"></div>
+
+                @* Center Icon/Loader *@
+                <!-- <div class="hero-center-icon">
+                    <div class="loading-spinner"></div>
+                </div> -->
+
+                @* Hero Content - Left/Right Layout *@
+                <div class="hero-content hero-content-@alignment">
+
+                    @* LEFT SECTION - Title & Subtitle *@
+                    <div class="hero-left-section">
+                        @* Eyebrow/Subtitle *@
+                        @if (!string.IsNullOrWhiteSpace(subHeading))
+                        {
+                            <p class="hero-eyebrow">@subHeading</p>
+                        }
+
+                        @* Main Title *@
+                        @if (!string.IsNullOrWhiteSpace(heading))
+                        {
+                            <h1 class="hero-title">@Html.Raw(heading)</h1>
+                        }
+                    </div>
+
+                    @* RIGHT SECTION - Description & CTA *@
+                    @if (!string.IsNullOrWhiteSpace(description) || ctaLink != null)
+                    {
+                        <div class="hero-right-section">
+                            @* Description *@
+                            @if (!string.IsNullOrWhiteSpace(description))
+                            {
+                                <!-- <div class="hero-description">
+                                    @Html.Raw(description)
+                                </div> -->
+                                <div class="hero-description">
+                                    @Html.Raw(description?.Replace("\n", "<br />"))
+                                </div>
+                            }
+
+                            @* CTA Buttons *@
+                            @if (ctaLink != null)
+                            {
+                                <div class="hero-buttons">
+                                    <a href="@ctaLink.Url"
+                                       target="@ctaLink.Target"
+                                       class="hero-btn hero-btn-primary">
+                                        @(string.IsNullOrWhiteSpace(ctaText) ? ctaLink.Name : ctaText)
+                                        <span class="btn-arrow">→</span>
+                                    </a>
+                                    
+                                    <a href="@cta2Link.Url"
+                                       target="@cta2Link.Target"
+                                       class="hero-btn hero-btn-secondary">
+                                         @(string.IsNullOrWhiteSpace(ctaText) ? cta2Link.Name : cta2Text)
+                                        <span class="btn-arrow">→</span>
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+        }
+
+    </section>
+}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    const video = document.querySelector(".hero-video");
+
+    if (!video) {
+        console.log("❌ No hero video found.");
+        return;
+    }
+
+    console.log("🎥 Hero video found.");
+
+    // Ensure autoplay works
+    video.muted = true;
+    video.autoplay = true;
+    video.loop = true;
+    video.playsInline = true;
+    video.preload = "auto";
+
+    // Log video loading events
+    video.addEventListener("loadstart", () => {
+        console.log("📥 Video loading started");
+    });
+
+    video.addEventListener("loadedmetadata", () => {
+        console.log("✅ Metadata loaded");
+    });
+
+    video.addEventListener("loadeddata", () => {
+        console.log("✅ First frame loaded");
+    });
+
+    video.addEventListener("canplay", () => {
+        console.log("▶ Video can play");
+
+        video.play().catch(err => {
+            console.log("Autoplay failed:", err);
+        });
+    });
+
+    video.addEventListener("playing", () => {
+        console.log("🎬 Video is playing");
+    });
+
+    video.addEventListener("error", () => {
+        console.error("❌ Video error:", video.error);
+    });
+
+});
+</script>

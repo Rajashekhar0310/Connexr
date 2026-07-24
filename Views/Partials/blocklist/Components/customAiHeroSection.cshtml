@@ -1,0 +1,107 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Extensions
+
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var heroTopTitle = content.Value<string>("heroTopTitle");
+    var heroMainTitle = content.Value<string>("heroMainTitle");
+    var heroSubtitle = content.Value<string>("heroSubtitle");
+    var heroDescription = content.Value<string>("heroDescription");
+    var heroCtaText = content.Value<string>("heroCtaText");
+
+    var heroLink = content.Value<IEnumerable<Link>>("heroCtaLink")?.FirstOrDefault();
+
+    var heroImage = content.Value<IPublishedContent>("heroImage");
+    var backgroundImage = heroImage?.Url() ?? "";
+
+    var caseStudies = content.Value<BlockListModel>("heroCaseStudies");
+}
+
+<section class="cai-hero" style="background-image:url('@backgroundImage');">
+
+    <div class="cai-hero__container">
+
+        <div class="cai-hero__content">
+
+            <h1 class="cai-hero__title">
+
+                @if (!string.IsNullOrWhiteSpace(heroTopTitle))
+                {
+                    <span class="cai-orange">@heroTopTitle</span>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(heroMainTitle))
+                {
+                    <span class="cai-blue">@heroMainTitle</span>
+                }
+
+            </h1>
+
+            @if (!string.IsNullOrWhiteSpace(heroSubtitle))
+            {
+                <h2 class="cai-hero__subtitle">@heroSubtitle</h2>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(heroDescription))
+            {
+                <div class="cai-hero__description">@Html.Raw(heroDescription)</div>
+            }
+
+            @if (heroLink != null)
+            {
+                <a href="@heroLink.Url" target="@heroLink.Target" class="cai-hero__button">
+                    @heroCtaText
+                    <span class="cai-arrow">↗</span>
+                </a>
+            }
+
+            @if (caseStudies != null && caseStudies.Any())
+            {
+                <div class="cai-hero__cases">
+
+                    @foreach (var card in caseStudies)
+                    {
+                        var item = card.Content;
+
+                        var cardLabel = item.Value<string>("cardLabel");
+                        var cardTitle = item.Value<string>("cardTitle");
+
+                        <!-- var cardImageUrl = item.Value<IEnumerable<MediaWithCrops>>("image")?.FirstOrDefault()?.Url() ?? ""; -->
+                        var cardImage = item.Value<IPublishedContent>("image");
+var cardImageUrl = cardImage?.Url() ?? "";
+                        var cardLink = item.Value<IEnumerable<Link>>("link")?.FirstOrDefault();
+
+                        <a class="cai-case"
+                           href="@(cardLink?.Url ?? "#")"
+                           target="@(cardLink?.Target)"
+                           style="background-image:url('@cardImageUrl');">
+
+                            <span class="cai-case__overlay"></span>
+
+                            <span class="cai-case__inner">
+                                @if (!string.IsNullOrWhiteSpace(cardLabel))
+                                {
+                                    <span class="cai-case__label">@cardLabel</span>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(cardTitle))
+                                {
+                                    <span class="cai-case__title">@cardTitle</span>
+                                }
+                            </span>
+   
+                        </a>
+                    }
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</section>

@@ -1,0 +1,346 @@
+:root{
+--navy:#14296b;
+--navy-soft:#3a4d7a;
+--orange:#f7941d;
+--orange-d:#ef7d12;
+}
+
+.ai-speed-hero{
+position:relative;
+width:100%;
+height:100vh;
+overflow:hidden;
+background:#e4ebf3;
+}
+
+/* background image */
+.ai-speed-stage{
+position:absolute;
+inset:0;
+overflow:hidden;
+}
+
+.ai-speed-bg{
+position:absolute;
+inset:-4%;
+/* background-position:62% 50%; */
+will-change:transform;
+background-position: center;
+
+background-size: 92%;
+background-repeat: no-repeat;
+
+}
+
+/* left fade for text readability */
+.ai-speed-scrim{
+position:absolute;
+inset:0;
+background:linear-gradient(
+90deg,
+rgba(232,239,247,.92) 0%,
+rgba(232,239,247,.55) 26%,
+rgba(232,239,247,0) 46%
+);
+}
+
+/* content */
+.ai-speed-wrapper{
+position:absolute;
+inset:0;
+display:flex;
+align-items:center;
+}
+
+.ai-speed-content{
+padding-left:6vw;
+max-width:640px;
+}
+
+.ai-speed-title{
+font-weight:800;
+line-height:.92;
+font-size:clamp(40px,6.4vw,92px);
+font-family: poppins;
+}
+
+.ai-speed-line{
+display:block;
+}
+
+.ai-speed-navy{
+color:var(--navy);
+}
+
+.ai-speed-highlight,
+.ai-speed-ai-text{
+color:#fff;
+font-weight:500;
+font-family: Racing Sans one;
+
+}
+
+.ai-speed-subheading{
+display:block;
+color:var(--navy);
+font-weight:700;
+font-size:clamp(20px,2.7vw,34px);
+margin-top:.5em;
+}
+
+.ai-speed-body{
+color:var(--navy-soft);
+font-size:18px;
+line-height:1.6;
+margin-top:1.1em;
+max-width:45ch;
+}
+
+.ai-speed-btn{
+display:inline-flex;
+align-items:center;
+gap:.6em;
+margin-top:1.6em;
+background:var(--orange);
+color:#fff;
+padding:.7em 1.2em;
+border-radius:999px;
+text-decoration:none;
+font-weight:700;
+}
+
+/* ======================================================
+   AI SPEED HERO - MOBILE EXACT LAYOUT
+====================================================== */
+
+@media (max-width: 767px) {
+
+    .ai-speed-hero {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        min-height: 700px;
+        overflow: hidden;
+        background: #e4ebf3;
+    }
+
+
+    /* IMAGE */
+
+    .ai-speed-stage {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+
+    .ai-speed-bg {
+        position: absolute !important;
+
+        inset: 0 !important;
+
+        width: 100% !important;
+        height: 100% !important;
+
+        background-size: cover !important;
+        background-position: 61% center !important;
+        background-repeat: no-repeat !important;
+
+        transform: none !important;
+    }
+
+
+    /* GRADIENT */
+
+    .ai-speed-scrim {
+        position: absolute;
+        inset: 0;
+
+        background:
+            linear-gradient(
+                to bottom,
+                rgba(228, 235, 243, 0) 0%,
+                rgba(228, 235, 243, 0) 34%,
+                rgba(228, 235, 243, 0.15) 42%,
+                rgba(228, 235, 243, 0.65) 53%,
+                rgba(228, 235, 243, 0.94) 65%,
+                #e4ebf3 82%,
+                #e4ebf3 100%
+            ) !important;
+    }
+
+
+    /* CONTENT */
+
+    .ai-speed-wrapper {
+        position: absolute;
+        inset: 0;
+
+        display: block;
+    }
+
+
+    .ai-speed-content {
+        position: absolute;
+
+        top: 48%;
+        left: 0;
+
+        width: 100%;
+        max-width: none;
+
+        padding: 0 20px;
+    }
+
+
+    /* TITLE */
+
+    .ai-speed-title {
+        margin: 0;
+
+        font-family: 'Poppins', sans-serif;
+
+        font-size: 40px;
+        font-weight: 800;
+
+        line-height: 0.9;
+
+        letter-spacing: -1.4px;
+    }
+
+
+    .ai-speed-line {
+        display: block;
+    }
+
+
+    .ai-speed-navy {
+        color: #14296b;
+    }
+
+
+    .ai-speed-highlight,
+    .ai-speed-ai-text {
+        color: #ffffff;
+
+        font-family: 'Racing Sans One', sans-serif;
+
+        font-size: inherit;
+        font-weight: 400;
+
+        line-height: inherit;
+    }
+
+
+    /* SUB HEADING */
+
+    .ai-speed-subheading {
+        display: block;
+
+        margin-top: 14px;
+
+        color: #14296b;
+
+        font-family: 'Poppins', sans-serif;
+
+        font-size: 18px;
+        font-weight: 700;
+
+        line-height: 1.2;
+    }
+
+
+    /* DESCRIPTION */
+
+    .ai-speed-body {
+        max-width: 310px;
+
+        margin: 13px 0 0;
+
+        color: #3a4d7a;
+
+        font-family: 'Poppins', sans-serif;
+
+        font-size: 10px;
+        font-weight: 500;
+
+        line-height: 1.45;
+    }
+
+
+    /* BUTTON */
+
+    .ai-speed-btn {
+        display: flex;
+
+        align-items: center;
+        justify-content: space-between;
+
+        width: 100%;
+
+        margin-top: 18px;
+
+        padding: 14px 17px;
+
+        border-radius: 999px;
+
+        background: #f7941d;
+
+        color: #14296b;
+
+        font-family: 'Poppins', sans-serif;
+
+        font-size: 10px;
+        font-weight: 600;
+
+        line-height: 1;
+
+        text-decoration: none;
+    }
+}
+
+
+/* ======================================================
+   SMALL MOBILE
+====================================================== */
+
+@media (max-width: 480px) {
+
+    .ai-speed-hero {
+        min-height: 680px;
+    }
+
+
+    .ai-speed-bg {
+        background-size: cover !important;
+        background-position: 59% center !important;
+    }
+
+
+    .ai-speed-content {
+        top: 48%;
+        padding: 0 18px;
+    }
+
+
+    .ai-speed-title {
+        font-size: 38px;
+    }
+
+
+    .ai-speed-subheading {
+        font-size: 17px;
+    }
+
+
+    .ai-speed-body {
+        max-width: 290px;
+
+        font-size: 9.5px;
+        line-height: 1.5;
+    }
+}
+
+

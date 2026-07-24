@@ -1,0 +1,21 @@
+﻿@using Umbraco.Cms.Core.Models.Blocks
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels
+
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.PartnersPage>
+
+@{
+    Layout = "master.cshtml";
+}
+
+<div class="partners-page">
+
+    <div class="page-content">
+
+        @if (Model.PartnersComponent != null)
+        {
+            @await Html.GetBlockListHtmlAsync(Model.PartnersComponent)
+        }
+
+    </div>
+
+</div>

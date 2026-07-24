@@ -1,0 +1,108 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Extensions
+
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var panels = content.Value<BlockListModel>("panels");
+
+    var sectionImageUrl =
+        content.Value<MediaWithCrops>("sectionImage")?.Url()
+        ?? content.Value<IEnumerable<MediaWithCrops>>("sectionImage")?.FirstOrDefault()?.Url()
+        ?? "";
+}
+
+@if (panels != null && panels.Any())
+{
+    <section class="svc-panels" style="background-image:url('@sectionImageUrl');">
+
+        @foreach (var block in panels)
+        {
+            var panel = block.Content;
+
+            var panelNumber = panel.Value<string>("panelNumber");
+            var panelTitle = panel.Value<string>("panelTitle");
+            var panelDescription = panel.Value<string>("panelDescription");
+            var panelButtonText = panel.Value<string>("panelButtonText");
+
+            var panelButtonLink = panel.Value<IEnumerable<Link>>("panelButtonLink")?.FirstOrDefault();
+
+            var caseBlock = panel.Value<BlockListModel>("panelCase")?.FirstOrDefault()?.Content;
+
+            <div class="svc-panel">
+
+                <div class="svc-panel__base">
+                    @if (!string.IsNullOrWhiteSpace(panelNumber))
+                    {
+                        <span class="svc-panel__num">@panelNumber</span>
+                    }
+                    <h3 class="svc-panel__title">@panelTitle</h3>
+                </div>
+
+                <div class="svc-panel__glass">
+
+                    @if (!string.IsNullOrWhiteSpace(panelNumber))
+                    {
+                        <span class="svc-panel__num">@panelNumber</span>
+                    }
+
+                    <h3 class="svc-panel__title">@panelTitle</h3>
+
+                    @if (!string.IsNullOrWhiteSpace(panelDescription))
+                    {
+                        <p class="svc-panel__desc">@panelDescription</p>
+                    }
+
+                    @if (panelButtonLink != null && !string.IsNullOrWhiteSpace(panelButtonText))
+                    {
+                        <a href="@panelButtonLink.Url"
+                           target="@panelButtonLink.Target"
+                           class="svc-panel__btn">
+                            @panelButtonText <span>↗</span>
+                        </a>
+                    }
+
+                    @if (caseBlock != null)
+                    {
+                        var caseLabel = caseBlock.Value<string>("caseLabel");
+                        var caseTitle = caseBlock.Value<string>("caseTitle");
+
+                        var caseImageUrl =
+                            caseBlock.Value<MediaWithCrops>("caseImage")?.Url()
+                            ?? caseBlock.Value<IEnumerable<MediaWithCrops>>("caseImage")?.FirstOrDefault()?.Url()
+                            ?? "";
+
+                        var caseLink = caseBlock.Value<IEnumerable<Link>>("caseLink")?.FirstOrDefault();
+
+                        <a class="svc-case"
+                           href="@(caseLink?.Url ?? "#")"
+                           target="@(caseLink?.Target)"
+                           style="background-image:url('@caseImageUrl');">
+
+                            <span class="svc-case__overlay"></span>
+
+                            <span class="svc-case__inner">
+                                @if (!string.IsNullOrWhiteSpace(caseLabel))
+                                {
+                                    <span class="svc-case__label">@caseLabel</span>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(caseTitle))
+                                {
+                                    <span class="svc-case__title">@caseTitle</span>
+                                }
+                            </span>
+
+                        </a>
+                    }
+
+                </div>
+
+            </div>
+        }
+
+    </section>
+}

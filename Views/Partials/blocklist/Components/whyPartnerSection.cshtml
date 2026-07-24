@@ -1,0 +1,98 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Extensions
+
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var sectionTitle = content.Value<string>("sectionTitle");
+    var sectionDescription = content.Value<string>("sectionDescription");
+
+    var sectionImageUrl =
+        content.Value<MediaWithCrops>("sectionImage")?.Url()
+        ?? content.Value<IEnumerable<MediaWithCrops>>("sectionImage")?.FirstOrDefault()?.Url()
+        ?? "";
+
+    var items = content.Value<BlockListModel>("items");
+}
+
+@if (items != null && items.Any())
+{
+    <section class="wp-section">
+
+        <!-- LEFT -->
+        <div class="wp-visual" style="background-image:url('@sectionImageUrl');">
+
+            <div class="wp-visual__overlay"></div>
+
+            <div class="wp-visual__inner">
+
+                @if (!string.IsNullOrWhiteSpace(sectionTitle))
+                {
+                    <h2 class="wp-visual__title">
+                        @Html.Raw(Html.Encode(sectionTitle).Replace("\n", "<br />"))
+                    </h2>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(sectionDescription))
+                {
+                    <p class="wp-visual__desc">@sectionDescription</p>
+                }
+
+            </div>
+
+            <div class="wp-dots">
+                <span></span>
+                <span></span>
+            </div>
+
+        </div>
+
+        <!-- RIGHT -->
+        <div class="wp-list">
+
+            @for (var i = 0; i < items.Count; i++)
+            {
+                var item = items[i].Content;
+
+                var itemNumber = item.Value<string>("itemNumber");
+                var itemTitle = item.Value<string>("itemTitle");
+                var itemDescription = item.Value<string>("itemDescription");
+
+                var isFirst = i == 0;
+
+                <div class="wp-item @(isFirst ? "active" : "")">
+
+                    <button class="wp-item__head"
+                            type="button"
+                            aria-expanded="@(isFirst ? "true" : "false")">
+
+                        @if (!string.IsNullOrWhiteSpace(itemNumber))
+                        {
+                            <span class="wp-item__num">@itemNumber</span>
+                        }
+
+                        <span class="wp-item__title">@itemTitle</span>
+
+                        <span class="wp-item__icon"></span>
+
+                    </button>
+
+                    <div class="wp-item__panel">
+                        @if (!string.IsNullOrWhiteSpace(itemDescription))
+                        {
+                            <p>@itemDescription</p>
+                        }
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
+    </section>
+}
+<script src="/Scripts/What We Build/why-partner.js"></script>

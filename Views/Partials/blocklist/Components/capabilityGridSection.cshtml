@@ -1,0 +1,78 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Extensions
+
+@*
+    Views/Partials/blocklist/Components/capabilityGridSection.cshtml
+
+    Element type "capabilityGridSection":
+      capabilityEyebrow        Textstring
+      capabilityHeading        Textstring   e.g. "Built for the "
+      capabilityHeadingAccent  Textstring   e.g. "Complexity"      (orange)
+      capabilityHeadingEnd     Textstring   e.g. " of Healthcare"
+      capabilityCards          Block List of "capabilityCard"
+
+    Element type "capabilityCard":
+      cardTitle                Textstring
+
+    Styles: wwwroot/css/capability-grid.css
+*@
+
+@{
+    var content = Model.Content;
+
+    var eyebrow = content.Value<string>("capabilityEyebrow");
+    var heading = content.Value<string>("capabilityHeading");
+    var headingAccent = content.Value<string>("capabilityHeadingAccent");
+    var headingEnd = content.Value<string>("capabilityHeadingEnd");
+    var cards = content.Value<BlockListModel>("capabilityCards");
+
+    var headingId = "cg-" + content.Key.ToString("N")[..8];
+
+    // emit the stylesheet link once per request, in case the block is used twice
+    var cssLinked = Context.Items.ContainsKey("cg-css-linked");
+    Context.Items["cg-css-linked"] = true;
+}
+
+@if (!cssLinked)
+{
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/capability-grid.css" asp-append-version="true" />
+}
+
+<section class="cg" aria-labelledby="@headingId">
+    <div class="cg__inner">
+
+        @if (!string.IsNullOrWhiteSpace(eyebrow))
+        {
+            <p class="cg__eyebrow">@eyebrow</p>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(heading)
+             || !string.IsNullOrWhiteSpace(headingAccent)
+             || !string.IsNullOrWhiteSpace(headingEnd))
+        {
+            <h2 class="cg__headline" id="@headingId">@heading<em>@headingAccent</em>@headingEnd</h2>
+        }
+
+        @if (cards is not null && cards.Count > 0)
+        {
+            <div class="cg__grid">
+                @foreach (var block in cards)
+{
+    var card = block.Content;
+    if (card is null) { continue; }
+
+    var title = card.Value<string>("cardTitle");
+
+    <article class="cg__card">
+        <span class="cg__dots" aria-hidden="true"><span></span><span></span></span>
+        <h3 class="cg__cardTitle">@title</h3>
+    </article>
+}
+            </div>
+        }
+
+    </div>
+</section>

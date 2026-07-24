@@ -1,0 +1,124 @@
+﻿@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var section = Model.Content;
+
+    var categories = section.Value<BlockListModel>("categories");
+
+    if (categories == null || !categories.Any())
+    {
+        return;
+    }
+
+    var firstTab = true;
+}
+
+<section class="cns-section">
+
+    <div class="cns-wrapper">
+
+        <!-- Tabs -->
+        <div class="cns-tab-header">
+
+            @foreach (var category in categories)
+            {
+                var tab = category.Content;
+
+                <button class="cns-tab-btn @(firstTab ? "active" : "")"
+                        data-tab="cns-tab-@category.Content.Key">
+
+                    @tab.Value("categoryName")
+
+                </button>
+
+                firstTab = false;
+            }
+
+        </div>
+
+        @{
+            firstTab = true;
+        }
+
+        <!-- Tab Content -->
+        @foreach (var category in categories)
+        {
+            var tab = category.Content;
+
+            var cards = tab.Value<BlockListModel>("items");
+
+            <div id="cns-tab-@category.Content.Key"
+                 class="cns-tab-content @(firstTab ? "active" : "")">
+
+                <div class="cns-card-grid">
+
+                    @if (cards != null)
+                    {
+                        foreach (var card in cards)
+                        {
+                            var item = card.Content;
+
+                            var image = item.Value<MediaWithCrops>("image");
+
+                            var link = item.Value<IEnumerable<Link>>("link")?.FirstOrDefault();
+
+                            <article class="cns-card">
+
+                                @if (image != null)
+                                {
+                                    <img class="cns-card-image"
+                                         src="@image.MediaUrl()"
+                                         alt="@item.Value("title")" />
+                                }
+
+                                <div class="cns-card-overlay"></div>
+
+                                <div class="cns-card-body">
+
+                                    @if (!string.IsNullOrWhiteSpace(item.Value<string>("tag")))
+                                    {
+                                        <span class="cns-card-tag">
+                                            @item.Value("tag")
+                                        </span>
+                                    }
+
+                                    <h3 class="cns-card-title">
+                                        @item.Value("title")
+                                    </h3>
+
+                                    <p class="cns-card-description">
+                                        @item.Value("description")
+                                    </p>
+
+                                    @if (link != null)
+                                    {
+                                        <a href="@link.Url"
+                                           target="@link.Target"
+                                           class="cns-card-link">
+                                            Read More
+                                        </a>
+                                    }
+
+                                </div>
+
+                            </article>
+                        }
+                    }
+
+                </div>
+
+            </div>
+
+            firstTab = false;
+        }
+
+    </div>
+
+</section>
+
+<script id="contentNewsData" type="application/json">
+{}
+</script>
+<script src="/Scripts/Custom Ai Solutions/contentNewsSection.js"></script>

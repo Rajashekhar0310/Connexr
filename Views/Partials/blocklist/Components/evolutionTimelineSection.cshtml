@@ -1,0 +1,171 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Extensions
+
+@inherits UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var title = content.Value<string>("title");
+    var highlightText = content.Value<string>("highlightText");
+    var sectionDescription = content.Value<string>("description");
+
+    var timelineItems =
+        content.Value<BlockListModel>("timelineItems");
+
+    var sectionId = "evolution-" + Guid.NewGuid().ToString("N");
+
+    var defaultIndex = timelineItems != null && timelineItems.Count > 0
+        ? timelineItems.Count - 1
+        : 0;
+}
+
+@if (timelineItems != null && timelineItems.Count > 0)
+{
+    var defaultItem = timelineItems[defaultIndex];
+
+    var defaultYear =
+        defaultItem.Content.Value<string>("year");
+
+    var defaultPercentage =
+        defaultItem.Content.Value<string>("percentage");
+
+    var defaultDescription =
+        defaultItem.Content.Value<string>("description");
+
+    var defaultImage =
+        defaultItem.Content.Value<MediaWithCrops>("image");
+
+    <section class="evolution-section"
+             id="@sectionId"
+             data-evolution-section>
+
+        <div class="evolution-container">
+
+
+            <!-- LEFT SIDE -->
+            <div class="evolution-left">
+
+                <h2 class="evolution-title">
+                    @title
+
+                    @if (!string.IsNullOrWhiteSpace(highlightText))
+                    {
+                        <span>@highlightText</span>
+                    }
+                </h2>
+
+
+                @if (!string.IsNullOrWhiteSpace(sectionDescription))
+                {
+                    <p class="evolution-intro">
+                        @sectionDescription
+                    </p>
+                }
+
+
+                <!-- TIMELINE NAVIGATION -->
+                <div class="timeline-navigation">
+
+                    <button class="timeline-arrow timeline-prev"
+                            type="button"
+                            aria-label="Previous year">
+                        &#10094;
+                    </button>
+
+
+                    <div class="timeline-years">
+
+                        @for (var i = 0; i < timelineItems.Count; i++)
+                        {
+                            var item = timelineItems[i];
+
+                            var year =
+                                item.Content.Value<string>("year");
+
+                            var percentage =
+                                item.Content.Value<string>("percentage");
+
+                            var itemDescription =
+                                item.Content.Value<string>("description");
+
+                            var itemImage =
+                                item.Content.Value<MediaWithCrops>("image");
+
+                            var imageUrl =
+                                itemImage?.MediaUrl() ?? "";
+
+                            <button type="button"
+                                    class="year-btn @(i == defaultIndex ? "active" : "")"
+                                    data-index="@i"
+                                    data-year="@year"
+                                    data-percentage="@percentage"
+                                    data-description="@itemDescription"
+                                    data-image="@imageUrl">
+
+                                @year
+
+                            </button>
+                        }
+
+                    </div>
+
+
+                    <button class="timeline-arrow timeline-next"
+                            type="button"
+                            aria-label="Next year">
+                        &#10095;
+                    </button>
+
+
+                    <span class="timeline-dot"></span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CENTER IMAGE -->
+            <div class="evolution-image-wrapper">
+
+                @if (defaultImage != null)
+                {
+                    <img src="@defaultImage.MediaUrl()"
+                         alt="@defaultYear"
+                         class="evolution-image">
+                }
+
+            </div>
+
+
+
+            <!-- RIGHT SIDE -->
+            <div class="evolution-right">
+
+                <div class="display-year">
+                    @defaultYear
+                </div>
+
+
+                <div class="evolution-stat">
+
+                    <h3 class="percentage">
+                        @defaultPercentage
+                    </h3>
+
+                    <p class="stats-description">
+                        @defaultDescription
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+}
+<script src="/scripts/About Us/evolutionTimelineSection.js"></script>

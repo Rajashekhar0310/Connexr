@@ -1,0 +1,12 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Leadership>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@{
+	Layout = "master.cshtml";
+}
+<div class="page-content">
+    @if (Model.HasValue("leaderContent"))
+    {
+        @await Html.GetBlockListHtmlAsync(Model, "leaderContent")
+    }
+</div>

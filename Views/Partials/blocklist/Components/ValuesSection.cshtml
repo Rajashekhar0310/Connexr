@@ -1,0 +1,133 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>
+
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Extensions
+
+@{
+    var content = Model.Content;
+
+    var image = content.Value<IPublishedContent>("backgroundImage");
+    var values = content.Value<BlockListModel>("values");
+}
+
+<section class="core-values-section">
+
+    <div class="core-values-left">
+
+        @if(image != null)
+        {
+            <img class="core-values-image"
+                 src="@image.Url()"
+                 alt="@image.Name">
+        }
+
+        <div class="core-values-overlay"></div>
+
+        <div class="core-values-content">
+
+            <span class="core-values-smalltitle">
+                @content.Value("smallTitle")
+            </span>
+
+            <h2 class="core-values-title">
+                @Html.Raw(content.Value<string>("title"))
+            </h2>
+
+            <p class="core-values-description">
+                @content.Value("description")
+            </p>
+
+        </div>
+
+        <div class="core-values-slider">
+
+            <span class="active"></span>
+
+            <span></span>
+
+        </div>
+
+    </div>
+
+
+    <div class="core-values-right">
+
+        @if(values != null)
+        {
+            var i = 1;
+
+            foreach(var item in values)
+            {
+                <div class="core-values-item @(i==1?"active":"")">
+
+                    <div class="core-values-header">
+
+                        <div class="core-values-number">
+                            @i.ToString("00")
+                        </div>
+
+                        <div class="core-values-heading">
+                            @item.Content.Value("heading")
+                        </div>
+
+                        <button class="core-values-btn" type="button">
+                            +
+                        </button>
+
+                    </div>
+
+                    <div class="core-values-body">
+
+                        @item.Content.Value("description")
+
+                    </div>
+
+                </div>
+
+                i++;
+            }
+        }
+
+    </div>
+
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const items = document.querySelectorAll(".core-values-item");
+
+    // Set initial button state
+    items.forEach(item => {
+        const btn = item.querySelector(".core-values-btn");
+        btn.textContent = item.classList.contains("active") ? "−" : "+";
+    });
+
+    items.forEach(item => {
+
+        const header = item.querySelector(".core-values-header");
+
+        header.addEventListener("click", function () {
+
+            items.forEach(i => {
+
+                const btn = i.querySelector(".core-values-btn");
+
+                if (i !== item) {
+                    i.classList.remove("active");
+                    btn.textContent = "+";
+                }
+
+            });
+
+            item.classList.toggle("active");
+
+            const currentBtn = item.querySelector(".core-values-btn");
+
+            currentBtn.textContent = item.classList.contains("active") ? "−" : "+";
+
+        });
+
+    });
+
+});
+</script>

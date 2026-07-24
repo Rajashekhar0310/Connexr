@@ -1,0 +1,288 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Extensions
+
+@inherits UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var smallTitle = content.Value<string>("smallTitle");
+    var title = content.Value<string>("title");
+    var highlightText = content.Value<string>("highlightText");
+    var description = content.Value<string>("description");
+
+    var buttonText = content.Value<string>("buttonText");
+    var buttonLink = content.Value<IEnumerable<Link>>("buttonLink")?.FirstOrDefault();
+
+    var cards = content.Value<BlockListModel>("expertiseCards");
+}
+
+<section class="expertise-section">
+
+    <div class="container">
+
+        <!-- ================= HEADER ================= -->
+
+        <div class="expertise-header">
+
+            <div class="expertise-content">
+
+                @if (!string.IsNullOrWhiteSpace(smallTitle))
+                {
+                   <span class="section-small-title">
+                        <span class="dots">
+                            <span></span>
+                            <span></span>
+                        </span>
+
+                        @smallTitle
+                    </span>
+                }
+
+                <h2 class="section-title">
+                    @title
+                    <span>@highlightText</span>
+                </h2>
+
+                @if (!string.IsNullOrWhiteSpace(description))
+                {
+                    <p class="section-description">
+                        @description
+                    </p>
+                }
+
+            </div>
+
+            <!-- @if (buttonLink != null)
+            {
+                <a href="@buttonLink.Url"
+                   target="@buttonLink.Target"
+                   class="view-all-btn">
+
+                    @buttonText
+
+                    <span class="btn-arrow">
+
+                        <svg viewBox="0 0 24 24">
+                            <path d="M7 17L17 7M9 7h8v8"
+                                  stroke-width="2"
+                                  fill="none"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round" />
+                        </svg>
+
+                    </span>
+
+                </a>
+            } -->
+
+        </div>
+
+        <!-- ================= CARDS ================= -->
+
+        <div class="slider-container">
+
+            <div class="track" id="track">
+
+                @if (cards != null)
+                {
+                    foreach (var card in cards)
+                    {
+                        var item = card.Content;
+
+                        var industryName = item.Value<string>("industryName");
+
+                        var icon = item.Value<MediaWithCrops>("icon");
+
+                        var backgroundImage = item.Value<MediaWithCrops>("backgroundImage");
+
+                        var cardLink = item.Value<Link>("cardLink");
+
+                        var url = cardLink?.Url ?? "#";
+                        var target = cardLink?.Target;
+
+                        <a href="@url"
+                           target="@target"
+                           class="card">
+
+                            @if (backgroundImage != null)
+                            {
+                                <div class="bg"
+                                     style="background-image:url('@backgroundImage.Url()')">
+                                </div>
+
+                                <div class="legibility"></div>
+
+                                <div class="overlay"></div>
+                            }
+
+                            <div class="card-content">
+
+                                @if (icon != null)
+                                {
+                                    <div class="icon">
+
+                                        <img src="@icon.Url()"
+                                             alt="@industryName">
+
+                                    </div>
+                                }
+
+                                <div class="title">
+
+                                    @Html.Raw(industryName)
+
+                                </div>
+
+                                <div class="go">
+
+                                    <svg viewBox="0 0 24 24">
+
+                                        <path d="M7 17L17 7M9 7h8v8"
+                                              stroke-width="2"
+                                              fill="none"
+                                              stroke-linecap="round"
+                                              stroke-linejoin="round" />
+
+                                    </svg>
+
+                                </div>
+
+                            </div>
+
+                        </a>
+                    }
+                }
+
+            </div>
+
+        </div>
+
+        <!-- ================= NAVIGATION ================= -->
+
+       <div class="slider-navigation">
+
+            <button id="prev" class="slider-btn" type="button">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M15 18L9 12L15 6" />
+                </svg>
+            </button>
+
+            <button id="next" class="slider-btn" type="button">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M9 18L15 12L9 6" />
+                </svg>
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  document.querySelectorAll(".expertise-section").forEach(function (section) {
+
+    const container = section.querySelector(".slider-container");
+    const track     = section.querySelector(".track");
+    const prev      = section.querySelector("#prev");
+    const next      = section.querySelector("#next");
+
+    if (!container || !track) return;
+    if (track.children.length === 0) return;
+
+    /* ---- make the loop seamless: duplicate the card set once ---- */
+    // (assumes cards are listed ONCE in the HTML)
+    track.innerHTML += track.innerHTML;
+
+    const gap = parseFloat(getComputedStyle(track).gap) || 0;
+
+    // width of ONE original set (we duplicated, so it's half the total minus one gap)
+    function oneSetWidth() {
+      return (track.scrollWidth - gap) / 2;
+    }
+
+    // width of a single card + gap, for button/swipe steps
+    function step() {
+      const card = track.querySelector(".card");
+      return card ? card.getBoundingClientRect().width + gap : 300;
+    }
+
+    let offset = 0;        // current scroll position in px
+    let speed  = 0.5;      // auto-scroll px per frame (raise = faster)
+    let paused = false;
+
+    function wrap() {
+      const w = oneSetWidth();
+      if (w <= 0) return;
+      // keep offset within [0, w) so it loops with no empty space
+      offset = ((offset % w) + w) % w;
+    }
+
+    function apply() {
+      track.style.transform = "translate3d(" + (-offset) + "px, 0, 0)";
+    }
+
+    function loop() {
+      if (!paused) {
+        offset += speed;
+        wrap();
+        apply();
+      }
+      requestAnimationFrame(loop);
+    }
+
+    /* ---- pause on hover ---- */
+    container.addEventListener("mouseenter", function () { paused = true; });
+    container.addEventListener("mouseleave", function () { paused = false; });
+
+    /* ---- buttons: step one card, stay seamless ---- */
+    if (next) {
+      next.addEventListener("click", function () {
+        offset += step();
+        wrap();
+        apply();
+      });
+    }
+
+    if (prev) {
+      prev.addEventListener("click", function () {
+        offset -= step();
+        wrap();
+        apply();
+      });
+    }
+
+    /* ---- touch swipe ---- */
+    let startX = null;
+
+    track.addEventListener("touchstart", function (e) {
+      startX = e.touches[0].clientX;
+      paused = true;
+    }, { passive: true });
+
+    track.addEventListener("touchend", function (e) {
+      if (startX !== null) {
+        const distance = startX - e.changedTouches[0].clientX;
+        if (distance > 50) { offset += step(); }
+        else if (distance < -50) { offset -= step(); }
+        wrap();
+        apply();
+      }
+      startX = null;
+      paused = false;
+    });
+
+    /* ---- recalc after images load & on resize (keeps loop accurate) ---- */
+    window.addEventListener("load", function () { wrap(); apply(); });
+    window.addEventListener("resize", function () { wrap(); apply(); });
+
+    /* ---- start ---- */
+    requestAnimationFrame(loop);
+
+  });
+
+});
+</script>

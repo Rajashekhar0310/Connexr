@@ -1,0 +1,149 @@
+/*====================================
+    TALK PEOPLE SECTION
+=====================================*/
+
+.talk-people-section{
+    background:#FDF5ED;
+    padding:70px 0;
+}
+
+.talk-people-container{
+    width:1320px;
+    max-width:95%;
+    margin:0 auto;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:60px;
+}
+
+/*====================================
+            LEFT
+=====================================*/
+
+.talk-people-left{
+    width:32%;
+}
+
+.talk-people-left h5{
+    color:#FF9A48;
+    font-size:42px;
+    font-weight:700;
+    line-height:1.1;
+    margin-bottom:6px;
+}
+
+.talk-people-left h2{
+    color:#163C8C;
+    font-size:44px;
+    font-weight:700;
+    line-height:1.1;
+    margin-bottom:22px;
+}
+
+.talk-people-left p{
+    color:#25385C;
+    font-size:15px;
+    line-height:1.8;
+}
+
+/*====================================
+            RIGHT
+=====================================*/
+
+.talk-people-right{
+    width:68%;
+
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+}
+
+.talk-people-logo-card{
+    background:#fff;
+    border-radius:8px;
+    border:1px solid #EFEFEF;
+
+    height:120px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    transition:all .35s ease;
+}
+
+.talk-people-logo-card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 12px 28px rgba(0,0,0,.08);
+}
+
+.talk-people-logo-card img{
+    max-width:85%;
+    max-height:75px;
+    object-fit:contain;
+    display:block;
+}
+
+/*====================================
+        TABLET
+=====================================*/
+
+@media (max-width:991px){
+
+    .talk-people-container{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .talk-people-left,
+    .talk-people-right{
+        width:100%;
+    }
+
+    .talk-people-right{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .talk-people-left h5{
+        font-size:36px;
+    }
+
+    .talk-people-left h2{
+        font-size:38px;
+    }
+
+}
+
+/*====================================
+        MOBILE
+=====================================*/
+
+@media (max-width:576px){
+
+    .talk-people-section{
+        padding:50px 0;
+    }
+
+    .talk-people-right{
+        grid-template-columns:1fr;
+    }
+
+    .talk-people-left h5{
+        font-size:30px;
+    }
+
+    .talk-people-left h2{
+        font-size:32px;
+    }
+
+    .talk-people-left p{
+        font-size:14px;
+    }
+
+    .talk-people-logo-card{
+        height:110px;
+    }
+
+}

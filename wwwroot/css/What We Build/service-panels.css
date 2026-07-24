@@ -1,0 +1,390 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=DM+Sans:wght@400;500&display=swap');
+
+/*==========================================================
+    RESET — scoped
+==========================================================*/
+
+.svc-panels,
+.svc-panels *,
+.svc-panels *::before,
+.svc-panels *::after{
+    box-sizing:border-box;
+}
+
+
+/*==========================================================
+    SECTION — one background image across the whole row
+==========================================================*/
+
+.svc-panels{
+    position:relative;
+
+    display:flex;
+    width:100%;
+    height:720px;
+
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-color:#1a1310;
+}
+
+.svc-panels::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(26,19,16,.35);
+    z-index:1;
+}
+
+
+/*==========================================================
+    PANEL — transparent slice
+==========================================================*/
+
+.svc-panel{
+    position:relative;
+    z-index:2;
+
+    flex:1 1 0;
+    min-width:0;
+
+    background:transparent;
+
+    border-right:1px solid rgba(255,255,255,.14);
+
+    cursor:pointer;
+}
+
+.svc-panel:last-child{ border-right:none; }
+
+
+/*==========================================================
+    BASE — centred number + title
+==========================================================*/
+
+.svc-panel__base{
+    position:relative;
+    z-index:2;
+
+    height:100%;
+    padding:34px 22px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+
+    transition:opacity .35s ease;
+}
+
+.svc-panel:hover .svc-panel__base{ opacity:0; }
+
+
+/*==========================================================
+    GLASS — appears on hover
+==========================================================*/
+
+.svc-panel__glass{
+    position:absolute;
+    inset:0;
+    z-index:3;
+
+    padding:80px 22px 32px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+
+    overflow-y:auto;
+
+    background:rgba(48,36,30,.55);
+
+    border:1px solid rgba(255,255,255,.16);
+
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(16px);
+
+    transition:
+        opacity .45s ease,
+        transform .5s cubic-bezier(.22,1,.36,1),
+        visibility .45s ease;
+}
+
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)){
+    .svc-panel__glass{
+        background:rgba(255,255,255,.08);
+        backdrop-filter:blur(12px) saturate(140%);
+        -webkit-backdrop-filter:blur(12px) saturate(140%);
+    }
+}
+
+.svc-panel:hover .svc-panel__glass{
+    opacity:1;
+    visibility:visible;
+    transform:translateY(0);
+}
+
+
+/*==========================================================
+    STAGGER
+==========================================================*/
+
+.svc-panel__glass > *{
+    opacity:0;
+    transform:translateY(12px);
+    transition:opacity .4s ease, transform .45s ease;
+}
+
+.svc-panel:hover .svc-panel__glass > *{
+    opacity:1;
+    transform:translateY(0);
+}
+
+.svc-panel:hover .svc-panel__glass > *:nth-child(1){ transition-delay:.06s; }
+.svc-panel:hover .svc-panel__glass > *:nth-child(2){ transition-delay:.12s; }
+.svc-panel:hover .svc-panel__glass > *:nth-child(3){ transition-delay:.18s; }
+.svc-panel:hover .svc-panel__glass > *:nth-child(4){ transition-delay:.24s; }
+.svc-panel:hover .svc-panel__glass > *:nth-child(5){ transition-delay:.30s; }
+
+
+/*==========================================================
+    TEXT
+==========================================================*/
+
+.svc-panel__num{
+    display:block;
+    font-family:'Poppins',sans-serif;
+    font-size:14px;
+    font-weight:500;
+    color:rgba(255,255,255,.65);
+    margin-bottom:10px;
+    flex-shrink:0;
+}
+
+.svc-panel__title{
+    margin:0;
+    font-family:'Poppins',sans-serif;
+    font-size:25px;
+    font-weight:600;
+    line-height:1.35;
+    color:#fff;
+    flex-shrink:0;
+}
+
+.svc-panel__desc{
+    margin:14px 0 18px;
+    font-family:'DM Sans',sans-serif;
+    font-size:18px;
+    line-height:1.7;
+    color:rgba(255,255,255,.9);
+}
+
+
+/*==========================================================
+    BUTTON
+==========================================================*/
+
+.svc-panel__btn{
+    align-self:flex-start;
+    flex-shrink:0;
+
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+
+    padding:9px 18px;
+    border-radius:30px;
+
+    background:#f5903e;
+    color:#231a14;
+
+    font-family:'DM Sans',sans-serif;
+    font-size:16px;
+    font-weight:600;
+    text-decoration:none;
+
+    transition:background .3s ease;
+}
+
+.svc-panel__btn:hover{ background:#ffa658; }
+
+.svc-panel__btn:focus-visible{
+    outline:3px solid #fff;
+    outline-offset:3px;
+}
+
+.svc-panel__btn span{ font-size:13px; }
+
+
+/*==========================================================
+    CASE CARD — own image, pinned bottom, clickable
+==========================================================*/
+
+.svc-case{
+    position:relative;
+    z-index:4;
+
+    display:block;
+
+    width:100%;
+    height:160px;
+
+    margin-top:auto;
+    flex-shrink:0;
+
+    border-radius:6px;
+    overflow:hidden;
+    text-decoration:none;
+
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-color:#1c2f5c;
+
+    transition:transform .3s ease;
+}
+
+.svc-case:hover{ transform:translateY(-3px); }
+
+.svc-case:focus-visible{
+    outline:3px solid #f5903e;
+    outline-offset:3px;
+}
+
+.svc-case__overlay{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        180deg,
+        rgba(20,45,105,.15) 0%,
+        rgba(20,45,105,.45) 45%,
+        rgba(20,45,105,.85) 100%
+    );
+    transition:background .35s ease;
+}
+
+.svc-case:hover .svc-case__overlay{
+    background:linear-gradient(
+        180deg,
+        rgba(20,45,105,.25) 0%,
+        rgba(20,45,105,.55) 45%,
+        rgba(20,45,105,.90) 100%
+    );
+}
+
+.svc-case__inner{
+    position:relative;
+    z-index:2;
+
+    height:100%;
+    padding:16px 18px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.svc-case__label{
+    flex-shrink:0;
+    font-family:'Poppins',sans-serif;
+    font-size:10px;
+    font-weight:600;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:rgba(255,255,255,.9);
+}
+
+.svc-case__title{
+    flex-shrink:0;
+    font-family:'Poppins',sans-serif;
+    font-size:18px;
+    font-weight:600;
+    line-height:1.4;
+    color:#fff;
+
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+}
+
+
+/*==========================================================
+    RESPONSIVE
+==========================================================*/
+
+@media(max-width:1200px){
+
+.svc-panels{ height:640px; }
+
+.svc-panel__base{ padding:26px 18px; }
+
+.svc-panel__glass{ padding:64px 18px 26px; }
+
+.svc-panel__desc{ font-size:12px; margin:12px 0 16px; }
+
+.svc-case{ height:140px; }
+
+.svc-case__inner{ padding:14px 16px; }
+
+.svc-case__title{ font-size:13px; }
+
+}
+
+
+@media(max-width:900px){
+
+.svc-panels{
+    flex-direction:column;
+    height:auto;
+    background-attachment:scroll;
+}
+
+.svc-panel{
+    width:100%;
+    min-height:400px;
+    border-right:none;
+    border-bottom:1px solid rgba(255,255,255,.14);
+}
+
+.svc-panel:last-child{ border-bottom:none; }
+
+.svc-panel__base{ display:none; }
+
+.svc-panel__glass{
+    position:relative;
+    opacity:1;
+    visibility:visible;
+    transform:none;
+    overflow:visible;
+    padding:30px 22px;
+    border:none;
+}
+
+.svc-panel__glass > *{
+    opacity:1;
+    transform:none;
+}
+
+.svc-case{
+    margin-top:30px;
+    height:170px;
+}
+
+.svc-case__title{ -webkit-line-clamp:3; }
+
+}
+
+
+@media(prefers-reduced-motion:reduce){
+
+.svc-panel__glass,
+.svc-panel__glass > *,
+.svc-panel__base,
+.svc-case{ transition:none; }
+
+.svc-case:hover{ transform:none; }
+
+}

@@ -1,0 +1,12 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.SriniRagipally>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@{
+	Layout = "master.cshtml";
+}
+<div class="page-content">
+    @if (Model.HasValue("sriniContent"))
+    {
+        @await Html.GetBlockListHtmlAsync(Model, "sriniContent")
+    }
+</div>

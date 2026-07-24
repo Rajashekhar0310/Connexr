@@ -1,0 +1,85 @@
+﻿@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.PublishedContent
+
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+    var cards = content.Value<BlockListModel>("cards");
+}
+
+@if (cards != null && cards.Any())
+{
+<section class="case-study-section">
+
+    <div class="case-container">
+
+        @foreach (var item in cards)
+        {
+            var card = item.Content;
+
+            var image = card.Value<IPublishedContent>("image");
+            var label = card.Value<string>("label");
+            var title = card.Value<string>("title");
+            var description = card.Value<string>("description");
+            var link = card.Value<Link>("redirectPage");
+
+            <a href="@(link?.Url ?? "#")" class="case-card">
+
+                @if(image != null)
+                {
+                    <img src="@image.Url()" alt="@title" />
+                }
+
+                <div class="overlay"></div>
+
+                <div class="content">
+
+                    <span class="tag">
+                        @label
+                    </span>
+
+                    <div class="bottom-content">
+
+                        <h3>@title</h3>
+
+                        @if(!string.IsNullOrWhiteSpace(description))
+                        {
+                            <p>@description</p>
+                        }
+
+                    </div>
+
+                </div>
+
+            </a>
+        }
+
+    </div>
+
+</section>
+}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+    const cards = document.querySelectorAll(".case-card");
+
+    cards.forEach(card => {
+
+        card.addEventListener("mouseenter", function () {
+
+            this.classList.add("active");
+
+        });
+
+        card.addEventListener("mouseleave", function () {
+
+            this.classList.remove("active");
+
+        });
+
+    });
+
+});
+</script>

@@ -1,0 +1,234 @@
+/* ========================================
+   OFFICE LOCATIONS
+======================================== */
+
+.office-locations-section {
+    width: 100%;
+    padding: 35px 0;
+    background: #ffffff;
+}
+
+.office-locations-container {
+    width: min(100% - 40px, 1220px);
+    margin: 0 auto;
+}
+
+
+/* ========================================
+   GRID
+======================================== */
+
+.office-locations-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+
+/* ========================================
+   CARD
+======================================== */
+
+.office-location-card {
+    position: relative;
+
+    flex: 1 1 0;
+    min-width: 0;
+
+    height: 800px;
+
+    overflow: hidden;
+    background: #111;
+
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.office-location-card.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.office-location-image {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center;
+
+    display: block;
+
+    transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+/* ========================================
+   GRADIENT
+======================================== */
+
+.office-location-overlay {
+    position: absolute;
+    inset: 0;
+
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.02) 25%,
+        rgba(0, 0, 0, 0.12) 55%,
+        rgba(0, 0, 0, 0.72) 100%
+    );
+
+    z-index: 1;
+    transition: background 0.5s ease;
+}
+
+
+/* ========================================
+   CONTENT
+======================================== */
+
+.office-location-content {
+    position: absolute;
+    left: 30px;
+    right: 30px;
+    bottom: 30px;
+
+    z-index: 2;
+    color: #ffffff;
+}
+
+.office-location-label {
+    display: block;
+    margin-bottom: 12px;
+
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.4px;
+
+    color: rgba(255, 255, 255, 0.9);
+    text-transform: uppercase;
+}
+
+.office-location-title {
+    margin: 0;
+
+    font-size: clamp(22px, 2vw, 30px);
+    line-height: 1.15;
+    font-weight: 600;
+
+    color: #ffffff;
+}
+
+
+/* ========================================
+   HOVER
+======================================== */
+
+.office-location-card:hover .office-location-image {
+    transform: scale(1.07);
+}
+
+.office-location-card:hover .office-location-overlay {
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.02) 20%,
+        rgba(0, 0, 0, 0.15) 50%,
+        rgba(0, 0, 0, 0.8) 100%
+    );
+}
+
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+
+/* ===== LAPTOP — one row, shorter ===== */
+
+@media (max-width: 1440px) {
+    .office-location-card { height: 680px; }
+}
+
+@media (max-width: 1200px) {
+    .office-location-card { height: 600px; }
+}
+
+
+/* ===== TABLET — 2 per row ===== */
+
+@media (max-width: 991px) {
+    .office-location-card {
+        flex: 1 1 calc(50% - 12px);
+        height: 520px;
+    }
+}
+
+
+/* ===== SMALL TABLET ===== */
+
+@media (max-width: 768px) {
+    .office-location-card { height: 460px; }
+
+    .office-location-content {
+        left: 24px;
+        right: 24px;
+        bottom: 26px;
+    }
+}
+
+
+/* ===== MOBILE — 1 per row ===== */
+
+@media (max-width: 640px) {
+    .office-locations-section { padding: 20px 0; }
+    .office-locations-container { width: calc(100% - 30px); }
+
+    .office-locations-grid {
+        flex-direction: column;
+        flex-wrap: nowrap;
+        gap: 15px;
+    }
+
+    .office-location-card {
+        flex: none;
+        width: 100%;
+        height: 470px;
+    }
+
+    .office-location-content {
+        left: 22px;
+        right: 22px;
+        bottom: 24px;
+    }
+
+    .office-location-title { font-size: 25px; }
+}
+
+
+/* ===== SMALL PHONE ===== */
+
+@media (max-width: 400px) {
+    .office-location-card { height: 420px; }
+
+    .office-location-content {
+        left: 18px;
+        right: 18px;
+        bottom: 20px;
+    }
+
+    .office-location-title { font-size: 22px; }
+}
+
+
+/* ===== REDUCED MOTION ===== */
+
+@media (prefers-reduced-motion: reduce) {
+    .office-location-card {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}

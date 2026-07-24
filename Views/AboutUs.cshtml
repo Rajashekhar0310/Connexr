@@ -7,42 +7,13 @@
 @{
     Layout = "master.cshtml";
 
-    var blocks = Model.Value<BlockListModel>("content");
+   
 }
 
+<!-- Page Components -->
 <div class="page-content">
-
-    @if (blocks != null)
+    @if (Model.HasValue("aboutContent"))
     {
-        @foreach (var block in blocks)
-        {
-            var image = block.Content.Value<IPublishedContent>("image");
-
-            <section class="content-block image-content">
-
-                <div class="image-content-wrapper">
-
-                    <div class="image-section">
-
-                        @if (image != null)
-                        {
-                            <img src="@image.Url()" alt="@image.Name" />
-                        }
-
-                    </div>
-
-                    <div class="text-section">
-
-                        <h2>@Model.Value("title")</h2>
-
-                        @Html.Raw(block.Content.Value<string>("content"))
-
-                    </div>
-
-                </div>
-
-            </section>
-        }
+        @await Html.GetBlockListHtmlAsync(Model, "aboutContent")
     }
-
 </div>
