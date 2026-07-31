@@ -1,0 +1,65 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@inherits UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var type = content.Value<string>("videoType");
+
+    var video = content.Value<MediaWithCrops>("videoFile");
+
+    var poster = content.Value<MediaWithCrops>("posterImage");
+
+    var url = content.Value<string>("videoUrl");
+
+    var caption = content.Value<string>("caption");
+
+    var autoplay = content.Value<bool>("autoPlay");
+
+    var loop = content.Value<bool>("loop");
+}
+
+<section class="blog-video">
+
+    <div class="container">
+
+        @if(type == "Local" && video != null)
+        {
+            <video
+                controls
+                @(autoplay ? "autoplay muted playsinline" : "")
+                @(loop ? "loop" : "")
+                poster="@(poster?.MediaUrl())">
+
+                <source src="@video.MediaUrl()" type="video/mp4"/>
+
+            </video>
+        }
+
+        else if(type == "YouTube")
+        {
+            <iframe
+                src="@url"
+                allowfullscreen>
+            </iframe>
+        }
+
+        else if(type == "Vimeo")
+        {
+            <iframe
+                src="@url"
+                allowfullscreen>
+            </iframe>
+        }
+
+        @if(!string.IsNullOrWhiteSpace(caption))
+        {
+            <div class="video-caption">
+                @caption
+            </div>
+        }
+
+    </div>
+
+</section>

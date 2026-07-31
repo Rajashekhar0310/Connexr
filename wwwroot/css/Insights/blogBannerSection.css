@@ -1,0 +1,29 @@
+.blog-banner-section{
+    margin:100px 0;
+}
+
+.blog-banner-section figure{
+    margin:0;
+}
+
+.blog-banner-section img{
+    width:100%;
+    display:block;
+    object-fit:cover;
+}
+
+.blog-banner-section.rounded img{
+    border-radius:20px;
+}
+
+.blog-banner-section figcaption{
+    margin-top:15px;
+    text-align:center;
+    color:#8A8A8A;
+    font-size:14px;
+}
+
+.blog-banner-section.full-width .container{
+    max-width:100%;
+    padding:0;
+}

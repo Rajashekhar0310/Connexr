@@ -65,13 +65,18 @@
 /* ---------- card ---------- */
 .tech .card {
   position: relative;
-  height: 500px;
   background: var(--card);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   overflow: hidden;
   outline: none;
   transition: box-shadow .4s ease, transform .4s cubic-bezier(.22, .7, .28, 1);
+}
+
+/* card height — this selector wins the specificity fight */
+.tech .stack .card {
+  height: 350px;
+  min-height: 350px;
 }
 
 .tech .card:hover,
@@ -109,13 +114,11 @@
   background: var(--card);
   padding: 24px 36px 28px;
   transition: opacity .3s ease;
+  z-index: 2;
 }
 
 .tech .card:hover .card__label,
 .tech .card:focus-within .card__label { opacity: 0; }
-
-.tech .card__label { z-index: 2; }
-.tech .card__panel { z-index: 3; }
 
 .tech .card__label .card__title { font-size: 26px; }
 .tech .card__label .card__sub { margin-top: 8px; }
@@ -125,12 +128,13 @@
   position: absolute;
   inset: 0;
   background: var(--card);
-  padding: 38px 40px;
+  padding: 34px 36px;
   display: flex;
   flex-direction: column;
   transform: translateY(100%);
   transition: transform .55s cubic-bezier(.22, .7, .28, 1);
   will-change: transform;
+  z-index: 3;
 }
 
 .tech .card:hover .card__panel,
@@ -138,17 +142,17 @@
 
 .tech .card__icon {
   display: block;
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   object-fit: contain;
   color: var(--orange);
-  margin-bottom: 52px;
+  margin-bottom: 22px;
   opacity: 0;
   transform: translateY(10px);
   transition: opacity .35s ease .18s, transform .45s cubic-bezier(.22, .7, .28, 1) .18s;
 }
 
-.tech .card__icon--none { height: 34px; }
+.tech .card__icon--none { height: 32px; }
 
 .tech .card:hover .card__icon,
 .tech .card:focus-within .card__icon {
@@ -159,51 +163,66 @@
 .tech .card__title {
   margin: 0;
   color: var(--navy);
-  visibility: visible;
-  opacity: 1;
-  font-size: 27px;
+  font-size: 24px;
   font-weight: 600;
   letter-spacing: -.01em;
 }
 
 .tech .card__sub {
-  margin: 12px 0 0;
+  margin: 10px 0 0;
   color: var(--navy);
-  visibility: visible;
-  opacity: 1;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
 }
 
 .tech .card__text {
-  margin: 26px 0 0;
-  font-size: 16px;
-  line-height: 1.85;
+  margin: 18px 0 0;
+  font-size: 15px;
+  line-height: 1.75;
   color: var(--body);
   max-width: 46ch;
 }
 
-/* ---------- responsive ---------- */
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+/* ---- large laptop / desktop down ---- */
+@media (max-width: 1440px) {
+  .tech__inner { grid-template-columns: 0.7fr 1.15fr 1.15fr; gap: 28px; }
+  .tech .stack { gap: 28px; }
+  .tech .stack .card { height: 340px; min-height: 340px; }
+}
+
+/* ---- small laptop ---- */
+@media (max-width: 1280px) {
+  .tech { padding: 56px 32px 80px; }
+  .tech .stack--offset { padding-top: 140px; }
+  .tech .stack .card { height: 330px; min-height: 330px; }
+}
+
+/* ---- tablet: two columns ---- */
 @media (max-width: 1180px) {
   .tech__inner { grid-template-columns: 1fr 1fr; }
   .tech .intro { grid-column: 1 / -1; }
   .tech .stack--offset { padding-top: 0; }
-  .tech .card { height: 470px; }
-  .tech .card__icon { margin-bottom: 32px; }
+  .tech .stack .card { height: 340px; min-height: 340px; }
+  .tech .card__icon { margin-bottom: 22px; }
 }
 
+/* ---- phone: single column ---- */
 @media (max-width: 760px) {
   .tech { padding: 48px 20px 64px; }
   .tech__inner { grid-template-columns: 1fr; gap: 24px; }
   .tech .stack { gap: 24px; }
   .tech .headline { max-width: none; }
-  .tech .card { height: 420px; }
+  .tech .stack .card { height: 320px; min-height: 320px; }
   .tech .card__label { padding: 20px 24px 24px; }
-  .tech .card__panel { padding: 28px 24px; }
-  .tech .card__icon { margin-bottom: 24px; }
+  .tech .card__panel { padding: 26px 24px; }
+  .tech .card__icon { margin-bottom: 18px; }
   .tech .card__title,
-  .tech .card__label .card__title { font-size: 23px; }
-  .tech .card__text { margin-top: 18px; font-size: 15px; line-height: 1.75; }
+  .tech .card__label .card__title { font-size: 22px; }
+  .tech .card__text { margin-top: 16px; font-size: 14px; line-height: 1.7; }
 }
 
 /* touch devices have no hover: keep the panel open */

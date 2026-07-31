@@ -96,3 +96,111 @@ document.addEventListener("DOMContentLoaded", function () {
 
     applyFilters();
 });
+/* ---------- Application Popup ---------- */
+
+const popup = document.getElementById("applicationPopup");
+
+if (popup) {
+
+    const closeBtn = popup.querySelector(".popup-close");
+
+    document.querySelectorAll(".apply-btn").forEach(function (button) {
+
+        button.addEventListener("click", function (e) {
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            const job = this.closest(".job");
+
+            document.getElementById("popupJobTitle").textContent = this.dataset.title;
+            document.getElementById("jobTitle").value = this.dataset.title;
+            document.getElementById("popupLocation").textContent = this.dataset.location;
+            document.getElementById("popupType").textContent = this.dataset.type;
+            document.getElementById("popupExperience").textContent = this.dataset.experience;
+
+            const details = job.querySelector(".job__panel-body");
+
+            if (details) {
+                document.getElementById("popupDetails").innerHTML = details.innerHTML;
+            }
+
+            popup.classList.add("show");
+            document.body.style.overflow = "hidden";
+
+        });
+
+    });
+
+    closeBtn.addEventListener("click", function () {
+
+        popup.classList.remove("show");
+        document.body.style.overflow = "";
+
+    });
+
+    popup.addEventListener("click", function (e) {
+
+        if (e.target === popup) {
+
+            popup.classList.remove("show");
+            document.body.style.overflow = "";
+
+        }
+
+    });
+
+}
+const form = document.getElementById("careerApplicationForm");
+
+if (form) {
+
+    form.addEventListener("submit", async function (e) {
+
+        e.preventDefault();
+
+        const formData = new FormData(this);
+
+        try {
+
+            const response = await fetch("/career/apply", {
+                method: "POST",
+                body: formData
+            });
+
+            console.log("Status:", response.status);
+            console.log("Content-Type:", response.headers.get("content-type"));
+
+            const text = await response.text();
+
+            console.log("RAW:", text);
+
+            try {
+
+                const result = JSON.parse(text);
+
+                console.log("Parsed:", result);
+
+                alert(result.message);
+
+            }
+            catch (jsonError) {
+
+                console.error("JSON Parse Error:", jsonError);
+
+                alert(text);
+
+            }
+
+        }
+        catch (err) {
+
+            console.error("Fetch Error:", err);
+
+            alert(err);
+
+        }
+
+    });
+
+}

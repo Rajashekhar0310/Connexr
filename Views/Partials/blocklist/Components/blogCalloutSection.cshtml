@@ -1,0 +1,51 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@inherits UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var title = content.Value<string>("title");
+    var body = content.Value<string>("content");
+    var style = content.Value<string>("style") ?? "Primary";
+
+    var icon = content.Value<MediaWithCrops>("icon");
+
+    var buttonText = content.Value<string>("buttonText");
+    var buttonLink = content.Value<Link>("buttonLink");
+}
+
+<section class="blog-callout @style.ToLower()">
+
+    <div class="container">
+
+        <div class="callout-card">
+
+            @if(icon != null)
+            {
+                <img src="@icon.MediaUrl()" alt="@title" class="callout-icon"/>
+            }
+
+            @if(!string.IsNullOrWhiteSpace(title))
+            {
+                <h3>@title</h3>
+            }
+
+            <div class="callout-content">
+                @Html.Raw(body)
+            </div>
+
+            @if(buttonLink != null)
+            {
+                <a href="@buttonLink.Url"
+                   target="@buttonLink.Target"
+                   class="callout-btn">
+                    @buttonText
+                </a>
+            }
+
+        </div>
+
+    </div>
+
+</section>

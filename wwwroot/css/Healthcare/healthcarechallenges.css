@@ -1,802 +1,310 @@
 /* ==========================================================
-   CHALLENGES SECTION
+   CHALLENGES SECTION  —  cleaned, single definition per rule
 ========================================================== */
 
 .hh-section{
-    position:relative;
-    width:100%;
-    background:#fff;
-    overflow:hidden;
-    padding:0;
+  position:relative;
+  width:100%;
+  background:#fff;
+  overflow:hidden;
+  padding:0;
 }
 
 .hh{
-
-    position:relative;
-
-    width:100%;
-
-    min-height:760px;
-
-    overflow:hidden;
-
-    isolation:isolate;
-
-    background:#EEF3F8;
-
-    font-family:"Poppins",sans-serif;
-
+  position:relative;
+  width:100%;
+  min-height:760px;
+  overflow:hidden;
+  isolation:isolate;
+  background:#EEF3F8;
+  font-family:"Poppins",sans-serif;
 }
 
-/* ===========================================
-   Background Image
-=========================================== */
-
+/* ---------- background image ---------- */
 .hh__photo{
-
-    position:absolute;
-
-    inset:0;
-
-    width:100%;
-
-    height:100%;
-
-    object-fit:cover;
-
-    object-position:center center;
-
-    z-index:-2;
-
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center center;
+  z-index:-2;
 }
 
-/* ===========================================
-   Overlay
-=========================================== */
-
+/* ---------- overlay ---------- */
 .hh__scrim{
-
-    position:absolute;
-
-    inset:0;
-
-    z-index:-1;
-
-    /* background:
-        linear-gradient(
-            90deg,
-            rgba(255,255,255,.98) 0%,
-            rgba(255,255,255,.95) 18%,
-            rgba(255,255,255,.82) 32%,
-            rgba(255,255,255,.45) 46%,
-            rgba(255,255,255,0) 60%
-        ),
-        linear-gradient(
-            180deg,
-            rgba(7,28,67,0) 60%,
-            rgba(7,28,67,.25) 100%
-        ); */
-
+  position:absolute;
+  inset:0;
+  z-index:-1;
 }
 
-/* ===========================================
-   Left Content
-=========================================== */
-
+/* ---------- left copy ---------- */
 .hh__copy{
-
-    position:absolute;
-
-    top:90px;
-
-    left:80px;
-
-    width:520px;
-
-    z-index:10;
-
+  position:absolute;
+  top:90px;
+  left:80px;
+  width:520px;
+  z-index:10;
 }
 
 .hh__eyebrow{
-
-    margin:0 0 18px;
-
-    font-size:13px;
-
-    letter-spacing:.22em;
-
-    text-transform:uppercase;
-
-    font-weight:600;
-
-    color:#0C2A57;
-
+  margin:0 0 18px;
+  font-size:13px;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  font-weight:600;
+  color:#0C2A57;
 }
 
 .hh__headline{
-
-    margin:0;
-font-family: poppins;
-    font-size:38px;
-
-    line-height:1.1;
-
-    font-weight:600;
-
-    color:#163B70;
-
+  margin:0;
+  font-family:"Poppins",sans-serif;
+  font-size:38px;
+  line-height:1.1;
+  font-weight:600;
+  color:#163B70;
 }
 
 .hh__headline em{
-
-    display:block;
-
-    margin-top:10px;
-
-    color:#F49A2D;
-
-    font-style:normal;
-
+  display:block;
+  margin-top:10px;
+  color:#F49A2D;
+  font-style:normal;
 }
 
-/* ===========================================
-   Cards Wrapper
-=========================================== */
-
+/* ---------- cards wrapper ---------- */
 .hh__cards{
-
-    position:absolute;
-
-    left:80px;
-
-    right:80px;
-
-    bottom:40px;
-
-    display:flex;
-
-    align-items:flex-end;
-
-    gap:18px;
-
-    z-index:20;
-
+  position:absolute;
+  left:80px;
+  right:80px;
+  bottom:40px;
+  display:flex;
+  align-items:flex-end;
+  gap:18px;
+  z-index:20;
 }
+
 /* ==========================================================
    CARD
 ========================================================== */
-
-.hh__card {
-
-    position: relative;
-
-    flex: 1;
-
-    height: 80px;
-
-    transition:
-        height .45s cubic-bezier(.22,.61,.36,1);
-
+.hh__card{
+  position:relative;
+  flex:1;
+  height:80px;
+  transform-origin:bottom center;
+  transition:height .45s cubic-bezier(.22,.61,.36,1);
 }
 
-/* Active Card */
-
-.hh__card.is-active,
-.hh__card:hover{
-
-    height:300px;
-
+/* expanded: grow to fit the content instead of a fixed height */
+.hh__card:hover,
+.hh__card.is-active{
+  height:auto;
+  min-height:300px;
+  z-index:20;
 }
 
-/* ==========================================================
-   BUTTON
-========================================================== */
-
+/* ---------- button shell ---------- */
 .hh__cardButton{
-
-    position:absolute;
-
-    inset:0;
-
-    width:100%;
-
-    height:100%;
-
-    border:none;
-
-    cursor:pointer;
-
-    border-radius:10px;
-
-    background:rgba(255,255,255,.16);
-
-    backdrop-filter:blur(16px);
-
-    -webkit-backdrop-filter:blur(16px);
-
-    border-top:3px solid rgba(255,255,255,.45);
-
-    overflow:hidden;
-
-    transition:
-        background .4s ease,
-        border-color .4s ease;
-
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  border:none;
+  cursor:pointer;
+  border-radius:10px;
+  background:rgba(255,255,255,.18);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  border-top:3px solid rgba(255,255,255,.4);
+  overflow:hidden;
+  transition:background .4s ease, border-color .4s ease, box-shadow .4s ease;
 }
 
 .hh__card:hover .hh__cardButton,
 .hh__card.is-active .hh__cardButton{
-
-    background:#0C2A57;
-
-    border-top-color:#F49A2D;
-
+  background:#0C2A57;
+  border-top-color:#F49A2D;
+  box-shadow:0 25px 60px rgba(0,0,0,.28);
 }
 
-/* ==========================================================
-   CONTENT
-========================================================== */
-
+/* ---------- expanded content ---------- */
+/* absolute + zero space while collapsed, so it doesn't affect the 80px height */
 .hh__cardContent{
-
-    position:absolute;
-
-    top:26px;
-
-    left:24px;
-
-    right:24px;
-
-    opacity:0;
-
-    transform:translateY(35px);
-
-    transition:
-        opacity .35s ease,
-        transform .45s cubic-bezier(.22,.61,.36,1);
-
+  position:absolute;
+  left:24px;
+  right:24px;
+  top:24px;
+  opacity:0;
+  transform:translateY(28px);
+  transition:opacity .35s ease, transform .45s cubic-bezier(.22,.61,.36,1);
 }
 
+/* relative when open, so the description pushes the card taller instead of spilling out */
 .hh__card:hover .hh__cardContent,
 .hh__card.is-active .hh__cardContent{
+  position:relative;
+  left:0;
+  right:0;
+  top:0;
+  opacity:1;
+  transform:translateY(0);
+  padding:24px;
+}
 
-    opacity:1;
-
-    transform:translateY(0);
-
+.hh__cardHeader{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:14px;
+  margin-bottom:16px;
 }
 
 .hh__cardDescription{
-
-    margin:0;
-
-    color:#fff;
-
-    font-size:15px;
-
-    line-height:1.8;
-
-    font-weight:400;
-
+  margin:0;
+  color:#fff;
+  font-size:16px;
+  line-height:1.75;
+  font-weight:400;
+  transition:opacity .35s ease;
 }
 
-/* ==========================================================
-   FOOTER
-========================================================== */
-
+/* ---------- collapsed footer ---------- */
 .hh__cardFooter{
-
-    position:absolute;
-
-    left:24px;
-
-    right:24px;
-
-    bottom:22px;
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
+  position:absolute;
+  left:24px;
+  right:24px;
+  bottom:22px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+  transition:opacity .3s ease, transform .35s ease;
 }
 
+.hh__card:hover .hh__cardFooter,
+.hh__card.is-active .hh__cardFooter{
+  opacity:0;
+  transform:translateY(20px);
+  pointer-events:none;
+}
+
+/* ---------- title ---------- */
 .hh__cardTitle{
-
-    font-size:22px;
-
-    line-height:1.35;
-
-    font-weight:500;
-
-    color:#fff;
-
+  font-size:22px;
+  font-family:"Poppins",sans-serif;
+  line-height:1.35;
+  font-weight:500;
+  color:#fff;
 }
 
 .hh__accent{
-
-    color:#F49A2D;
-
-    font-weight:600;
-
+  color:#F49A2D;
+  font-weight:600;
 }
 
-/* ==========================================================
-   ORANGE BUTTON
-========================================================== */
-
+/* ---------- orange circle ---------- */
 .hh__circle{
-
-    width:34px;
-
-    height:34px;
-
-    border-radius:50%;
-
-    background:#F49A2D;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    flex-shrink:0;
-
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  background:#F49A2D;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex:none;
 }
+.hh__circle svg{ width:14px; height:14px; }
 
-.hh__circle svg{
-
-    width:14px;
-
-    height:14px;
-
-}
 
 /* ==========================================================
-   HOVER EFFECT
+   RESPONSIVE
 ========================================================== */
 
-.hh__card:hover{
-
-    z-index:20;
-
+/* ---- large laptop ---- */
+@media (max-width:1440px){
+  .hh__copy{ left:60px; width:480px; }
+  .hh__cards{ left:60px; right:60px; }
 }
 
-.hh__card.is-active{
-
-    z-index:10;
-
-}
-/* ==========================================================
-   TABLET
-========================================================== */
-
+/* ---- small laptop / large tablet ---- */
 @media (max-width:1200px){
+  .hh{ min-height:700px; }
 
-    .hh{
+  .hh__copy{ left:50px; top:70px; width:430px; }
+  .hh__headline{ font-size:34px; }
 
-        min-height:700px;
+  .hh__cards{ left:50px; right:50px; bottom:35px; gap:14px; }
 
-    }
-
-    .hh__copy{
-
-        left:50px;
-        top:70px;
-        width:430px;
-
-    }
-
-    .hh__headline{
-
-        font-size:48px;
-
-    }
-
-    .hh__cards{
-
-        left:50px;
-        right:50px;
-        bottom:35px;
-
-        gap:14px;
-
-    }
-
-    .hh__cardTitle{
-
-        font-size:18px;
-
-    }
-
+  .hh__cardTitle{ font-size:18px; }
+  .hh__card:hover,
+  .hh__card.is-active{ min-height:320px; }
 }
 
-/* ==========================================================
-   MOBILE
-========================================================== */
-
+/* ---- tablet: cards stack under the copy ---- */
 @media (max-width:991px){
+  .hh{ min-height:auto; padding-bottom:40px; }
 
-    .hh{
+  .hh__copy{
+    position:relative;
+    left:auto; top:auto; width:100%;
+    padding:50px 25px 10px;
+  }
+  .hh__headline{ font-size:34px; }
 
-        min-height:auto;
+  .hh__cards{
+    position:relative;
+    left:auto; right:auto; bottom:auto;
+    margin:25px;
+    flex-direction:column;
+    align-items:stretch;
+    gap:12px;
+  }
 
-        padding-bottom:40px;
+  .hh__card{ width:100%; height:84px; }
+  .hh__card:hover,
+  .hh__card.is-active{ height:auto; min-height:0; }
 
-    }
-
-    .hh__copy{
-
-        position:relative;
-
-        left:auto;
-        top:auto;
-
-        width:100%;
-
-        padding:50px 25px 20px;
-
-    }
-
-    .hh__headline{
-
-        font-size:38px;
-
-    }
-
-    .hh__cards{
-
-        position:relative;
-
-        left:auto;
-        right:auto;
-        bottom:auto;
-
-        margin:25px;
-
-        display:flex;
-
-        flex-direction:column;
-
-        align-items:stretch;
-
-    }
-
-    .hh__card{
-
-        width:100%;
-
-        height:90px;
-
-    }
-
-    .hh__card:hover,
-    .hh__card.is-active{
-
-        height:220px;
-
-    }
-
+  /* on stacked cards the content flows naturally, footer hides as before */
+  .hh__cardContent{ padding:22px 22px 24px; }
+  .hh__cardTitle{ font-size:20px; }
+  .hh__cardDescription{ font-size:15px; }
 }
 
-/* ==========================================================
-   SMALL MOBILE
-========================================================== */
-
+/* ---- phone ---- */
 @media (max-width:768px){
+  .hh__copy{ padding:35px 20px 8px; }
+  .hh__headline{ font-size:28px; }
+  .hh__eyebrow{ font-size:12px; }
 
-    .hh__headline{
+  .hh__cards{ margin:20px; gap:10px; }
 
-        font-size:30px;
+  .hh__card{ height:76px; }
 
-    }
+  .hh__cardFooter{ left:18px; right:18px; bottom:18px; }
+  .hh__cardContent{ padding:18px; }
 
-    .hh__copy{
+  .hh__cardTitle{ font-size:17px; }
+  .hh__cardDescription{ font-size:14px; line-height:1.7; }
 
-        padding:35px 20px;
-
-    }
-
-    .hh__cards{
-
-        margin:20px;
-
-    }
-
-    .hh__cardFooter{
-
-        left:18px;
-        right:18px;
-        bottom:18px;
-
-    }
-
-    .hh__cardContent{
-
-        left:18px;
-        right:18px;
-        top:18px;
-
-    }
-
-    .hh__cardTitle{
-
-        font-size:16px;
-
-    }
-
-    .hh__cardDescription{
-
-        font-size:13px;
-
-        line-height:1.7;
-
-    }
-
+  .hh__circle{ width:30px; height:30px; }
 }
 
-/* ==========================================================
-   ANIMATION
-========================================================== */
-
-.hh__card{
-
-    transform-origin:bottom center;
-
-}
-
-.hh__cardButton{
-
-    transition:
-        background .4s ease,
-        border-color .4s ease,
-        box-shadow .4s ease;
-
-}
-
-.hh__card:hover .hh__cardButton,
-.hh__card.is-active .hh__cardButton{
-
-    box-shadow:0 25px 60px rgba(0,0,0,.28);
-
-}
-
-.hh__cardDescription{
-
-    transition:opacity .35s ease;
-
+/* ---- small phone ---- */
+@media (max-width:420px){
+  .hh__headline{ font-size:24px; }
+  .hh__copy{ padding:30px 18px 4px; }
+  .hh__cards{ margin:16px; }
+  .hh__cardTitle{ font-size:16px; }
 }
 
 /* ==========================================================
    ACCESSIBILITY
 ========================================================== */
-
 @media (prefers-reduced-motion:reduce){
-
-    .hh *,
-    .hh *::before,
-    .hh *::after{
-
-        animation:none !important;
-
-        transition:none !important;
-
-    }
-
-}
-
-
-/* ===========================================
-   CARD
-=========================================== */
-
-.hh__card{
-
-    position:relative;
-
-    flex:1;
-
-    height:90px;
-
-    transition:height .45s cubic-bezier(.22,.61,.36,1);
-
-}
-
-.hh__cardButton{
-
-    position:absolute;
-
-    inset:0;
-
-    width:100%;
-    height:100%;
-
-    border:none;
-
-    border-radius:10px;
-
-    background:rgba(255,255,255,.18);
-
-    backdrop-filter:blur(14px);
-
-    -webkit-backdrop-filter:blur(14px);
-
-    border-top:3px solid rgba(255,255,255,.35);
-
-    cursor:pointer;
-
-    overflow:hidden;
-
-    transition:all .4s ease;
-
-}
-
-/* Expand Up */
-
-.hh__card:hover,
-.hh__card.is-active{
-
-    height:290px;
-
-}
-
-.hh__card:hover .hh__cardButton,
-.hh__card.is-active .hh__cardButton{
-
-    background:#0C2A57;
-
-    border-top-color:#F49A2D;
-
-}
-
-/* ===========================================
-   HEADER (Top)
-=========================================== */
-
-.hh__cardHeader{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    margin-bottom:18px;
-
-}
-
-/* Hidden Initially */
-
-.hh__cardContent{
-
-    position:absolute;
-
-    left:24px;
-
-    right:24px;
-
-    top:24px;
-
-    opacity:0;
-
-    transform:translateY(25px);
-
-    transition:
-        opacity .35s ease,
-        transform .45s ease;
-
-}
-
-/* Visible */
-
-.hh__card:hover .hh__cardContent,
-.hh__card.is-active .hh__cardContent{
-
-    opacity:1;
-
-    transform:translateY(0);
-
-}
-
-/* ===========================================
-   FOOTER (Bottom)
-=========================================== */
-
-.hh__cardFooter{
-
-    position:absolute;
-
-    left:24px;
-
-    right:24px;
-
-    bottom:24px;
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    transition:
-        opacity .3s ease,
-        transform .35s ease;
-
-}
-
-/* Hide Footer */
-
-.hh__card:hover .hh__cardFooter,
-.hh__card.is-active .hh__cardFooter{
-
-    opacity:0;
-
-    transform:translateY(20px);
-
-}
-
-/* ===========================================
-   TITLE
-=========================================== */
-
-.hh__cardTitle{
-
-    font-size:28px;
-font-family: poppins;
-    line-height:1.4;
-
-    font-weight:500;
-
-    color:#fff;
-
-}
-
-.hh__accent{
-
-    color:#F49A2D;
-
-    font-weight:600;
-
-}
-
-/* ===========================================
-   DESCRIPTION
-=========================================== */
-
-.hh__cardDescription{
-
-    margin:0;
-
-    color:#fff;
-
-    font-size:18px;
-
-    line-height:1.8;
-
-}
-
-/* ===========================================
-   ORANGE BUTTON
-=========================================== */
-
-.hh__circle{
-
-    width:34px;
-
-    height:34px;
-
-    border-radius:50%;
-
-    background:#F49A2D;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    flex:none;
-
+  .hh *,
+  .hh *::before,
+  .hh *::after{
+    animation:none !important;
+    transition:none !important;
+  }
 }

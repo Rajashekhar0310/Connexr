@@ -1,0 +1,95 @@
+.blog-callout{
+
+    padding:90px 0;
+
+}
+
+.callout-card{
+
+    padding:60px;
+
+    border-radius:20px;
+
+}
+
+.callout-icon{
+
+    width:70px;
+
+    margin-bottom:30px;
+
+}
+
+.callout-card h3{
+
+    font-size:34px;
+
+    margin-bottom:25px;
+
+    color:#132238;
+
+}
+
+.callout-content{
+
+    font-size:18px;
+
+    line-height:1.8;
+
+}
+
+.callout-btn{
+
+    display:inline-flex;
+
+    margin-top:35px;
+
+    padding:15px 35px;
+
+    border-radius:50px;
+
+    text-decoration:none;
+
+    background:#F58220;
+
+    color:#fff;
+
+}
+
+.blog-callout.primary .callout-card{
+
+    background:#FFF8F1;
+
+}
+
+.blog-callout.secondary .callout-card{
+
+    background:#F5F7FA;
+
+}
+
+.blog-callout.warning .callout-card{
+
+    background:#FFF4E5;
+
+}
+
+.blog-callout.success .callout-card{
+
+    background:#F2FFF5;
+
+}
+
+.blog-callout.dark .callout-card{
+
+    background:#132238;
+
+    color:#fff;
+
+}
+
+.blog-callout.dark h3{
+
+    color:#fff;
+
+}

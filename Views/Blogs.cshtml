@@ -1,164 +1,213 @@
-﻿@using Umbraco.Cms.Core.Models
+﻿@using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Cms.Core.Models.PublishedContent
-@using Umbraco.Extensions
 
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 
 @{
-    Layout = "master.cshtml";
+    Layout = "Master.cshtml";
 
-    var title = Model.Value<string>("blogTitle");
-    var shortDescription = Model.Value<string>("shortDescription");
-    var category = Model.Value<string>("category");
-    var author = Model.Value<string>("author");
-    var readingTime = Model.Value<string>("readingTime");
-    var publishDate = Model.Value<DateTime>("publishDate");
-
-    var heroImage = Model.Value<IPublishedContent>("heroImage2");
-    var heroVideo = Model.Value<IPublishedContent>("video");
-
-    var heroMediaType = Model.Value<string>("heroMediaType") ?? "Image";
+    var sections = Model.Value<BlockListModel>("blogSections");
 }
 
-<section class="blog-hero">
+<link rel="stylesheet" href="~/css/blogs.css" />
 
-    <div class="blog-container">
+<div class="blog-page">
 
-        <div class="blog-hero-grid">
+    @* Render Hero Block *@
+    @{
+        var hero = sections?.FirstOrDefault(x => x.Content.ContentType.Alias == "blogHeroSection");
+    }
 
-            <div class="blog-left">
+    @if (hero != null)
+    {
+        @await Html.PartialAsync("~/Views/Partials/BlockList/Components/blogHeroSection.cshtml", hero)
+    }
 
-                @if (!string.IsNullOrWhiteSpace(category))
-                {
-                    <span class="blog-category">@category</span>
-                }
+    <section class="blog-wrapper">
 
-                <h1>@title</h1>
+        <div class="container">
 
-                @if (!string.IsNullOrWhiteSpace(shortDescription))
-                {
-                    <p class="blog-description">
-                        @shortDescription
-                    </p>
-                }
+            <div class="blog-layout">
 
-            </div>
+                <!-- Left Navigation -->
+                <aside class="blog-sidebar">
 
-            <div class="blog-right">
+                    <div class="blog-toc">
 
-                @if (!string.IsNullOrWhiteSpace(author))
-                {
-                    <div class="meta">
+                        @{
+                            int index = 1;
 
-                        <span>Author</span>
+                            foreach (var item in sections.Where(x => x.Content.ContentType.Alias == "blogContentSection"))
+                            {
+                                var sectionId = item.Content.Value<string>("sectionId");
+                                var heading = item.Content.Value<string>("heading");
 
-                        <strong>@author</strong>
+                                <a href="#@sectionId"
+                                   class="toc-link"
+                                   data-target="@sectionId">
+
+                                    <span>@index.ToString("D2")</span>
+
+                                    @heading
+
+                                </a>;
+
+                                index++;
+                            }
+                        }
 
                     </div>
-                }
 
-                <div class="meta">
+                </aside>
 
-                    <span>Published</span>
+                <!-- Right Content -->
+                <div class="blog-content">
 
-                    <strong>@publishDate.ToString("dd MMM yyyy")</strong>
+                   @foreach (var item in sections.Where(x => x.Content.ContentType.Alias != "blogHeroSection"))
+{
+    switch (item.Content.ContentType.Alias)
+    {
+        case "blogContentSection":
+            @await Html.PartialAsync(
+                "~/Views/Partials/BlockList/Components/blogContentSection.cshtml",
+                item)
+            break;
+
+        case "blogBannerSection":
+            @await Html.PartialAsync(
+                "~/Views/Partials/BlockList/Components/blogBannerSection.cshtml",
+                item)
+            break;
+
+        case "blogQuoteSection":
+            @await Html.PartialAsync(
+                "~/Views/Partials/BlockList/Components/blogQuoteSection.cshtml",
+                item)
+            break;
+
+        case "blogVideoSection":
+            @await Html.PartialAsync(
+                "~/Views/Partials/BlockList/Components/blogVideoSection.cshtml",
+                item)
+            break;
+
+        case "blogCalloutSection":
+            @await Html.PartialAsync(
+                "~/Views/Partials/BlockList/Components/blogCalloutSection.cshtml",
+                item)
+            break;
+
+        case "blogCtaSection":
+            @await Html.PartialAsync(
+                "~/Views/Partials/BlockList/Components/blogCtaSection.cshtml",
+                item)
+            break;
+    }
+}
 
                 </div>
 
-                @if (!string.IsNullOrWhiteSpace(readingTime))
+            </div>
+
+        </div>
+
+    </section>
+
+   @{
+    var relatedBlogs = Model.Parent()?
+        .ChildrenOfType("blogsPage")
+        .Where(x => x.Id != Model.Id)
+        .OrderByDescending(x => x.Value<DateTime>("publishDate"))
+        .Take(4)
+        .ToList() ?? new List<IPublishedContent>();
+}
+
+@if (relatedBlogs.Any())
+{
+    <section class="insight-blog-related-section">
+
+        <div class="insight-blog-container">
+
+            <div class="insight-blog-section-header">
+
+                <h2>Related Insights</h2>
+
+                <p>
+                    Continue reading our latest insights and articles.
+                </p>
+
+            </div>
+
+            <div class="insight-blog-related-grid">
+
+                @foreach (var blog in relatedBlogs)
                 {
-                    <div class="meta">
+                    var blogTitle = blog.Value<string>("blogTitle");
+                    var blogDescription = blog.Value<string>("shortDescription");
+                    var blogImage = blog.Value<IPublishedContent>("image");
+                    var blogCategory = blog.Value<string>("category");
+                    var blogDate = blog.Value<DateTime>("publishDate");
+                    var blogReadingTime = blog.Value<string>("readingTime");
 
-                        <span>Reading Time</span>
+                    <a href="@blog.Url()"
+                       class="insight-blog-related-card">
 
-                        <strong>@readingTime</strong>
+                        @if (blogImage != null)
+                        {
+                            <div class="insight-blog-related-image">
 
-                    </div>
+                                <img src="@blogImage.Url()"
+                                     alt="@blogTitle" />
+
+                            </div>
+                        }
+
+                        <div class="insight-blog-related-content">
+
+                            @if (!string.IsNullOrWhiteSpace(blogCategory))
+                            {
+                                <span class="insight-blog-related-category">
+                                    @blogCategory
+                                </span>
+                            }
+
+                            <h3>
+                                @blogTitle
+                            </h3>
+
+                            @if (!string.IsNullOrWhiteSpace(blogDescription))
+                            {
+                                <p>
+                                    @blogDescription
+                                </p>
+                            }
+
+                            <div class="insight-blog-related-meta">
+
+                                <span>
+                                    @blogDate.ToString("dd MMM yyyy")
+                                </span>
+
+                                @if (!string.IsNullOrWhiteSpace(blogReadingTime))
+                                {
+                                    <span>
+                                        • @blogReadingTime
+                                    </span>
+                                }
+
+                            </div>
+
+                        </div>
+
+                    </a>
                 }
 
             </div>
 
         </div>
 
-    </div>
+    </section>
+}
+</div>
 
-</section> 
-
- <section class="blog-media">
-
-    <div class="blog-container">
-
-        @if (heroMediaType == "Video" && heroVideo != null)
-        {
-            <video autoplay
-                   muted
-                   loop
-                   playsinline
-                   controls>
-
-                <source src="@heroVideo.Url()" type="video/mp4"/>
-
-            </video>
-        }
-        else if(heroImage != null)
-        {
-            <img src="@heroImage.Url()"
-                 alt="@title" />
-        }
-
-    </div>
-
-</section> -->
-
-<section class="blog-wrapper">
-
-    <div class="blog-container">
-
-        <aside class="blog-navigation">
-
-            <div class="nav-sticky">
-
-                @{
-                    var blocks = Model.Value<Umbraco.Cms.Core.Models.Blocks.BlockListModel>("blogSections");
-                    var count = 1;
-                }
-
-                @if(blocks != null)
-                {
-                    foreach(var block in blocks)
-                    {
-                        var section = block.Content;
-
-                        var smallTitle = section.Value<string>("smallTitle");
-
-                        var sectionId = section.Value<string>("sectionId");
-
-                        <a href="#@sectionId"
-                           class="blog-nav-link">
-
-                            <span class="line"></span>
-
-                            <span class="number">
-                                @count.ToString("00")
-                            </span>
-
-                        </a>
-
-                        count++;
-                    }
-                }
-
-            </div>
-
-        </aside>
-
-        <div class="blog-content">
-
-            @await Html.GetBlockListHtmlAsync(Model,"blogSections")
-
-        </div>
-
-    </div>
-
-</section> -->
-<script src="/Scripts/bog-page.js"></script>
+<script src="~/scripts/bog-page.js"></script>

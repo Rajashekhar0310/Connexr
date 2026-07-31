@@ -19,5 +19,8 @@ public class NewsletterComposer : IComposer
         builder.AddNotificationAsyncHandler<
             UmbracoApplicationStartingNotification,
             RunNewsletterMigrations>();
+        builder.AddNotificationAsyncHandler<
+    Umbraco.Cms.Core.Notifications.UmbracoApplicationStartingNotification,
+    RunCareerMigrations>();
     }
 }

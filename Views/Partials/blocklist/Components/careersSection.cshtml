@@ -145,12 +145,17 @@
 
                             </div>
 
-                            @if (applyLink != null)
+                           @if (applyLink != null)
                             {
-                                <a class="job__btn"
-                                   href="@applyLink.Url"
-                                   target="@applyLink.Target">
+                             <a class="job__btn apply-btn"
+                                href="javascript:void(0);"
+                                data-title="@jobTitle"
+                                data-location="@jobLocation"
+                                data-type="@jobType"
+                                data-experience="@jobExperience">
+
                                     @applyText <span>↗</span>
+
                                 </a>
                             }
 
@@ -178,4 +183,140 @@
 
     </section>
 }
+<!-- ===========================
+     Career Application Popup
+============================ -->
+<div id="applicationPopup" class="application-popup">
+
+    <div class="application-popup__content">
+
+        <button type="button" class="popup-close">&times;</button>
+
+        <div class="popup-header">
+
+            <span class="popup-tag">Current Opening</span>
+
+            <h2 id="popupJobTitle"></h2>
+
+            <div class="popup-meta">
+
+                <span id="popupLocation"></span>
+
+                <span id="popupType"></span>
+
+                <span id="popupExperience"></span>
+
+            </div>
+
+        </div>
+
+        <div class="popup-body">
+
+            <!-- LEFT SIDE -->
+            <div class="popup-job">
+
+                <h3>About the Role</h3>
+
+                <div id="popupDetails"></div>
+
+            </div>
+
+            <!-- RIGHT SIDE -->
+            <div class="popup-form">
+
+                <h3>Apply for this Position</h3>
+
+  <form id="careerApplicationForm"
+      action="/umbraco/surface/CareerSurface/SubmitApplication"
+      method="post"
+      enctype="multipart/form-data">
+
+    @Html.AntiForgeryToken()
+    
+
+    <input type="hidden" id="jobTitle" name="JobTitle" />
+
+    <div class="form-row">
+
+        <div class="form-group">
+            <label>Full Name *</label>
+            <input type="text"
+                   name="FullName"
+                   required />
+        </div>
+
+        <div class="form-group">
+            <label>Email *</label>
+            <input type="email"
+                   name="Email"
+                   required />
+        </div>
+
+    </div>
+
+    <div class="form-row">
+
+        <div class="form-group">
+            <label>Phone *</label>
+            <input type="tel"
+                   name="Phone"
+                   required />
+        </div>
+
+        <div class="form-group">
+            <label>Current Location</label>
+            <input type="text"
+                   name="CurrentLocation" />
+        </div>
+
+    </div>
+
+    <div class="form-row">
+
+        <div class="form-group">
+            <label>Experience</label>
+            <input type="text"
+                   name="Experience" />
+        </div>
+
+        <div class="form-group">
+            <label>Current Company</label>
+            <input type="text"
+                   name="CurrentCompany" />
+        </div>
+
+    </div>
+
+    <div class="form-group">
+        <label>LinkedIn</label>
+        <input type="url"
+               name="LinkedIn" />
+    </div>
+
+    <div class="form-group">
+        <label>Resume *</label>
+        <input type="file"
+               name="Resume"
+               accept=".pdf,.doc,.docx"
+               required />
+    </div>
+
+    <div class="form-group">
+        <label>Cover Letter</label>
+        <textarea name="CoverLetter"></textarea>
+    </div>
+
+    <button type="submit" class="submit-btn">
+        Submit Application
+    </button>
+</form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
 <script src="/Scripts/Careers/careers.js"></script>

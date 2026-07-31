@@ -1,0 +1,71 @@
+.blog-quote{
+
+    padding:90px 0;
+
+}
+
+.quote-wrapper{
+
+    max-width:950px;
+
+    margin:auto;
+
+}
+
+.quote-icon{
+
+    font-size:90px;
+
+    color:#F58220;
+
+    line-height:1;
+
+    margin-bottom:20px;
+
+}
+
+.quote-content{
+
+    font-size:34px;
+
+    line-height:1.5;
+
+    color:#102A43;
+
+}
+
+.quote-author{
+
+    margin-top:50px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+}
+
+.quote-author img{
+
+    width:70px;
+
+    height:70px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+}
+
+.quote-author h4{
+
+    margin:0;
+
+}
+
+.quote-author span{
+
+    color:#777;
+
+}

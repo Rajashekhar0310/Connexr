@@ -62,14 +62,28 @@
 .hc-banner__button{
     display:inline-flex;
     align-items:center;
-    justify-content:center;
-    padding:14px 28px;
+    justify-content:space-between;   /* text left, arrow right */
+    gap:20px;
+    padding:16px 30px;
+    min-width:230px;                 /* gives it width */
+    white-space:nowrap;              /* keeps text on one line */
     border-radius:40px;
     background:#ff8b3d;
     color:#fff;
     text-decoration:none;
     font-weight:600;
+    font-size:16px;
     transition:.3s;
+}
+
+.hc-banner__button:hover{
+    background:#e46d1c;
+}
+
+.hc-banner__button svg{
+    width:22px;
+    height:22px;
+    flex:none;
 }
 
 .hc-banner__button:hover{

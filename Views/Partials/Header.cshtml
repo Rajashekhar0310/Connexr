@@ -1,131 +1,490 @@
 ﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
 @using Umbraco.Cms.Web.Common.Views
+
 @inherits UmbracoViewPage
 
 @{
-    IPublishedContent home = Model.Root();
+    var home = Model.Root();
 
-     var navItems = home.Children()
+    var navItems = home.Children()
         .Where(x =>
             x.IsVisible() &&
+            x.ContentType.Alias != "privacyPolicy" &&
+            x.ContentType.Alias != "leadership" &&
+             x.ContentType.Alias != "faqPage" &&
             x.ContentType.Alias != "siteData" &&
+            x.ContentType.Alias != "blogs" &&
+            x.ContentType.Alias != "contactUs" &&
+            x.ContentType.Alias != "page404" &&
             x.ContentType.Alias != "santthoshPurmani" &&
             x.ContentType.Alias != "sriniRagipally" &&
             x.ContentType.Alias != "suhaibAhmed" &&
             x.ContentType.Alias != "udayaVanteru" &&
-            x.ContentType.Alias != "blogs" &&
-            x.ContentType.Alias != "vijaySimhachalam" &&
-            x.ContentType.Alias != "page404")
+             x.ContentType.Alias != "partnersPage" &&
+             x.ContentType.Alias != "hrLogin" &&
+             x.ContentType.Alias != "hrApplications" &&
+            x.ContentType.Alias != "vijaySimhachalam")
         .ToList();
 
-    <!-- IPublishedContent logo = home.Value<IPublishedContent>("logo");
+    var logo = home.Value<IPublishedContent>("logo");
+   var ctaText = home.Value<string>("headerCtaText") ?? "Get in Touch";
 
-    string ctaText = home.Value<string>("headerCtaText") ?? "Get in Touch";
-    Link ctaLink = home.Value<Link>("headerCtaLink"); -->
-        
-
-
-    IPublishedContent logo = home.Value<IPublishedContent>("logo");
-
-    string ctaText = home.Value<string>("headerCtaText") ?? "Get in Touch";
-    Link ctaLink = home.Value<Link>("headerCtaLink");
+    var ctaLinks = home.Value<IEnumerable<Link>>("headerCtaLink");
+    var ctaLink = ctaLinks?.FirstOrDefault();
 }
 
-<header class="site-header visible">
-
+<header class="site-header">
     <div class="header-wrapper">
-
         <div class="nav-container">
 
             <!-- Logo -->
             <div class="logo">
-                @if (logo != null)
-                {
-                    <a href="@home.Url()" title="Go to homepage">
+                <a href="@home.Url()">
+                    @if (logo != null)
+                    {
                         <img src="@logo.Url()"
-                             alt="@(logo.Value<string>("umbracoAltText") ?? logo.Name ?? "Logo")" />
-                    </a>
-                }
+                             alt="@(logo.Value<string>("umbracoAltText") ?? logo.Name)" />
+                    }
+                </a>
             </div>
 
-            <!-- Navigation -->
-            @if (navItems.Any())
-            {
-                <nav class="main-nav" id="mainNav">
-                    <ul>
-                        @foreach (var item in navItems)
+            <!-- Right Side -->
+            <div class="header-right">
+
+                <nav class="main-nav">
+                   <ul>
+
+          @foreach (var item in navItems)
+{
+    <!-- var children = item.Children()
+        .Where(x => x.IsVisible())
+        .ToList(); -->
+        var children = item.Children()
+    .Where(x =>
+        x.IsVisible() &&
+        x.ContentType.Alias != "partnersPage" &&
+        x.Name != "Privacy Policy" &&
+        x.Name != "Cookie Policy")
+    .ToList();
+
+    bool active = Model.Id == item.Id ||
+                  Model.Ancestors().Any(x => x.Id == item.Id);
+
+    bool isWhatWeBuild = item.ContentType.Alias == "whatWeBuild";
+    bool isIndustries = item.ContentType.Alias == "industries";
+    bool isInsights = item.ContentType.Alias == "insights";
+
+    <li class="@((isWhatWeBuild || isIndustries || isInsights || children.Any()) ? "has-dropdown" : "") @(active ? "active" : "")">
+
+        <a href="@item.Url()">
+            @item.Name
+        </a>
+
+        @* ===========================
+           WHAT WE BUILD
+        ============================ *@
+
+        @if (isWhatWeBuild)
+        {
+            var menuTitle = item.Value<string>("menuLeftTitle");
+
+            var rightImage = item.Value<IPublishedContent>("menuRightImage");
+
+            var rightHeading = item.Value<string>("menuRightHeading");
+
+            var rightDescription = item.Value<string>("menuRightDescription");
+
+            var buttonLinks = item.Value<IEnumerable<Link>>("megaMenuButtonLink");
+
+            var buttonLink = buttonLinks?.FirstOrDefault();
+
+            <div class="mega-menu">
+
+                <div class="mega-container">
+
+                    <!-- LEFT -->
+
+                    <div class="mega-left">
+
+                        <h3>@menuTitle</h3>
+
+                    </div>
+
+                    <!-- CENTER -->
+
+                    <div class="mega-center">
+
+                        <ul>
+
+                            @foreach (var child in children)
+                            {
+                                <li>
+
+                                    <a href="@child.Url()">
+
+                                        @child.Name
+
+                                    </a>
+
+                                </li>
+                            }
+
+                        </ul>
+
+                    </div>
+
+                    <!-- RIGHT -->
+
+                    <div class="mega-right">
+
+                        @if (rightImage != null)
                         {
-                            var childItems = item.Children()
-                                .Where(x => x.IsVisible())
-                                .ToList();
-
-                            <li class="@(childItems.Any() ? "has-submenu" : "")">
-
-                                <a href="@item.Url()">
-                                    @item.Name
-
-                                    @if (childItems.Any())
-                                    {
-                                        <span class="submenu-arrow">⌄</span>
-                                    }
-                                </a>
-
-                                @if (childItems.Any())
-                                {
-                                    <button class="submenu-toggle"
-                                            type="button"
-                                            aria-label="Toggle submenu"
-                                            aria-expanded="false">⌄</button>
-
-                                    <ul class="submenu">
-                                        @for (var i = 0; i < childItems.Count; i++)
-                                        {
-                                            <li style="--i:@i">
-                                                <a href="@childItems[i].Url()">
-                                                    @childItems[i].Name
-                                                </a>
-                                            </li>
-                                        }
-                                    </ul>
-                                }
-
-                            </li>
+                            <img src="@rightImage.Url()"
+                                 alt="@rightImage.Name" />
                         }
-                    </ul>
-                </nav>
-            }
 
-            <!-- CTA -->
-            @if (ctaLink != null && !string.IsNullOrWhiteSpace(ctaText))
-            {
-                <a href="@ctaLink.Url"
-                   target="@(string.IsNullOrWhiteSpace(ctaLink.Target) ? "_self" : ctaLink.Target)"
-                   class="header-btn">
+                        <div class="mega-overlay">
 
-                    <span>@ctaText</span>
-                    <span>↗</span>
+                            <h3>@rightHeading</h3>
 
-                </a>
-            }
+                            <p>@rightDescription</p>
 
-            <!-- Burger -->
-            <button class="nav-burger"
-                    id="navBurger"
-                    type="button"
-                    aria-label="Open menu"
-                    aria-expanded="false"
-                    aria-controls="mainNav">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
+                            @if (buttonLink != null)
+                            {
+                                <a href="@buttonLink.Url"
+                                   class="mega-arrow"
+                                   target="@(string.IsNullOrWhiteSpace(buttonLink.Target) ? "_self" : buttonLink.Target)">
+
+                                    <svg width="18"
+                                         height="18"
+                                         viewBox="0 0 24 24"
+                                         fill="none">
+
+                                        <path d="M7 17L17 7M17 7H9M17 7V15"
+                                              stroke="currentColor"
+                                              stroke-width="2"
+                                              stroke-linecap="round"
+                                              stroke-linejoin="round" />
+
+                                    </svg>
+
+                                </a>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+        @* ===========================
+   INDUSTRIES
+=========================== *@
+
+else if (isIndustries)
+{
+    var leftTitle = item.Value<string>("menuLeftTitle");
+
+    var stats = item.Value<BlockListModel>("statisticsCards");
+
+    <div class="mega-menu">
+
+        <div class="mega-container">
+
+            <!-- LEFT -->
+
+            <div class="mega-left">
+
+                <h3>@leftTitle</h3>
+
+            </div>
+
+            <!-- CENTER -->
+
+            <div class="mega-center">
+
+                <ul>
+
+                    @foreach (var child in children)
+                    {
+                        <li>
+
+                            <a href="@child.Url()">
+
+                                @child.Name
+
+                            </a>
+
+                        </li>
+                    }
+
+                </ul>
+
+            </div>
+
+            <!-- RIGHT -->
+
+            <div class="industry-stats">
+
+                @if (stats != null)
+                {
+                    foreach (var block in stats)
+                    {
+                        var stat = block.Content;
+
+                        var number = stat.Value<string>("number");
+                        var heading = stat.Value<string>("heading");
+                        var description = stat.Value<string>("description");
+
+                        <div class="stat-card">
+
+                            <h2>@number</h2>
+
+                            <h4>@heading</h4>
+
+                            <p>@description</p>
+
+                        </div>
+                    }
+                }
+
+            </div>
 
         </div>
 
     </div>
+}
+@* ===========================
+   INSIGHTS
+=========================== *@
 
+else if (isInsights)
+{
+    var leftTitle = item.Value<string>("menuLeftTitle");
+
+    var rightImage = item.Value<IPublishedContent>("menuRightImage");
+
+    var rightHeading = item.Value<string>("menuRightHeading");
+
+    var rightDescription = item.Value<string>("menuRightDescription");
+
+    var buttonLinks = item.Value<IEnumerable<Link>>("megaMenuButtonLink");
+
+    var buttonLink = buttonLinks?.FirstOrDefault();
+
+    <div class="mega-menu">
+
+        <div class="mega-container">
+
+            <!-- LEFT -->
+
+            <div class="mega-left">
+
+                <h3>@leftTitle</h3>
+
+            </div>
+
+            <!-- CENTER -->
+
+            <div class="mega-center">
+
+                <ul>
+
+                    <li>
+                        <a href="/insights?category=blog">
+                            Blogs
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/insights?category=case-study">
+                            Case Studies
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/insights?category=news">
+                            News
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/insights?category=whitepaper">
+                            Whitepapers
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+            <!-- RIGHT -->
+
+            <div class="mega-right">
+
+                @if (rightImage != null)
+                {
+                    <img src="@rightImage.Url()"
+                         alt="@rightImage.Name" />
+                }
+
+                <div class="mega-overlay">
+
+                    <h3>@rightHeading</h3>
+
+                    <p>@rightDescription</p>
+
+                    @if (buttonLink != null)
+                    {
+                        <a href="@buttonLink.Url"
+                           class="mega-arrow"
+                           target="@(string.IsNullOrWhiteSpace(buttonLink.Target) ? "_self" : buttonLink.Target)">
+
+                            <svg width="18"
+                                 height="18"
+                                 viewBox="0 0 24 24"
+                                 fill="none">
+
+                                <path d="M7 17L17 7M17 7H9M17 7V15"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+
+                            </svg>
+
+                        </a>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+}
+@* ===========================
+   NORMAL DROPDOWN
+=========================== *@
+
+else if (children.Any())
+{
+    <ul class="dropdown">
+
+        @foreach (var child in children)
+        {
+            <li>
+
+                <a href="@child.Url()">
+
+                    @child.Name
+
+                </a>
+
+            </li>
+        }
+
+    </ul>
+}
+
+    </li>
+}
+
+            </ul>
+                </nav>
+
+               @if (ctaLink != null)
+                    {
+                        <a href="@ctaLink.Url"
+                        class="header-btn"
+                        target="@(string.IsNullOrWhiteSpace(ctaLink.Target) ? "_self" : ctaLink.Target)">
+
+                            <span>@ctaText</span>
+
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                <path d="M7 17L17 7M17 7H9M17 7V15"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"/>
+                            </svg>
+
+                        </a>
+                    }
+
+                <button id="navBurger"
+                        class="nav-burger"
+                        type="button"
+                        aria-label="Toggle Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+            </div>
+        </div>
+    </div>
 </header>
 
-<div class="nav-overlay" id="navOverlay"></div>
+<!-- Mobile Navigation -->
+<div class="mobile-nav" id="mobileNav">
+    <div class="mobile-inner">
 
-<script src="~/scripts/Home/Header.js" defer></script>
+        <ul>
+            @foreach (var item in navItems)
+            {
+                <!-- var children = item.Children()
+                    .Where(x => x.IsVisible())
+                    .ToList(); -->
+                    var children = item.Children()
+                    .Where(x =>
+                        x.IsVisible() &&
+                        x.ContentType.Alias != "partnersPage" &&
+                        x.ContentType.Alias != "privacyPolicy")
+                    .ToList();
+
+                <li>
+                    <div class="mobile-link">
+                        <a href="@item.Url()">
+                            @item.Name
+                        </a>
+                    </div>
+
+                   @if (children.Any())
+                    {
+                        <ul class="mobile-submenu">
+                            @foreach (var child in children)
+                            {
+                                <li>
+                                    <a href="@child.Url()">
+                                        @child.Name
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </li>
+            }
+        </ul>
+
+        @if (ctaLink != null)
+        {
+            <a href="@ctaLink.Url"
+               class="mobile-btn"
+               target="@(string.IsNullOrWhiteSpace(ctaLink.Target) ? "_self" : ctaLink.Target)">
+                @ctaText
+            </a>
+        }
+
+    </div>
+</div>
+
+<div class="mobile-overlay" id="mobileOverlay"></div>
+
+
+<script src="~/scripts/Home/Header.js" asp-append-version="true"></script>

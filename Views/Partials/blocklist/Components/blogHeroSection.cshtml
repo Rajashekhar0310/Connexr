@@ -1,0 +1,118 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@inherits UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var highlightText = content.Value<string>("highlightText");
+    var category = content.Value<string>("category");
+    var title = content.Value<string>("title");
+    var description = content.Value<string>("description");
+
+    var author = content.Value<string>("author");
+    var publishDate = content.Value<DateTime?>("publishDate");
+    var readingTime = content.Value<string>("readingTime");
+
+    var keyTakeaways = content.Value<string>("keyTakeaways");
+
+    var mediaType = content.Value<string>("mediaType");
+    var heroImage = content.Value<MediaWithCrops>("heroImage");
+    var heroVideo = content.Value<MediaWithCrops>("heroVideo");
+}
+
+<section class="blog-hero">
+
+    <div class="container">
+
+        <div class="blog-hero-grid">
+
+            <!-- Left Side -->
+            <div class="blog-left">
+
+                @if (!string.IsNullOrWhiteSpace(highlightText))
+                {
+                    <div class="hero-highlight">
+                        @highlightText
+                    </div>
+                }
+
+                <span class="blog-category">
+                    @category
+                </span>
+
+                <h1 class="blog-title">
+                    @title
+                </h1>
+
+                <p class="blog-description">
+                    @description
+                </p>
+
+            </div>
+
+            <!-- Right Side -->
+            <div class="blog-right">
+
+                <div class="blog-meta">
+
+                    @if (!string.IsNullOrWhiteSpace(author))
+                    {
+                        <div class="meta-item">
+                            <strong>Author</strong>
+                            <span>@author</span>
+                        </div>
+                    }
+
+                    @if (publishDate.HasValue)
+                    {
+                        <div class="meta-item">
+                            <strong>Published</strong>
+                            <span>@publishDate.Value.ToString("dd MMM yyyy")</span>
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(readingTime))
+                    {
+                        <div class="meta-item">
+                            <strong>Reading Time</strong>
+                            <span>@readingTime</span>
+                        </div>
+                    }
+
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(keyTakeaways))
+                {
+                    <div class="key-takeaways">
+
+                        <h3>Key Takeaways</h3>
+
+                        @Html.Raw(keyTakeaways)
+
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+        <!-- Hero Media -->
+        <div class="blog-hero-media">
+
+            @if (mediaType == "Video" && heroVideo != null)
+            {
+                <video autoplay muted loop playsinline>
+                    <source src="@heroVideo.MediaUrl()" type="video/mp4" />
+                </video>
+            }
+            else if (heroImage != null)
+            {
+                <img src="@heroImage.MediaUrl()" alt="@title" />
+            }
+
+        </div>
+
+    </div>
+
+</section>

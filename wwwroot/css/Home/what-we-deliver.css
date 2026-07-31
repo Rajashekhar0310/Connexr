@@ -341,7 +341,36 @@
 .deliver-card.active .deliver-toggle .minus {
     display: block;
 }
+/* ======================================================
+   LAPTOP - keep the CTA inside the content panel
+====================================================== */
 
+@media (min-width: 1101px) and (max-width: 1600px) {
+
+    /* let the active panel grow to fit title + description + button
+       instead of being pinned to a fixed top */
+    .deliver-card.active .deliver-content {
+        top: auto;
+        max-height: 68%;
+        overflow-y: auto;
+        padding-bottom: 22px;
+    }
+
+    /* tighten spacing so everything fits without scrolling on most laptops */
+    .deliver-card.active .deliver-content h3 {
+        margin-bottom: 12px;
+        font-size: 22px;
+    }
+
+    .deliver-description {
+        font-size: 16px;
+        line-height: 1.55;
+    }
+
+    .deliver-link {
+        margin-top: 16px;
+    }
+}
 
 /* TABLET */
 

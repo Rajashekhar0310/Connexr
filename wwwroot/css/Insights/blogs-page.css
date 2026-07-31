@@ -778,3 +778,84 @@ RESPONSIVE
 }
 
 }
+.blog-layout{
+
+    display:grid;
+
+    grid-template-columns:300px 1fr;
+
+    gap:70px;
+
+}
+
+.blog-sidebar{
+
+    position:relative;
+
+}
+
+.blog-toc{
+
+    position:sticky;
+
+    top:140px;
+
+}
+
+.toc-link{
+
+    display:flex;
+
+    gap:15px;
+
+    align-items:center;
+
+    margin-bottom:22px;
+
+    text-decoration:none;
+
+    color:#666;
+
+    transition:.3s;
+
+}
+
+.toc-link span{
+
+    color:#F58220;
+
+    font-weight:600;
+
+    width:35px;
+
+}
+
+.toc-link.active{
+
+    color:#132238;
+
+    font-weight:600;
+
+}
+
+.toc-link.active span{
+
+    color:#F58220;
+
+}
+
+@media(max-width:1200px){
+
+.blog-layout{
+
+    grid-template-columns:1fr;
+
+}
+
+.blog-sidebar{
+
+    display:none;
+
+}
+
+}

@@ -1,0 +1,710 @@
+/* ==========================================================================
+   CNX Contact Hero
+   Part 1 - Hero Layout
+   ========================================================================== */
+
+:root{
+    --navy:#152a63;
+    --navy-deep:#13235f;
+    --orange:#f58220;
+    --orange-light:#ff9a48;
+    --ink:#122560;
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:'Poppins',system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    color:var(--ink);
+    background:#eef2f7;
+    -webkit-font-smoothing:antialiased;
+}
+
+/* ==========================================================
+   HERO SECTION
+   ========================================================== */
+
+.contact-hero{
+    position:relative;
+    padding:150px 0 0;
+    isolation:isolate;
+}
+
+/* Background Image */
+.contact-hero__scene{
+    position:absolute;
+    inset:0;
+    background-image:var(--scene);
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-color:#6f7f92;
+    z-index:-2;
+}
+
+/* Overlay */
+.contact-hero__veil{
+    position:absolute;
+    inset:0;
+    z-index:-1;
+    background:linear-gradient(
+        100deg,
+        rgba(10,22,52,.72) 0%,
+        rgba(10,22,52,.50) 40%,
+        rgba(10,22,52,.30) 64%,
+        rgba(10,22,52,.44) 100%
+    );
+}
+
+/* ==========================================================
+   MAIN CONTAINER
+   ========================================================== */
+
+.contact-hero__wrap{
+
+    width:96%;
+    max-width:1600px;
+    margin:0 auto;
+
+    display:grid;
+
+    /* Left content + Right form */
+    grid-template-columns:minmax(980px,1fr) 430px;
+
+    gap:50px;
+
+    align-items:end;
+
+    min-height:720px;
+}
+
+/* Left Column */
+.contact-hero__wrap > div:first-child{
+    display:flex;
+    flex-direction:column;
+    height:100%;
+}
+
+/* Push office cards to bottom */
+.contact-hero__wrap > div:first-child .offices{
+    margin-top:auto;
+}
+
+/* ==========================================================
+   BREADCRUMB
+   ========================================================== */
+
+.contact-hero__crumbs{
+
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    margin-bottom:34px;
+
+    color:#fff;
+
+    font-size:10px;
+
+    font-weight:700;
+
+    letter-spacing:1.5px;
+
+    text-transform:uppercase;
+}
+
+.contact-hero__crumbs a{
+
+    color:inherit;
+
+    opacity:.75;
+
+    text-decoration:none;
+
+    transition:.3s;
+}
+
+.contact-hero__crumbs a:hover{
+
+    color:var(--orange-light);
+
+    opacity:1;
+}
+
+.contact-hero__crumbs span{
+
+    opacity:.5;
+}
+
+/* ==========================================================
+   TITLE
+   ========================================================== */
+
+.contact-hero__title{
+
+    color:#fff;
+
+    font-size:clamp(40px,4vw,58px);
+
+    font-weight:700;
+
+    line-height:1.18;
+
+    letter-spacing:-0.02em;
+
+    margin-bottom:22px;
+
+    max-width:760px;
+}
+
+/* ==========================================================
+   DESCRIPTION
+   ========================================================== */
+
+.contact-hero__lead{
+
+    color:rgba(255,255,255,.88);
+
+    font-size:17px;
+
+    line-height:1.85;
+
+    max-width:46ch;
+
+    margin-bottom:50px;
+}
+/* ==========================================================================
+   PART 2 - OFFICE CARDS (315 × 315)
+   ========================================================================== */
+
+.offices{
+    display:grid;
+    grid-template-columns:repeat(3,315px);
+    gap:24px;
+    align-items:stretch;
+    justify-content:flex-start;
+}
+
+/* ==========================================================
+   OFFICE CARD
+   ========================================================== */
+
+.office{
+
+    position:relative;
+
+    width:315px;
+    height:315px;
+
+    display:flex;
+    flex-direction:column;
+
+    padding:34px 30px;
+
+    background:rgba(18,32,70,.42);
+
+    backdrop-filter:blur(7px);
+    -webkit-backdrop-filter:blur(7px);
+
+    border-top:4px solid transparent;
+
+    color:#fff;
+
+    overflow:hidden;
+
+    box-shadow:0 14px 34px rgba(10,22,52,.18);
+
+    transition:
+        transform .4s cubic-bezier(.22,.7,.28,1),
+        background .4s ease,
+        color .4s ease,
+        border-color .4s ease,
+        box-shadow .4s ease;
+}
+
+.office:hover,
+.office:focus-within{
+
+    transform:translateY(-12px);
+
+    background:#fff;
+
+    color:var(--ink);
+
+    border-top-color:var(--navy-deep);
+
+    box-shadow:0 26px 56px rgba(10,22,52,.26);
+}
+
+/* ==========================================================
+   ICON
+   ========================================================== */
+
+.office__icon{
+
+    width:34px;
+    height:34px;
+
+    flex:none;
+
+    margin-bottom:60px;
+
+    color:var(--orange-light);
+
+    transition:color .35s ease;
+}
+
+.office:hover .office__icon,
+.office:focus-within .office__icon{
+
+    color:var(--orange);
+}
+
+/* ==========================================================
+   TITLE
+   ========================================================== */
+
+.office__name{
+
+    font-size:22px;
+
+    font-weight:600;
+
+    line-height:1.35;
+
+    margin-bottom:18px;
+
+    color:#fff;
+
+    transition:color .35s ease;
+}
+
+.office:hover .office__name,
+.office:focus-within .office__name{
+
+    color:var(--navy-deep);
+}
+
+/* ==========================================================
+   ADDRESS
+   ========================================================== */
+
+.office__address{
+
+    font-size:15px;
+
+    line-height:1.9;
+
+    color:rgba(255,255,255,.90);
+
+    transition:color .35s ease;
+}
+
+.office:hover .office__address,
+.office:focus-within .office__address{
+
+    color:#5d6885;
+}
+
+/* ==========================================================
+   SPACER
+   ========================================================== */
+
+.office__content{
+
+    flex:1;
+
+    display:flex;
+
+    flex-direction:column;
+}
+
+/* ==========================================================
+   DOTS
+   ========================================================== */
+
+.office__dots{
+
+    display:flex;
+
+    gap:6px;
+
+    margin-top:auto;
+
+    padding-top:26px;
+
+    color:var(--orange-light);
+
+    transition:color .35s ease;
+}
+
+.office:hover .office__dots,
+.office:focus-within .office__dots{
+
+    color:var(--orange);
+}
+
+.office__dots i{
+
+    width:6px;
+    height:6px;
+
+    border-radius:50%;
+
+    background:currentColor;
+
+    opacity:.65;
+}
+
+/* ==========================================================
+   OPTIONAL HOVER SHINE
+   ========================================================== */
+
+.office::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:linear-gradient(
+        135deg,
+        rgba(255,255,255,.12),
+        transparent 45%
+    );
+
+    opacity:0;
+
+    transition:opacity .4s;
+}
+
+.office:hover::before{
+
+    opacity:1;
+}
+/* ==========================================================================
+   PART 3 - CONTACT PANEL + RESPONSIVE
+   ========================================================================== */
+
+/* =========================
+   CONTACT PANEL
+   ========================= */
+
+.contact-panel{
+    background:#fff;
+    align-self:end;
+
+    box-shadow:0 26px 60px rgba(10,22,52,.24);
+
+    border-radius:0;
+
+    overflow:hidden;
+}
+
+/* Top Contact Bar */
+
+.contact-panel__bar{
+
+    display:flex;
+    flex-wrap:wrap;
+
+    gap:12px 26px;
+
+    padding:18px 28px;
+
+    background:var(--navy-deep);
+}
+
+.contact-panel__link{
+
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+
+    color:#fff;
+
+    font-size:13.5px;
+    font-weight:500;
+
+    text-decoration:none;
+
+    transition:.3s;
+}
+
+.contact-panel__link:hover{
+
+    color:var(--orange-light);
+}
+
+.contact-panel__link svg{
+
+    width:16px;
+    height:16px;
+
+    flex:none;
+
+    color:var(--orange-light);
+}
+
+/* =========================
+   FORM CONTAINER
+   ========================= */
+
+.contact-panel__form{
+
+    padding:8px 10px 24px;
+
+    max-height:660px;
+
+    overflow-y:auto;
+
+    overflow-x:hidden;
+
+    -webkit-overflow-scrolling:touch;
+
+    background:#fff;
+}
+
+/* Scrollbar */
+
+.contact-panel__form::-webkit-scrollbar{
+
+    width:8px;
+}
+
+.contact-panel__form::-webkit-scrollbar-track{
+
+    background:transparent;
+}
+
+.contact-panel__form::-webkit-scrollbar-thumb{
+
+    background:rgba(18,32,70,.28);
+
+    border-radius:20px;
+}
+
+.contact-panel__form::-webkit-scrollbar-thumb:hover{
+
+    background:rgba(18,32,70,.45);
+}
+
+.contact-panel__form{
+
+    scrollbar-width:thin;
+
+    scrollbar-color:rgba(18,32,70,.30) transparent;
+}
+
+/* iframe */
+
+.contact-panel__form iframe{
+
+    width:100%;
+
+    display:block;
+
+    border:none;
+
+    min-height:620px;
+}
+
+/* Bottom Spacer */
+
+.contact-hero__spacer{
+
+    height:60px;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width:1500px){
+
+    .contact-hero__wrap{
+
+        width:95%;
+
+        max-width:1500px;
+
+        grid-template-columns:minmax(900px,1fr) 400px;
+
+        gap:40px;
+    }
+
+    .offices{
+
+        grid-template-columns:repeat(3,290px);
+
+        gap:20px;
+    }
+
+    .office{
+
+        width:290px;
+
+        height:290px;
+    }
+}
+
+@media (max-width:1280px){
+
+    .contact-hero__wrap{
+
+        grid-template-columns:1fr 380px;
+
+        gap:35px;
+    }
+
+    .offices{
+
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .office{
+
+        width:100%;
+
+        height:300px;
+    }
+
+    .contact-panel__form{
+
+        max-height:620px;
+    }
+}
+
+@media (max-width:991px){
+
+    .contact-hero{
+
+        padding-top:110px;
+    }
+
+    .contact-hero__wrap{
+
+        grid-template-columns:1fr;
+
+        gap:40px;
+
+        min-height:auto;
+    }
+
+    .offices{
+
+        grid-template-columns:repeat(2,1fr);
+
+        gap:20px;
+    }
+
+    .office{
+
+        width:100%;
+
+        height:300px;
+    }
+
+    .contact-panel{
+
+        width:100%;
+    }
+
+    .contact-panel__form{
+
+        max-height:none;
+    }
+
+    .contact-panel__form iframe{
+
+        min-height:700px;
+    }
+
+    .contact-hero__spacer{
+
+        height:50px;
+    }
+}
+
+@media (max-width:767px){
+
+    .contact-hero{
+
+        padding-top:90px;
+    }
+
+    .offices{
+
+        grid-template-columns:1fr;
+    }
+
+    .office{
+
+        width:100%;
+
+        height:auto;
+
+        min-height:280px;
+
+        padding:28px 24px;
+    }
+
+    .office__icon{
+
+        width:30px;
+        height:30px;
+
+        margin-bottom:40px;
+    }
+
+    .office__name{
+
+        font-size:20px;
+    }
+
+    .office__address{
+
+        font-size:14px;
+    }
+
+    .contact-panel__bar{
+
+        padding:16px 20px;
+
+        gap:12px;
+    }
+
+    .contact-panel__link{
+
+        font-size:13px;
+    }
+
+    .contact-panel__form{
+
+        padding:6px;
+    }
+
+    .contact-panel__form iframe{
+
+        min-height:750px;
+    }
+}
+
+@media (prefers-reduced-motion:reduce){
+
+    .office,
+    .contact-panel__link{
+
+        transition:none;
+    }
+
+    .office:hover{
+
+        transform:none;
+    }
+}

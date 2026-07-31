@@ -1,0 +1,49 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@inherits UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var image = content.Value<MediaWithCrops>("bannerImage");
+    var caption = content.Value<string>("caption");
+
+    var fullWidth = content.Value<bool>("fullWidth");
+    var rounded = content.Value<bool>("roundedCorners");
+
+    var cssClass = "";
+
+    if (fullWidth)
+    {
+        cssClass += " full-width";
+    }
+
+    if (rounded)
+    {
+        cssClass += " rounded";
+    }
+}
+
+@if (image != null)
+{
+<section class="blog-banner-section@cssClass">
+
+    <div class="container">
+
+        <figure>
+
+            <img src="@image.MediaUrl()" alt="@caption" />
+
+            @if (!string.IsNullOrWhiteSpace(caption))
+            {
+                <figcaption>
+                    @caption
+                </figcaption>
+            }
+
+        </figure>
+
+    </div>
+
+</section>
+}

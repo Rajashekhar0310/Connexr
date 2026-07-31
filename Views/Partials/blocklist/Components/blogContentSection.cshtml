@@ -1,0 +1,124 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@inherits UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var sectionId = content.Value<string>("sectionId");
+    var smallTitle = content.Value<string>("smallTitle");
+    var heading = content.Value<string>("heading");
+    var body = content.Value<string>("content");
+
+    var image = content.Value<MediaWithCrops>("image");
+    var imagePosition = content.Value<string>("imagePosition") ?? "None";
+    var caption = content.Value<string>("imageCaption");
+}
+
+<section id="@sectionId" class="blog-content-section">
+
+    <div class="container">
+
+        @if (!string.IsNullOrWhiteSpace(smallTitle))
+        {
+            <div class="blog-small-title">
+                <span></span>
+                @smallTitle
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(heading))
+        {
+            <h2 class="blog-section-title">
+                @heading
+            </h2>
+        }
+
+        @switch (imagePosition)
+        {
+            case "Top":
+
+                if (image != null)
+                {
+                    <figure class="blog-image-full">
+
+                        <img src="@image.MediaUrl()" alt="@heading" />
+
+                        @if (!string.IsNullOrWhiteSpace(caption))
+                        {
+                            <figcaption>@caption</figcaption>
+                        }
+
+                    </figure>
+                }
+
+                <div class="blog-richtext">
+                    @Html.Raw(body)
+                </div>
+
+                break;
+
+            case "Left":
+
+                <div class="blog-two-column">
+
+                    @if (image != null)
+                    {
+                        <div class="blog-image">
+
+                            <img src="@image.MediaUrl()" alt="@heading" />
+
+                            @if (!string.IsNullOrWhiteSpace(caption))
+                            {
+                                <figcaption>@caption</figcaption>
+                            }
+
+                        </div>
+                    }
+
+                    <div class="blog-richtext">
+                        @Html.Raw(body)
+                    </div>
+
+                </div>
+
+                break;
+
+            case "Right":
+
+                <div class="blog-two-column reverse">
+
+                    <div class="blog-richtext">
+                        @Html.Raw(body)
+                    </div>
+
+                    @if (image != null)
+                    {
+                        <div class="blog-image">
+
+                            <img src="@image.MediaUrl()" alt="@heading" />
+
+                            @if (!string.IsNullOrWhiteSpace(caption))
+                            {
+                                <figcaption>@caption</figcaption>
+                            }
+
+                        </div>
+                    }
+
+                </div>
+
+                break;
+
+            default:
+
+                <div class="blog-richtext">
+                    @Html.Raw(body)
+                </div>
+
+                break;
+        }
+
+    </div>
+
+</section>

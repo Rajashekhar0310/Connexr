@@ -20,12 +20,16 @@
 
     var logo = footer.Value<IPublishedContent>("footerLogo");
     var heading = footer.Value<string>("footerHeading");
-    var cta = footer.Value<Link>("ctaButton");
-    var copyright = footer.Value<string>("copyrightText");
+var ctaLinks = footer.Value<IEnumerable<Link>>("ctaButton");
+        var copyright = footer.Value<string>("copyrightText");
 
     var navGroups = footer.Value<BlockListModel>("navigationGroups");
     var socialIcons = footer.Value<BlockListModel>("socialIcons");
+        var certifications = footer.Value<BlockListModel>("footerCertifications");
+            var legalLinks = footer.Value<BlockListModel>("footerLegalLinks");
+                
 }
+
 
 <footer class="site-footer">
 
@@ -33,97 +37,158 @@
 
         <div class="footer-top">
 
-            <div class="footer-left">
+    <!-- LEFT SIDE -->
+    <div class="footer-left">
 
-                @if (logo != null)
+        @if (!string.IsNullOrWhiteSpace(heading))
+        {
+            <h2>@heading</h2>
+        }
+
+        @if (certifications != null && certifications.Any())
+        {
+            <div class="footer-certifications">
+
+                @foreach (var block in certifications)
                 {
-                    <img src="@logo.Url()" alt="Footer Logo" class="footer-logo" />
-                }
+                    var content = block.Content;
 
-                @if (!string.IsNullOrWhiteSpace(heading))
-                {
-                    <h2>@heading</h2>
-                }
+                    var title = content.Value<string>("title");
+                    var image = content.Value<IPublishedContent>("logo");
+                    var link = content.Value<Link>("link");
 
-                @if (cta != null)
-                {
-                    <a href="@cta.Url" class="footer-cta" target="@cta.Target">
-                        @cta.Name
-                    </a>
-                }
+                    <div class="certification-card">
 
-            </div>
+                        <!-- @if (!string.IsNullOrWhiteSpace(title))
+                        {
+                            <span class="certification-title">@title</span>
+                        } -->
+                        @if (!string.IsNullOrWhiteSpace(title))
+{
+    <span class="certification-title">@Html.Raw(Html.Encode(title).Replace("|", "<br />"))</span>
+}
 
-            <div class="footer-right">
-
-                @if (navGroups != null)
-                {
-                    foreach (var block in navGroups)
-                    {
-                        var content = block.Content;
-
-                        var title = content.Value<string>("groupTitle");
-                        var links = content.Value<IEnumerable<Link>>("links");
-
-                        <div class="footer-column">
-
-                            <h4>@title</h4>
-
-                            <ul>
-
-                                @if (links != null)
-                                {
-                                    foreach (var link in links)
-                                    {
-                                        <li>
-                                            <a href="@link.Url" target="@link.Target">
-                                                @link.Name
-                                            </a>
-                                        </li>
-                                    }
-                                }
-
-                            </ul>
-
-                        </div>
-                    }
-                }
-
-            </div>
-
-        </div>
-
-        <div class="footer-bottom">
-
-            <div class="footer-social">
-
-                @if (socialIcons != null)
-                {
-                    foreach (var block in socialIcons)
-                    {
-                        var content = block.Content;
-
-                        var icon = content.Value<IPublishedContent>("socialIcon");
-                        var socialUrl = content.Value<string>("socialLink");
-
-                        <a href="@socialUrl" target="_blank">
-
-                            @if (icon != null)
+                        @if (image != null)
+                        {
+                            if (link != null)
                             {
-                                <img src="@icon.Url()" alt="" width="40px" height="40px" />
+                                <a href="@link.Url" target="@link.Target">
+                                    <img src="@image.Url()" alt="@title" />
+                                </a>
                             }
+                            else
+                            {
+                                <img src="@image.Url()" alt="@title" />
+                            }
+                        }
 
-                        </a>
-                    }
+                    </div>
                 }
 
             </div>
+        }
+
+        <div class="footer-brand">
+
+            @if (logo != null)
+            {
+                <img src="@logo.Url()" class="footer-logo" alt="Footer Logo" />
+            }
 
             <div class="footer-copyright">
                 @copyright
             </div>
 
         </div>
+
+    </div>
+
+    <!-- RIGHT SIDE -->
+<!-- RIGHT SIDE -->
+<div class="footer-right">
+
+    @if (navGroups != null && navGroups.Any())
+    {
+        foreach (var block in navGroups)
+        {
+            var content = block.Content;
+
+            var title = content.Value<string>("groupTitle");
+            var links = content.Value<IEnumerable<Link>>("links");
+
+            <div class="footer-column">
+
+                @if (!string.IsNullOrWhiteSpace(title))
+                {
+                    <h4>@title</h4>
+                }
+
+                <ul>
+
+                    @if (links != null)
+                    {
+                        foreach (var link in links)
+                        {
+                            <li>
+                                <a href="@link.Url" target="@link.Target">
+                                    @link.Name
+                                </a>
+                            </li>
+                        }
+                    }
+
+                </ul>
+@* Contact button under Careers *@
+@if (!string.IsNullOrWhiteSpace(title) &&
+     title.Equals("Careers", StringComparison.OrdinalIgnoreCase) &&
+     ctaLinks != null && ctaLinks.Any())
+{
+    foreach (var cta in ctaLinks)
+    {
+        <a href="@cta.Url"
+           target="@cta.Target"
+           class="footer-cta">
+            @cta.Name
+        </a>
+    }
+}
+              
+
+            </div>
+        }
+    }
+ 
+
+    @if (legalLinks != null && legalLinks.Any())
+    {
+        <div class="footer-legal">
+
+            @foreach (var block in legalLinks)
+            {
+                var legalContent = block.Content;
+
+                var title = legalContent.Value<string>("title");
+                var links = legalContent.Value<IEnumerable<Link>>("link");
+
+                if (links != null)
+                {
+                    foreach (var link in links)
+                    {
+                        <a href="@link.Url" target="@link.Target">
+                            @(string.IsNullOrWhiteSpace(title) ? link.Name : title)
+                        </a>
+                    }
+                }
+            }
+
+        </div>
+    }
+
+</div>
+
+</div>
+
+        
 
     </div>
 

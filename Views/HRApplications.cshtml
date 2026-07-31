@@ -1,0 +1,368 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+
+@using Connexr_dev.Services
+@using Connexr_dev.Models
+
+@inject ICareerService CareerService
+
+@{
+    Layout = "Master.cshtml";
+
+    var applications = await CareerService.GetApplicationsAsync();
+
+    var total = applications.Count;
+    var newCount = applications.Count(x => x.Status == "New");
+    var shortlisted = applications.Count(x => x.Status == "Shortlisted");
+    var interview = applications.Count(x => x.Status == "Interview");
+    var rejected = applications.Count(x => x.Status == "Rejected");
+    var hired = applications.Count(x => x.Status == "Hired");
+}
+
+
+<style>
+
+
+</style>
+
+<div class="container">
+
+<h1 class="page-title">Career Applications</h1>
+<div class="dashboard-cards">
+
+    <div class="dashboard-card card-total">
+        <h2>@total</h2>
+        <p>Total Applications</p>
+    </div>
+
+    <div class="dashboard-card card-new">
+        <h2>@newCount</h2>
+        <p>New</p>
+    </div>
+
+    <div class="dashboard-card card-shortlisted">
+        <h2>@shortlisted</h2>
+        <p>Shortlisted</p>
+    </div>
+
+    <div class="dashboard-card card-interview">
+        <h2>@interview</h2>
+        <p>Interview</p>
+    </div>
+
+    <div class="dashboard-card card-rejected">
+        <h2>@rejected</h2>
+        <p>Rejected</p>
+    </div>
+
+    <div class="dashboard-card card-hired">
+        <h2>@hired</h2>
+        <p>Hired</p>
+    </div>
+
+</div>
+
+
+
+<div class="toolbar">
+
+    <input
+        type="text"
+        id="searchInput"
+        placeholder="Search by Name, Email or Job Title"
+        onkeyup="filterTable()"/>
+
+    <select id="statusFilter" onchange="filterTable()">
+        <option value="">All Status</option>
+        <option>New</option>
+        <option>Shortlisted</option>
+        <option>Interview</option>
+        <option>Rejected</option>
+        <option>Hired</option>
+    </select>
+
+</div>
+
+<table id="applicationTable">
+
+<thead>
+
+<tr>
+
+<th>Name</th>
+<th>Job</th>
+<th>Email</th>
+<th>Phone</th>
+<th>Experience</th>
+<th>Date</th>
+<th>Status</th>
+<th>Resume</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody id="applicationBody">
+
+@foreach (var item in applications)
+{
+    var statusClass = item.Status.ToLower();
+
+    <tr data-status="@item.Status">
+
+        <td>@item.FullName</td>
+
+        <td>@item.JobTitle</td>
+
+        <td>@item.Email</td>
+
+        <td>@item.Phone</td>
+
+        <td>@item.Experience</td>
+
+        <td>@item.AppliedUtc.ToString("dd MMM yyyy")</td>
+
+        <td>
+            <select onchange="updateStatus(this,@item.Id)">
+                <option value="New" selected="@(item.Status == "New")">New</option>
+                <option value="Shortlisted" selected="@(item.Status == "Shortlisted")">Shortlisted</option>
+                <option value="Interview" selected="@(item.Status == "Interview")">Interview</option>
+                <option value="Rejected" selected="@(item.Status == "Rejected")">Rejected</option>
+                <option value="Hired" selected="@(item.Status == "Hired")">Hired</option>
+            </select>
+        </td>
+
+        <td>
+            <a class="btn btn-resume"
+               href="@item.ResumePath"
+               target="_blank">
+                Resume
+            </a>
+        </td>
+
+        <td>
+            <button
+                class="btn btn-view"
+                onclick="showDetails(
+                    '@item.FullName',
+                    '@item.Email',
+                    '@item.Phone',
+                    '@item.CurrentLocation',
+                    '@item.CurrentCompany',
+                    '@item.LinkedIn',
+                    `@Html.Raw(item.CoverLetter?.Replace("`",""))`
+                )">
+                View
+            </button>
+        </td>
+
+    </tr>
+}
+
+</tbody>
+
+</table>
+<div class="pagination">
+    <button type="button" onclick="previousPage()">Previous</button>
+
+    <span id="pageInfo"></span>
+
+    <button type="button" onclick="nextPage()">Next</button>
+</div>
+
+
+</div>
+
+<div class="modal" id="detailsModal">
+
+<div class="modal-box">
+
+<h2 id="candidateName"></h2>
+
+<p><strong>Email :</strong> <span id="candidateEmail"></span></p>
+
+<p><strong>Phone :</strong> <span id="candidatePhone"></span></p>
+
+<p><strong>Location :</strong> <span id="candidateLocation"></span></p>
+
+<p><strong>Company :</strong> <span id="candidateCompany"></span></p>
+
+<p><strong>LinkedIn :</strong> <span id="candidateLinkedIn"></span></p>
+
+<p><strong>Cover Letter</strong></p>
+
+<p id="candidateCover"></p>
+
+<button
+class="btn close-btn"
+onclick="closeModal()">
+
+Close
+
+</button>
+
+
+</div>
+
+</div>
+
+<script>
+
+
+
+function showDetails(name,email,phone,location,company,linkedin,cover){
+
+document.getElementById("candidateName").innerText=name;
+
+document.getElementById("candidateEmail").innerText=email;
+
+document.getElementById("candidatePhone").innerText=phone;
+
+document.getElementById("candidateLocation").innerText=location;
+
+document.getElementById("candidateCompany").innerText=company;
+
+document.getElementById("candidateLinkedIn").innerText=linkedin;
+
+document.getElementById("candidateCover").innerText=cover;
+
+document.getElementById("detailsModal").style.display="flex";
+
+}
+
+function closeModal(){
+
+document.getElementById("detailsModal").style.display="none";
+
+}
+
+window.onclick=function(e){
+
+if(e.target===document.getElementById("detailsModal")){
+
+closeModal();
+
+}
+
+}
+async function updateStatus(dropdown,id){
+
+    const status = dropdown.value;
+
+    const response = await fetch(
+        "/career/status?id="+id+"&status="+encodeURIComponent(status),
+        {
+            method:"POST"
+        });
+
+    if(response.ok){
+
+        dropdown.closest("tr").dataset.status = dropdown.value;
+
+        location.reload();
+
+    }else{
+
+        alert("Failed to update status.");
+
+    }
+
+}
+const rowsPerPage = 10;
+let currentPage = 1;
+
+function getFilteredRows() {
+
+    const search = document
+        .getElementById("searchInput")
+        .value
+        .toLowerCase();
+
+    const status = document
+        .getElementById("statusFilter")
+        .value
+        .toLowerCase();
+
+    const rows = document.querySelectorAll("#applicationBody tr");
+
+    let filtered = [];
+
+    rows.forEach(row => {
+
+        const text = row.innerText.toLowerCase();
+        const rowStatus = row.dataset.status.toLowerCase();
+
+        const matchSearch = text.includes(search);
+        const matchStatus = status === "" || rowStatus === status;
+
+        if (matchSearch && matchStatus) {
+            filtered.push(row);
+        }
+
+        // Hide everything first
+        row.style.display = "none";
+
+    });
+
+    return filtered;
+}
+
+function showPage(page) {
+
+    const rows = getFilteredRows();
+
+    const totalPages = Math.max(1, Math.ceil(rows.length / rowsPerPage));
+
+    if (page < 1) page = 1;
+    if (page > totalPages) page = totalPages;
+
+    currentPage = page;
+
+    const start = (page - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+
+    rows.forEach((row, index) => {
+
+        if (index >= start && index < end) {
+            row.style.display = "";
+        }
+
+    });
+
+    document.getElementById("pageInfo").innerText =
+        `Page ${page} of ${totalPages}`;
+
+    document.querySelector(".pagination button:first-child").disabled =
+        page === 1;
+
+    document.querySelector(".pagination button:last-child").disabled =
+        page === totalPages;
+}
+
+function filterTable() {
+
+    currentPage = 1;
+    showPage(1);
+
+}
+
+function previousPage() {
+
+    if (currentPage > 1) {
+        showPage(currentPage - 1);
+    }
+
+}
+
+function nextPage() {
+
+    showPage(currentPage + 1);
+
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    showPage(1);
+
+});
+</script>

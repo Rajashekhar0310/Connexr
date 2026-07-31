@@ -97,15 +97,13 @@
 
                         var backgroundImage = item.Value<MediaWithCrops>("backgroundImage");
 
-                        var cardLink = item.Value<Link>("cardLink");
+                        <!-- var cardLink = item.Value<Link>("cardLink"); -->
 
-                        var url = cardLink?.Url ?? "#";
-                        var target = cardLink?.Target;
+                        var cardLink = item.Value<IEnumerable<Link>>("cardLink")?.FirstOrDefault();
 
-                        <a href="@url"
-                           target="@target"
-                           class="card">
-
+                        <a href="@cardLink?.Url"
+                          target="@cardLink?.Target"
+                          class="card">
                             @if (backgroundImage != null)
                             {
                                 <div class="bg"

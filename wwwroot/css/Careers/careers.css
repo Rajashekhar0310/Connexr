@@ -431,3 +431,638 @@
 .job__head:hover .job__btn{ transform:none; }
 
 }
+
+/*=========================================
+  CAREERS APPLICATION POPUP
+=========================================*/
+
+.application-popup{
+    position:fixed;
+    inset:0;
+    background:rgba(15,23,42,.65);
+    backdrop-filter:blur(8px);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    padding:40px;
+    z-index:99999;
+    animation:fadeIn .35s ease;
+}
+
+.application-popup.show{
+    display:flex;
+}
+
+.application-popup__content{
+    width:min(1400px,96vw);
+    max-height:92vh;
+    overflow:hidden;
+    background:#ffffff;
+    border-radius:24px;
+    position:relative;
+    box-shadow:0 25px 80px rgba(0,0,0,.15);
+    display:flex;
+    flex-direction:column;
+}
+
+/*=========================================
+  CLOSE BUTTON
+=========================================*/
+
+.popup-close{
+    position:absolute;
+    top:24px;
+    right:24px;
+    width:46px;
+    height:46px;
+    border:none;
+    background:#f5f5f5;
+    border-radius:50%;
+    font-size:28px;
+    cursor:pointer;
+    transition:.3s;
+    z-index:5;
+}
+
+.popup-close:hover{
+    background:#F58220;
+    color:#fff;
+    transform:rotate(90deg);
+}
+
+/*=========================================
+  HEADER
+=========================================*/
+
+.popup-header{
+    padding:45px 55px 30px;
+    border-bottom:1px solid #ECECEC;
+}
+
+.popup-tag{
+    display:inline-flex;
+    align-items:center;
+    padding:8px 18px;
+    background:#FFF3E8;
+    color:#F58220;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+}
+
+.popup-header h2{
+    margin:18px 0 12px;
+    font-size:42px;
+    line-height:1.2;
+    font-weight:700;
+    color:#172B4D;
+}
+
+.popup-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:22px;
+    color:#5F6C7B;
+    font-size:15px;
+}
+
+.popup-meta span{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+/*=========================================
+  BODY
+=========================================*/
+
+.popup-body{
+    display:grid;
+    grid-template-columns:1.2fr .8fr;
+    height:100%;
+    overflow:hidden;
+}
+
+/*=========================================
+  LEFT SIDE
+=========================================*/
+
+.popup-job{
+    padding:50px 55px;
+    overflow-y:auto;
+    border-right:1px solid #ECECEC;
+}
+
+.popup-job::-webkit-scrollbar{
+    width:8px;
+}
+
+.popup-job::-webkit-scrollbar-thumb{
+    background:#d7d7d7;
+    border-radius:30px;
+}
+
+.popup-job h3{
+    margin:0 0 18px;
+    color:#172B4D;
+    font-size:24px;
+    font-weight:700;
+}
+
+.popup-job h4{
+    margin:35px 0 14px;
+    color:#172B4D;
+    font-size:20px;
+    font-weight:600;
+}
+
+.popup-job p{
+    margin-bottom:18px;
+    color:#4E5968;
+    font-size:17px;
+    line-height:1.9;
+}
+
+.popup-job ul{
+    margin:18px 0;
+    padding-left:22px;
+}
+
+.popup-job li{
+    margin-bottom:12px;
+    color:#4E5968;
+    line-height:1.8;
+    font-size:16px;
+}
+
+.popup-job strong{
+    color:#172B4D;
+}
+
+.popup-job hr{
+    margin:35px 0;
+    border:none;
+    border-top:1px solid #ECECEC;
+}
+
+/*=========================================
+  RIGHT SIDE CONTAINER
+=========================================*/
+
+.popup-form{
+    padding:50px;
+    overflow-y:auto;
+    background:#FAFBFD;
+}
+
+.popup-form::-webkit-scrollbar{
+    width:8px;
+}
+
+.popup-form::-webkit-scrollbar-thumb{
+    background:#d7d7d7;
+    border-radius:30px;
+}
+
+.popup-form h3{
+    margin:0 0 28px;
+    font-size:28px;
+    font-weight:700;
+    color:#172B4D;
+}
+
+/*=========================================
+  ANIMATION
+=========================================*/
+
+@keyframes fadeIn{
+
+    from{
+        opacity:0;
+    }
+
+    to{
+        opacity:1;
+    }
+
+}
+/*=========================================
+  FORM LAYOUT
+=========================================*/
+
+.form-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+    margin-bottom:20px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+    margin-bottom:22px;
+}
+
+.form-group label{
+    margin-bottom:8px;
+    font-size:14px;
+    font-weight:600;
+    color:#172B4D;
+}
+
+.form-group label span{
+    color:#F58220;
+}
+
+.form-group small{
+    margin-top:8px;
+    font-size:12px;
+    color:#7B8794;
+}
+
+/*=========================================
+  INPUTS
+=========================================*/
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+    width:100%;
+    padding:15px 18px;
+    border:1px solid #D9E2EC;
+    border-radius:14px;
+    background:#fff;
+    font-size:15px;
+    font-family:'DM Sans',sans-serif;
+    color:#172B4D;
+    transition:.3s ease;
+}
+
+.form-group textarea{
+    resize:vertical;
+    min-height:140px;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder{
+    color:#A0AEC0;
+}
+
+.form-group input:hover,
+.form-group textarea:hover,
+.form-group select:hover{
+    border-color:#BAC8D6;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus{
+    outline:none;
+    border-color:#F58220;
+    box-shadow:0 0 0 4px rgba(245,130,32,.12);
+}
+
+/*=========================================
+  FILE UPLOAD
+=========================================*/
+
+.form-group input[type=file]{
+    padding:14px;
+    border:2px dashed #D9E2EC;
+    background:#fff;
+    cursor:pointer;
+    border-radius:14px;
+}
+
+.form-group input[type=file]:hover{
+    border-color:#F58220;
+    background:#FFF8F2;
+}
+
+.form-group input[type=file]::file-selector-button{
+    padding:10px 18px;
+    margin-right:15px;
+    border:none;
+    border-radius:10px;
+    background:#F58220;
+    color:#fff;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.form-group input[type=file]::file-selector-button:hover{
+    background:#DB6C0B;
+}
+
+/*=========================================
+  CHECKBOX
+=========================================*/
+
+.form-check{
+    margin:10px 0 25px;
+}
+
+.form-check label{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    cursor:pointer;
+    font-size:14px;
+    line-height:1.6;
+    color:#52606D;
+}
+
+.form-check input{
+    width:18px;
+    height:18px;
+    margin-top:2px;
+    accent-color:#F58220;
+}
+
+/*=========================================
+  SUBMIT BUTTON
+=========================================*/
+
+.submit-btn{
+    width:100%;
+    border:none;
+    border-radius:14px;
+    padding:18px;
+    background:#F58220;
+    color:#fff;
+    font-size:16px;
+    font-weight:700;
+    font-family:'Poppins',sans-serif;
+    cursor:pointer;
+    transition:.3s ease;
+}
+
+.submit-btn:hover{
+    background:#DB6C0B;
+    transform:translateY(-2px);
+    box-shadow:0 12px 28px rgba(245,130,32,.25);
+}
+
+.submit-btn:active{
+    transform:translateY(0);
+}
+
+.submit-btn:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+}
+
+/*=========================================
+  VALIDATION
+=========================================*/
+
+.form-group input.error,
+.form-group textarea.error{
+    border-color:#DC2626;
+}
+
+.form-group .error-message{
+    margin-top:6px;
+    color:#DC2626;
+    font-size:12px;
+}
+
+.form-group input.success,
+.form-group textarea.success{
+    border-color:#16A34A;
+}
+
+/*=========================================
+  SUCCESS MESSAGE
+=========================================*/
+
+.form-success{
+    display:none;
+    text-align:center;
+    padding:30px;
+}
+
+.form-success.show{
+    display:block;
+}
+
+.form-success h3{
+    color:#16A34A;
+    margin-bottom:12px;
+    font-size:28px;
+}
+
+.form-success p{
+    color:#52606D;
+    line-height:1.7;
+}
+/*=========================================
+  RESPONSIVE
+=========================================*/
+
+@media (max-width:1200px){
+
+    .application-popup{
+        padding:20px;
+    }
+
+    .application-popup__content{
+        width:100%;
+        max-height:95vh;
+    }
+
+    .popup-header{
+        padding:35px;
+    }
+
+    .popup-job{
+        padding:35px;
+    }
+
+    .popup-form{
+        padding:35px;
+    }
+
+}
+
+@media (max-width:991px){
+
+    .popup-body{
+        grid-template-columns:1fr;
+        overflow:auto;
+    }
+
+    .popup-job{
+        border-right:none;
+        border-bottom:1px solid #ECECEC;
+        max-height:420px;
+    }
+
+    .popup-form{
+        background:#fff;
+    }
+
+    .popup-header h2{
+        font-size:34px;
+    }
+
+}
+
+@media (max-width:768px){
+
+    .application-popup{
+        padding:0;
+        align-items:flex-end;
+    }
+
+    .application-popup__content{
+        width:100%;
+        height:100vh;
+        max-height:100vh;
+        border-radius:24px 24px 0 0;
+    }
+
+    .popup-header{
+        padding:25px;
+    }
+
+    .popup-header h2{
+        font-size:28px;
+    }
+
+    .popup-meta{
+        flex-direction:column;
+        gap:10px;
+    }
+
+    .popup-job{
+        padding:25px;
+    }
+
+    .popup-form{
+        padding:25px;
+    }
+
+    .form-row{
+        grid-template-columns:1fr;
+        gap:0;
+    }
+
+    .popup-form h3{
+        font-size:24px;
+    }
+
+    .popup-job h3{
+        font-size:22px;
+    }
+
+}
+
+@media (max-width:576px){
+
+    .popup-close{
+        width:40px;
+        height:40px;
+        font-size:22px;
+        top:18px;
+        right:18px;
+    }
+
+    .popup-tag{
+        font-size:11px;
+        padding:6px 14px;
+    }
+
+    .popup-header h2{
+        font-size:24px;
+        margin-top:15px;
+    }
+
+    .popup-meta{
+        font-size:14px;
+    }
+
+    .popup-job p,
+    .popup-job li{
+        font-size:15px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select{
+        padding:14px;
+        font-size:14px;
+    }
+
+    .submit-btn{
+        padding:16px;
+        font-size:15px;
+    }
+
+}
+
+/*=========================================
+  SMOOTH SCROLL
+=========================================*/
+
+.popup-job,
+.popup-form{
+    scroll-behavior:smooth;
+}
+
+/*=========================================
+  STICKY SUBMIT
+=========================================*/
+
+@media (max-width:768px){
+
+    .popup-form{
+
+        padding-bottom:100px;
+
+    }
+
+    .submit-btn{
+
+        position:sticky;
+        bottom:0;
+        z-index:5;
+
+        border-radius:14px;
+
+        box-shadow:0 -8px 20px rgba(0,0,0,.08);
+
+    }
+
+}
+
+/*=========================================
+  POPUP OPEN ANIMATION
+=========================================*/
+
+.application-popup.show .application-popup__content{
+
+    animation:popupScale .35s ease;
+
+}
+
+@keyframes popupScale{
+
+    from{
+
+        opacity:0;
+        transform:translateY(40px) scale(.96);
+
+    }
+
+    to{
+
+        opacity:1;
+        transform:translateY(0) scale(1);
+
+    }
+
+}
