@@ -10,16 +10,32 @@
 
     var panels = content.Value<BlockListModel>("panels");
 
-    var sectionImageUrl =
-        content.Value<MediaWithCrops>("sectionImage")?.Url()
+     var sectionImage = content.Value<MediaWithCrops>("sectionImage");
+    var sectionVideo = content.Value<MediaWithCrops>("sectionVideo");
+
+    var sectionImageUrl = sectionImage?.Url()
         ?? content.Value<IEnumerable<MediaWithCrops>>("sectionImage")?.FirstOrDefault()?.Url()
         ?? "";
+
+    var sectionVideoUrl = sectionVideo?.Url();
 }
 
 @if (panels != null && panels.Any())
 {
-    <section class="svc-panels" style="background-image:url('@sectionImageUrl');">
+    <section class="svc-panels">
 
+    @if (!string.IsNullOrWhiteSpace(sectionVideoUrl))
+    {
+        <video class="svc-panels__bg-video" autoplay muted loop playsinline>
+            <source src="@sectionVideoUrl" type="video/mp4" />
+        </video>
+    }
+    else if (!string.IsNullOrWhiteSpace(sectionImageUrl))
+    {
+        <div class="svc-panels__bg-image"
+             style="background-image:url('@sectionImageUrl');">
+        </div>
+    }
         @foreach (var block in panels)
         {
             var panel = block.Content;

@@ -13,7 +13,7 @@
             x.IsVisible() &&
             x.ContentType.Alias != "privacyPolicy" &&
             x.ContentType.Alias != "leadership" &&
-             x.ContentType.Alias != "faqPage" &&
+            x.ContentType.Alias != "faqPage" &&
             x.ContentType.Alias != "siteData" &&
             x.ContentType.Alias != "blogs" &&
             x.ContentType.Alias != "contactUs" &&
@@ -22,20 +22,22 @@
             x.ContentType.Alias != "sriniRagipally" &&
             x.ContentType.Alias != "suhaibAhmed" &&
             x.ContentType.Alias != "udayaVanteru" &&
-             x.ContentType.Alias != "partnersPage" &&
-             x.ContentType.Alias != "hrLogin" &&
-             x.ContentType.Alias != "hrApplications" &&
+            x.ContentType.Alias != "partnersPage" &&
+            x.ContentType.Alias != "hrLogin" &&
+            x.ContentType.Alias != "hrApplications" &&
             x.ContentType.Alias != "vijaySimhachalam")
         .ToList();
 
     var logo = home.Value<IPublishedContent>("logo");
-   var ctaText = home.Value<string>("headerCtaText") ?? "Get in Touch";
+    var logoLight = home.Value<IPublishedContent>("logoLight");
+
+    var ctaText = home.Value<string>("headerCtaText") ?? "Get in Touch";
 
     var ctaLinks = home.Value<IEnumerable<Link>>("headerCtaLink");
     var ctaLink = ctaLinks?.FirstOrDefault();
 }
 
-<header class="site-header">
+<header class="site-header" id="siteHeader">
     <div class="header-wrapper">
         <div class="nav-container">
 
@@ -44,8 +46,16 @@
                 <a href="@home.Url()">
                     @if (logo != null)
                     {
-                        <img src="@logo.Url()"
+                        <img class="logo-dark"
+                             src="@logo.Url()"
                              alt="@(logo.Value<string>("umbracoAltText") ?? logo.Name)" />
+                    }
+                    @if (logoLight != null)
+                    {
+                        <img class="logo-light"
+                             src="@logoLight.Url()"
+                             alt=""
+                             aria-hidden="true" />
                     }
                 </a>
             </div>
@@ -54,368 +64,255 @@
             <div class="header-right">
 
                 <nav class="main-nav">
-                   <ul>
+                    <ul>
 
-          @foreach (var item in navItems)
-{
-    <!-- var children = item.Children()
-        .Where(x => x.IsVisible())
-        .ToList(); -->
-        var children = item.Children()
-    .Where(x =>
-        x.IsVisible() &&
-        x.ContentType.Alias != "partnersPage" &&
-        x.Name != "Privacy Policy" &&
-        x.Name != "Cookie Policy")
-    .ToList();
-
-    bool active = Model.Id == item.Id ||
-                  Model.Ancestors().Any(x => x.Id == item.Id);
-
-    bool isWhatWeBuild = item.ContentType.Alias == "whatWeBuild";
-    bool isIndustries = item.ContentType.Alias == "industries";
-    bool isInsights = item.ContentType.Alias == "insights";
-
-    <li class="@((isWhatWeBuild || isIndustries || isInsights || children.Any()) ? "has-dropdown" : "") @(active ? "active" : "")">
-
-        <a href="@item.Url()">
-            @item.Name
-        </a>
-
-        @* ===========================
-           WHAT WE BUILD
-        ============================ *@
-
-        @if (isWhatWeBuild)
-        {
-            var menuTitle = item.Value<string>("menuLeftTitle");
-
-            var rightImage = item.Value<IPublishedContent>("menuRightImage");
-
-            var rightHeading = item.Value<string>("menuRightHeading");
-
-            var rightDescription = item.Value<string>("menuRightDescription");
-
-            var buttonLinks = item.Value<IEnumerable<Link>>("megaMenuButtonLink");
-
-            var buttonLink = buttonLinks?.FirstOrDefault();
-
-            <div class="mega-menu">
-
-                <div class="mega-container">
-
-                    <!-- LEFT -->
-
-                    <div class="mega-left">
-
-                        <h3>@menuTitle</h3>
-
-                    </div>
-
-                    <!-- CENTER -->
-
-                    <div class="mega-center">
-
-                        <ul>
-
-                            @foreach (var child in children)
-                            {
-                                <li>
-
-                                    <a href="@child.Url()">
-
-                                        @child.Name
-
-                                    </a>
-
-                                </li>
-                            }
-
-                        </ul>
-
-                    </div>
-
-                    <!-- RIGHT -->
-
-                    <div class="mega-right">
-
-                        @if (rightImage != null)
+                        @foreach (var item in navItems)
                         {
-                            <img src="@rightImage.Url()"
-                                 alt="@rightImage.Name" />
+                            var children = item.Children()
+                                .Where(x =>
+                                    x.IsVisible() &&
+                                    x.ContentType.Alias != "partnersPage" &&
+                                    x.Name != "Privacy Policy" &&
+                                    x.Name != "Cookie Policy")
+                                .ToList();
+
+                            bool active = Model.Id == item.Id ||
+                                          Model.Ancestors().Any(x => x.Id == item.Id);
+
+                            bool isWhatWeBuild = item.ContentType.Alias == "whatWeBuild";
+                            bool isIndustries = item.ContentType.Alias == "industries";
+                            bool isInsights = item.ContentType.Alias == "insights";
+
+                            <li class="@((isWhatWeBuild || isIndustries || isInsights || children.Any()) ? "has-dropdown" : "") @(active ? "active" : "")">
+
+                                <a href="@item.Url()">
+                                    @item.Name
+                                </a>
+
+                                @* ===========================
+                                   WHAT WE BUILD
+                                =========================== *@
+
+                                @if (isWhatWeBuild)
+                                {
+                                    var menuTitle = item.Value<string>("menuLeftTitle");
+                                    var rightImage = item.Value<IPublishedContent>("menuRightImage");
+                                    var rightHeading = item.Value<string>("menuRightHeading");
+                                    var rightDescription = item.Value<string>("menuRightDescription");
+
+                                    var buttonLinks = item.Value<IEnumerable<Link>>("megaMenuButtonLink");
+                                    var buttonLink = buttonLinks?.FirstOrDefault();
+
+                                    <div class="mega-menu">
+                                        <div class="mega-container">
+
+                                            <!-- LEFT -->
+                                            <div class="mega-left">
+                                                <h3>@menuTitle</h3>
+                                            </div>
+
+                                            <!-- CENTER -->
+                                            <div class="mega-center">
+                                                <ul>
+                                                    @foreach (var child in children)
+                                                    {
+                                                        <li>
+                                                            <a href="@child.Url()">@child.Name</a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+
+                                            <!-- RIGHT -->
+                                            <div class="mega-right">
+                                                @if (rightImage != null)
+                                                {
+                                                    <img src="@rightImage.Url()" alt="@rightImage.Name" />
+                                                }
+
+                                                <div class="mega-overlay">
+                                                    <h3>@rightHeading</h3>
+                                                    <p>@rightDescription</p>
+
+                                                    @if (buttonLink != null)
+                                                    {
+                                                        <a href="@buttonLink.Url"
+                                                           class="mega-arrow"
+                                                           target="@(string.IsNullOrWhiteSpace(buttonLink.Target) ? "_self" : buttonLink.Target)">
+                                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                                                <path d="M7 17L17 7M17 7H9M17 7V15"
+                                                                      stroke="currentColor"
+                                                                      stroke-width="2"
+                                                                      stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                        </a>
+                                                    }
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                }
+
+                                @* ===========================
+                                   INDUSTRIES
+                                =========================== *@
+
+                                else if (isIndustries)
+                                {
+                                    var leftTitle = item.Value<string>("menuLeftTitle");
+                                    var stats = item.Value<BlockListModel>("statisticsCards");
+
+                                    <div class="mega-menu">
+                                        <div class="mega-container">
+
+                                            <!-- LEFT -->
+                                            <div class="mega-left">
+                                                <h3>@leftTitle</h3>
+                                            </div>
+
+                                            <!-- CENTER -->
+                                            <div class="mega-center">
+                                                <ul>
+                                                    @foreach (var child in children)
+                                                    {
+                                                        <li>
+                                                            <a href="@child.Url()">@child.Name</a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+
+                                            <!-- RIGHT -->
+                                            <div class="industry-stats">
+                                                @if (stats != null)
+                                                {
+                                                    foreach (var block in stats)
+                                                    {
+                                                        var stat = block.Content;
+
+                                                        var number = stat.Value<string>("number");
+                                                        var heading = stat.Value<string>("heading");
+                                                        var description = stat.Value<string>("description");
+
+                                                        <div class="stat-card">
+                                                            <h2>@number</h2>
+                                                            <h4>@heading</h4>
+                                                            <p>@description</p>
+                                                        </div>
+                                                    }
+                                                }
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                }
+
+                                @* ===========================
+                                   INSIGHTS
+                                =========================== *@
+
+                                else if (isInsights)
+                                {
+                                    var leftTitle = item.Value<string>("menuLeftTitle");
+                                    var rightImage = item.Value<IPublishedContent>("menuRightImage");
+                                    var rightHeading = item.Value<string>("menuRightHeading");
+                                    var rightDescription = item.Value<string>("menuRightDescription");
+
+                                    var buttonLinks = item.Value<IEnumerable<Link>>("megaMenuButtonLink");
+                                    var buttonLink = buttonLinks?.FirstOrDefault();
+
+                                    <div class="mega-menu">
+                                        <div class="mega-container">
+
+                                            <!-- LEFT -->
+                                            <div class="mega-left">
+                                                <h3>@leftTitle</h3>
+                                            </div>
+
+                                            <!-- CENTER -->
+                                            <div class="mega-center">
+                                                <ul>
+                                                    <li><a href="/insights?category=blog">Blogs</a></li>
+                                                    <li><a href="/insights?category=case-study">Case Studies</a></li>
+                                                    <li><a href="/insights?category=news">News</a></li>
+                                                    <li><a href="/insights?category=whitepaper">Whitepapers</a></li>
+                                                </ul>
+                                            </div>
+
+                                            <!-- RIGHT -->
+                                            <div class="mega-right">
+                                                @if (rightImage != null)
+                                                {
+                                                    <img src="@rightImage.Url()" alt="@rightImage.Name" />
+                                                }
+
+                                                <div class="mega-overlay">
+                                                    <h3>@rightHeading</h3>
+                                                    <p>@rightDescription</p>
+
+                                                    @if (buttonLink != null)
+                                                    {
+                                                        <a href="@buttonLink.Url"
+                                                           class="mega-arrow"
+                                                           target="@(string.IsNullOrWhiteSpace(buttonLink.Target) ? "_self" : buttonLink.Target)">
+                                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                                                <path d="M7 17L17 7M17 7H9M17 7V15"
+                                                                      stroke="currentColor"
+                                                                      stroke-width="2"
+                                                                      stroke-linecap="round"
+                                                                      stroke-linejoin="round" />
+                                                            </svg>
+                                                        </a>
+                                                    }
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                }
+
+                                @* ===========================
+                                   NORMAL DROPDOWN
+                                =========================== *@
+
+                                else if (children.Any())
+                                {
+                                    <ul class="dropdown">
+                                        @foreach (var child in children)
+                                        {
+                                            <li>
+                                                <a href="@child.Url()">@child.Name</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+
+                            </li>
                         }
 
-                        <div class="mega-overlay">
-
-                            <h3>@rightHeading</h3>
-
-                            <p>@rightDescription</p>
-
-                            @if (buttonLink != null)
-                            {
-                                <a href="@buttonLink.Url"
-                                   class="mega-arrow"
-                                   target="@(string.IsNullOrWhiteSpace(buttonLink.Target) ? "_self" : buttonLink.Target)">
-
-                                    <svg width="18"
-                                         height="18"
-                                         viewBox="0 0 24 24"
-                                         fill="none">
-
-                                        <path d="M7 17L17 7M17 7H9M17 7V15"
-                                              stroke="currentColor"
-                                              stroke-width="2"
-                                              stroke-linecap="round"
-                                              stroke-linejoin="round" />
-
-                                    </svg>
-
-                                </a>
-                            }
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-        }
-        @* ===========================
-   INDUSTRIES
-=========================== *@
-
-else if (isIndustries)
-{
-    var leftTitle = item.Value<string>("menuLeftTitle");
-
-    var stats = item.Value<BlockListModel>("statisticsCards");
-
-    <div class="mega-menu">
-
-        <div class="mega-container">
-
-            <!-- LEFT -->
-
-            <div class="mega-left">
-
-                <h3>@leftTitle</h3>
-
-            </div>
-
-            <!-- CENTER -->
-
-            <div class="mega-center">
-
-                <ul>
-
-                    @foreach (var child in children)
-                    {
-                        <li>
-
-                            <a href="@child.Url()">
-
-                                @child.Name
-
-                            </a>
-
-                        </li>
-                    }
-
-                </ul>
-
-            </div>
-
-            <!-- RIGHT -->
-
-            <div class="industry-stats">
-
-                @if (stats != null)
-                {
-                    foreach (var block in stats)
-                    {
-                        var stat = block.Content;
-
-                        var number = stat.Value<string>("number");
-                        var heading = stat.Value<string>("heading");
-                        var description = stat.Value<string>("description");
-
-                        <div class="stat-card">
-
-                            <h2>@number</h2>
-
-                            <h4>@heading</h4>
-
-                            <p>@description</p>
-
-                        </div>
-                    }
-                }
-
-            </div>
-
-        </div>
-
-    </div>
-}
-@* ===========================
-   INSIGHTS
-=========================== *@
-
-else if (isInsights)
-{
-    var leftTitle = item.Value<string>("menuLeftTitle");
-
-    var rightImage = item.Value<IPublishedContent>("menuRightImage");
-
-    var rightHeading = item.Value<string>("menuRightHeading");
-
-    var rightDescription = item.Value<string>("menuRightDescription");
-
-    var buttonLinks = item.Value<IEnumerable<Link>>("megaMenuButtonLink");
-
-    var buttonLink = buttonLinks?.FirstOrDefault();
-
-    <div class="mega-menu">
-
-        <div class="mega-container">
-
-            <!-- LEFT -->
-
-            <div class="mega-left">
-
-                <h3>@leftTitle</h3>
-
-            </div>
-
-            <!-- CENTER -->
-
-            <div class="mega-center">
-
-                <ul>
-
-                    <li>
-                        <a href="/insights?category=blog">
-                            Blogs
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="/insights?category=case-study">
-                            Case Studies
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="/insights?category=news">
-                            News
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="/insights?category=whitepaper">
-                            Whitepapers
-                        </a>
-                    </li>
-
-                </ul>
-
-            </div>
-
-            <!-- RIGHT -->
-
-            <div class="mega-right">
-
-                @if (rightImage != null)
-                {
-                    <img src="@rightImage.Url()"
-                         alt="@rightImage.Name" />
-                }
-
-                <div class="mega-overlay">
-
-                    <h3>@rightHeading</h3>
-
-                    <p>@rightDescription</p>
-
-                    @if (buttonLink != null)
-                    {
-                        <a href="@buttonLink.Url"
-                           class="mega-arrow"
-                           target="@(string.IsNullOrWhiteSpace(buttonLink.Target) ? "_self" : buttonLink.Target)">
-
-                            <svg width="18"
-                                 height="18"
-                                 viewBox="0 0 24 24"
-                                 fill="none">
-
-                                <path d="M7 17L17 7M17 7H9M17 7V15"
-                                      stroke="currentColor"
-                                      stroke-width="2"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"/>
-
-                            </svg>
-
-                        </a>
-                    }
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-}
-@* ===========================
-   NORMAL DROPDOWN
-=========================== *@
-
-else if (children.Any())
-{
-    <ul class="dropdown">
-
-        @foreach (var child in children)
-        {
-            <li>
-
-                <a href="@child.Url()">
-
-                    @child.Name
-
-                </a>
-
-            </li>
-        }
-
-    </ul>
-}
-
-    </li>
-}
-
-            </ul>
+                    </ul>
                 </nav>
 
-               @if (ctaLink != null)
-                    {
-                        <a href="@ctaLink.Url"
-                        class="header-btn"
-                        target="@(string.IsNullOrWhiteSpace(ctaLink.Target) ? "_self" : ctaLink.Target)">
+                @if (ctaLink != null)
+                {
+                    <a href="@ctaLink.Url"
+                       class="header-btn"
+                       target="@(string.IsNullOrWhiteSpace(ctaLink.Target) ? "_self" : ctaLink.Target)">
 
-                            <span>@ctaText</span>
+                        <span>@ctaText</span>
 
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                                <path d="M7 17L17 7M17 7H9M17 7V15"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"/>
-                            </svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                            <path d="M7 17L17 7M17 7H9M17 7V15"
+                                  stroke="currentColor"
+                                  stroke-width="2"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round" />
+                        </svg>
 
-                        </a>
-                    }
+                    </a>
+                }
 
                 <button id="navBurger"
                         class="nav-burger"
@@ -438,10 +335,7 @@ else if (children.Any())
         <ul>
             @foreach (var item in navItems)
             {
-                <!-- var children = item.Children()
-                    .Where(x => x.IsVisible())
-                    .ToList(); -->
-                    var children = item.Children()
+                var children = item.Children()
                     .Where(x =>
                         x.IsVisible() &&
                         x.ContentType.Alias != "partnersPage" &&
@@ -450,20 +344,31 @@ else if (children.Any())
 
                 <li>
                     <div class="mobile-link">
-                        <a href="@item.Url()">
-                            @item.Name
-                        </a>
+                        <a href="@item.Url()">@item.Name</a>
+
+                        @if (children.Any())
+                        {
+                            <button class="mobile-toggle"
+                                    type="button"
+                                    aria-label="Toggle submenu">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                    <path d="M6 9L12 15L18 9"
+                                          stroke="currentColor"
+                                          stroke-width="2"
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round" />
+                                </svg>
+                            </button>
+                        }
                     </div>
 
-                   @if (children.Any())
+                    @if (children.Any())
                     {
                         <ul class="mobile-submenu">
                             @foreach (var child in children)
                             {
                                 <li>
-                                    <a href="@child.Url()">
-                                        @child.Name
-                                    </a>
+                                    <a href="@child.Url()">@child.Name</a>
                                 </li>
                             }
                         </ul>
@@ -485,6 +390,5 @@ else if (children.Any())
 </div>
 
 <div class="mobile-overlay" id="mobileOverlay"></div>
-
 
 <script src="~/scripts/Home/Header.js" asp-append-version="true"></script>

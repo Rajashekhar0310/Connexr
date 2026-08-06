@@ -1,423 +1,293 @@
 /* =====================================================
    PARTNERS SECTION
-=====================================================*/
+   All classes prefixed cxp- and scoped under .cxp-section
+   so nothing here can collide with other components.
+===================================================== */
 
-.ps-section{
-    
-    /* background:#fff; */
-    overflow:hidden;
+.cxp-section {
+    overflow: hidden;
 }
 
-.ps-inner{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:70px;
+.cxp-section *,
+.cxp-section *::before,
+.cxp-section *::after {
+    box-sizing: border-box;
+}
+
+.cxp-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 70px;
     padding: 120px;
     background: linear-gradient(to right, #ffffff, #ffbd88);
 }
 
 /*==========================
- Left Content
+    Left content
 ==========================*/
 
-.ps-text{
-    width:38%;
-    max-width:500px;
-    flex-shrink:0;
+.cxp-section .cxp-text {
+    width: 38%;
+    max-width: 500px;
+    flex-shrink: 0;
 }
 
-.ps-eyebrow{
-    font-size:15px;
-    font-weight:600;
-    color:#F28C28;
-    letter-spacing:3px;
-    text-transform:uppercase;
-    margin-bottom:18px;
+.cxp-section .cxp-eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    color: #122560;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin: 0 0 18px;
 }
 
-.ps-heading{
-    font-size:64px;
-    font-weight:700;
-    line-height:1.05;
-    margin-bottom:30px;
+.cxp-section .cxp-heading {
+    font-size: 45px;
+    font-weight: 600;
+    line-height: 1.05;
+    margin: 0 0 30px;
+    font-style: poppins;
+    
 }
 
-.ps-heading__main{
-    display:block;
-    color:#111827;
+.cxp-section .cxp-heading-main {
+    display: block;
+    color: #122560;
 }
 
-.ps-heading__highlight{
-    display:block;
-    color:#F28C28;
+.cxp-section .cxp-heading-highlight {
+    display: block;
+    color: #F28C28;
 }
 
-.ps-description{
-    color:#667085;
-    line-height:1.9;
-    font-size:18px;
-    margin-bottom:40px;
+.cxp-section .cxp-description {
+    color: #000000;
+    line-height: 1.6;
+    font-size: 18px;
+    margin-bottom: 40px;
 }
 
-.ps-description p{
-    margin:0;
+.cxp-section .cxp-description p {
+    margin: 0;
 }
 
-.ps-btn{
-    display:inline-flex;
-    align-items:center;
-    gap:12px;
-    padding:16px 34px;
-    border:2px solid #F28C28;
-    border-radius:50px;
-    color:#F28C28;
-    text-decoration:none;
-    font-weight:600;
-    transition:.35s;
+.cxp-section .cxp-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 34px;
+    border: 2px solid #F28C28;
+    border-radius: 50px;
+    color: #F28C28;
+    text-decoration: none;
+    font-weight: 600;
+    transition: .35s;
 }
 
-.ps-btn:hover{
-    background:#F28C28;
-    color:#fff;
+.cxp-section .cxp-btn:hover {
+    background: #F28C28;
+    color: #fff;
 }
 
-.ps-btn svg{
-    transition:.35s;
+.cxp-section .cxp-btn svg {
+    transition: .35s;
 }
 
-.ps-btn:hover svg{
-    transform:translateX(5px);
+.cxp-section .cxp-btn:hover svg {
+    transform: translateX(5px);
 }
 
 /*==========================
- Right Area
+    Right area
 ==========================*/
 
-.ps-logos-wrapper{
-    flex:1;
-    overflow:hidden;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    gap:26px;
-    min-height:460px;
-    position:relative;
+.cxp-section .cxp-logos {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 26px;
+    min-height: 460px;
+    position: relative;
+
+    /* soft fade at both edges instead of a hard cut */
+    -webkit-mask-image: linear-gradient(
+        to right,
+        transparent,
+        #000 8%,
+        #000 92%,
+        transparent
+    );
+    mask-image: linear-gradient(
+        to right,
+        transparent,
+        #000 8%,
+        #000 92%,
+        transparent
+    );
 }
 
 /*==========================
- Each Row
+    Rows
+
+    No CSS animation here - GSAP
+    drives the tracks. Two engines
+    on one element fight each other.
 ==========================*/
 
-.ps-row{
-    overflow:hidden;
-    width:100%;
+.cxp-section .cxp-row {
+    overflow: hidden;
+    width: 100%;
 }
 
-.ps-track{
-    display:flex;
-    align-items:center;
-    gap:18px;
-    width:max-content;
-    animation:ps-marquee 24s linear infinite;
-}
-
-.ps-row-two .ps-track{
-    animation-duration:28s;
-    animation-delay:-10s;
+.cxp-section .cxp-track {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    width: max-content;
+    will-change: transform;
 }
 
 /*==========================
- Card
+    Card
+
+    Every card is the same width.
+    GSAP measures scrollWidth / 2 and
+    assumes both halves match, so a
+    single odd-sized card opens a gap
+    that reads as an empty slot.
 ==========================*/
 
-/* .ps-card{ */
+.cxp-section .cxp-card {
+    /* width: 185px;
+    height: 145px; */
+     width: 200px;
+    height: 175px;
 
-    /* width:210px;
+    background: rgba(255, 255, 255, .28);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, .55);
+    border-radius: 2px;
 
-    height:170px;
-
-    background:#fff;
-
-    border:1px solid #ECECEC; */
-
-    /* display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    flex-shrink:0;
-
-    transition:.35s;
-
-    overflow:hidden;
-} */
-.ps-card{
-    width:210px;
-    height:170px;
-
-    /* glass */
-    background:rgba(255,255,255,0.18);
-    backdrop-filter:blur(14px);
-    -webkit-backdrop-filter:blur(14px);
-    /* border:1px solid rgba(255,255,255,0.5); */
-    border-radius:14px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex-shrink:0;
-    transition:.35s;
-    overflow:hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: .35s;
+    overflow: hidden;
 }
 
-.ps-card:hover{
-
-    transform:translateY(-8px);
-
-    /* box-shadow:0 18px 45px rgba(0,0,0,.08); */
-
+.cxp-section .cxp-card:hover {
+    transform: translateY(-8px);
+    background: rgba(255, 255, 255, .42);
 }
 
-.ps-card img{
-    width:70%;
-    height:70%;
-    object-fit:contain;
-    background:transparent;
+.cxp-section .cxp-card img {
+    /* width: 70%;
+    height: 70%; */
+     width: 90%;
+    height: 90%;
+    object-fit: contain;
+    background: transparent;
 }
 
 /*==========================
- Make last card larger
+    Responsive
 ==========================*/
 
-.ps-row-one .ps-card:first-child{
+@media (max-width: 1200px) {
 
-    width:240px;
-
-    height:170px;
-
-}
-
-.ps-row-two .ps-card:last-child{
-
-    width:250px;
-
-    height:170px;
-
-}
-
-/*==========================
- Infinite Animation
-==========================*/
-
-@keyframes ps-marquee{
-
-    0%{
-        transform:translateX(0);
+    .cxp-inner {
+        padding: 90px 60px;
+        gap: 50px;
     }
 
-    100%{
-        transform:translateX(calc(-50% - 9px));
+    .cxp-section .cxp-heading {
+        font-size: 52px;
     }
 
+    .cxp-section .cxp-text {
+        width: 42%;
+    }
+
+    .cxp-section .cxp-card {
+        width: 165px;
+        height: 130px;
+    }
+}
+
+@media (max-width: 991px) {
+
+    .cxp-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 70px 40px;
+    }
+
+    .cxp-section .cxp-text {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .cxp-section .cxp-heading {
+        font-size: 46px;
+    }
+
+    .cxp-section .cxp-logos {
+        width: 100%;
+        min-height: 340px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .cxp-inner {
+        padding: 60px 24px;
+    }
+
+    .cxp-section .cxp-heading {
+        font-size: 38px;
+    }
+
+    .cxp-section .cxp-description {
+        font-size: 16px;
+    }
+
+    .cxp-section .cxp-card {
+        width: 145px;
+        height: 115px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .cxp-section .cxp-heading {
+        font-size: 32px;
+    }
+
+    .cxp-section .cxp-btn {
+        padding: 13px 24px;
+        font-size: 14px;
+    }
+
+    .cxp-section .cxp-card {
+        width: 128px;
+        height: 105px;
+    }
 }
 
 /*==========================
- Pause on Hover
+    Reduced motion
 ==========================*/
 
-.ps-row:hover .ps-track{
-
-    animation-play-state:paused;
-
-}
-
-/* ==============
-Breadcrumb for partners page
-============= */
-/* ======================================================
-   PARTNERS PAGE - BREADCRUMB OVERRIDE
-====================================================== */
-/* PARTNERS PAGE - COMPLETE BREADCRUMB RESET */
-
-.partners-page .breadcrumb-wrapper {
-    position: relative !important;
-    top: auto !important;
-    left: auto !important;
-    right: auto !important;
-    bottom: auto !important;
-
-    width: 100% !important;
-    height: auto !important;
-    min-height: 0 !important;
-
-    background: transparent !important;
-    opacity: 1 !important;
-
-    z-index: auto !important;
-
-    transform: none !important;
-}
-
-
-.partners-page .breadcrumb-wrapper::before,
-.partners-page .breadcrumb-wrapper::after {
-    content: none !important;
-    display: none !important;
-}
-
-
-.partners-page .breadcrumb-wrapper .breadcrumb {
-    position: relative !important;
-
-    top: auto !important;
-    left: auto !important;
-
-    width: calc(100% - 140px) !important;
-    max-width: 1450px;
-
-    height: auto !important;
-    min-height: 0 !important;
-
-    margin: 0 auto !important;
-    padding: 30px 0 !important;
-
-    background: transparent !important;
-
-    opacity: 1 !important;
-    transform: none !important;
-}
-/*==========================
- Responsive
-==========================*/
-
-@media(max-width:1200px){
-
-.ps-heading{
-
-font-size:52px;
-
-}
-
-.ps-text{
-
-width:42%;
-
-}
-
-.ps-card{
-
-width:180px;
-
-height:150px;
-
-}
-
-}
-
-@media(max-width:991px){
-
-.ps-inner{
-
-flex-direction:column;
-
-align-items:flex-start;
-
-}
-
-.ps-text{
-
-width:100%;
-
-max-width:100%;
-
-}
-
-.ps-heading{
-
-font-size:46px;
-
-}
-
-.ps-logos-wrapper{
-
-width:100%;
-
-min-height:380px;
-
-}
-
-}
-
-@media(max-width:768px){
-
-.ps-section{
-
-padding:70px 0;
-
-}
-
-.ps-heading{
-
-font-size:38px;
-
-}
-
-.ps-description{
-
-font-size:16px;
-
-}
-
-.ps-card{
-
-width:150px;
-
-height:130px;
-
-}
-
-.ps-row-one .ps-card:first-child{
-
-width:170px;
-
-height:130px;
-
-}
-
-.ps-row-two .ps-card:last-child{
-
-width:170px;
-
-height:130px;
-
-}
-
-}
-
-@media(max-width:480px){
-
-.ps-heading{
-
-font-size:32px;
-
-}
-
-.ps-btn{
-
-padding:13px 24px;
-
-font-size:14px;
-
-}
-
-.ps-card{
-
-width:130px;
-
-height:110px;
-
-}
-
+@media (prefers-reduced-motion: reduce) {
+
+    .cxp-section .cxp-card,
+    .cxp-section .cxp-btn,
+    .cxp-section .cxp-btn svg {
+        transition: none;
+    }
 }

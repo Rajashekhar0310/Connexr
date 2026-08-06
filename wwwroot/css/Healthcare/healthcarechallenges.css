@@ -1,310 +1,690 @@
 /* ==========================================================
-   CHALLENGES SECTION  —  cleaned, single definition per rule
+   CHALLENGES SECTION
+
+   HOW IT WORKS
+
+   Collapsed cards have a FIXED footer height, so a title
+   that wraps to two lines does not make one card taller
+   than its neighbours. Titles clamp to two lines.
+
+   The open card sizes itself to its content via
+   grid-template-rows 0fr -> 1fr, so whatever the editor
+   writes, the card fits it. No max-height, no scrollbars.
+
+   The JS measures the tallest open card once and reserves
+   that space on the row, so the section never resizes when
+   you move between cards.
 ========================================================== */
 
-.hh-section{
-  position:relative;
-  width:100%;
-  background:#fff;
-  overflow:hidden;
-  padding:0;
+.hh-section {
+    position: relative;
+    width: 100%;
+    background: #fff;
+    overflow: hidden;
+    padding: 0;
 }
 
-.hh{
-  position:relative;
-  width:100%;
-  min-height:760px;
-  overflow:hidden;
-  isolation:isolate;
-  background:#EEF3F8;
-  font-family:"Poppins",sans-serif;
+.hh {
+    position: relative;
+    width: 100%;
+    min-height: 760px;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 90px 80px 40px;
+
+    isolation: isolate;
+    background: #EEF3F8;
+    font-family: "Poppins", sans-serif;
 }
+
 
 /* ---------- background image ---------- */
-.hh__photo{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  object-position:center center;
-  z-index:-2;
+
+.hh__photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    z-index: -2;
 }
+
 
 /* ---------- overlay ---------- */
-.hh__scrim{
-  position:absolute;
-  inset:0;
-  z-index:-1;
+
+.hh__scrim {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
 }
+
 
 /* ---------- left copy ---------- */
-.hh__copy{
-  position:absolute;
-  top:90px;
-  left:80px;
-  width:520px;
-  z-index:10;
+
+.hh__copy {
+    position: relative;
+    width: 520px;
+    max-width: 100%;
+    z-index: 10;
 }
 
-.hh__eyebrow{
-  margin:0 0 18px;
-  font-size:13px;
-  letter-spacing:.22em;
-  text-transform:uppercase;
-  font-weight:600;
-  color:#0C2A57;
+.hh__eyebrow {
+    margin: 0 0 18px;
+    font-size: 13px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #0C2A57;
 }
 
-.hh__headline{
-  margin:0;
-  font-family:"Poppins",sans-serif;
-  font-size:38px;
-  line-height:1.1;
-  font-weight:600;
-  color:#163B70;
+.hh__headline {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    font-size: 38px;
+    line-height: 1.1;
+    font-weight: 600;
+    color: #163B70;
 }
 
-.hh__headline em{
-  display:block;
-  margin-top:10px;
-  color:#F49A2D;
-  font-style:normal;
+.hh__headline em {
+    display: block;
+    margin-top: 10px;
+    color: #F49A2D;
+    font-style: normal;
 }
 
-/* ---------- cards wrapper ---------- */
-.hh__cards{
-  position:absolute;
-  left:80px;
-  right:80px;
-  bottom:40px;
-  display:flex;
-  align-items:flex-end;
-  gap:18px;
-  z-index:20;
+
+/* ---------- cards row ---------- */
+
+.hh__cards {
+    position: relative;
+    margin-top: auto;
+    padding-top: 50px;
+
+    display: flex;
+    align-items: flex-end;
+    gap: 18px;
+
+    z-index: 20;
 }
+
+/* JS sets an inline min-height here after measuring
+   the tallest open card, so the section stays put */
+
+.hh__cards.is-measuring,
+.hh__cards.is-measuring * {
+    transition: none !important;
+    animation: none !important;
+}
+
 
 /* ==========================================================
    CARD
 ========================================================== */
-.hh__card{
-  position:relative;
-  flex:1;
-  height:80px;
-  transform-origin:bottom center;
-  transition:height .45s cubic-bezier(.22,.61,.36,1);
+
+.hh__card {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+
+    border-radius: 10px;
+    overflow: hidden;
+
+    background: rgba(255, 255, 255, .18);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-top: 3px solid rgba(255, 255, 255, .4);
+
+    transition:
+        background .4s ease,
+        border-color .4s ease,
+        box-shadow .4s ease;
 }
 
-/* expanded: grow to fit the content instead of a fixed height */
 .hh__card:hover,
-.hh__card.is-active{
-  height:auto;
-  min-height:300px;
-  z-index:20;
+.hh__card.is-active {
+    background: #0C2A57;
+    border-top-color: #F49A2D;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, .28);
+    z-index: 21;
 }
+
 
 /* ---------- button shell ---------- */
-.hh__cardButton{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  border:none;
-  cursor:pointer;
-  border-radius:10px;
-  background:rgba(255,255,255,.18);
-  backdrop-filter:blur(14px);
-  -webkit-backdrop-filter:blur(14px);
-  border-top:3px solid rgba(255,255,255,.4);
-  overflow:hidden;
-  transition:background .4s ease, border-color .4s ease, box-shadow .4s ease;
+
+.hh__cardButton {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+    font: inherit;
 }
 
-.hh__card:hover .hh__cardButton,
-.hh__card.is-active .hh__cardButton{
-  background:#0C2A57;
-  border-top-color:#F49A2D;
-  box-shadow:0 25px 60px rgba(0,0,0,.28);
+
+/* ---------- expanded content ----------
+
+   0fr collapses to nothing, 1fr expands to the
+   content's own height.
+------------------------------------------------ */
+
+.hh__cardContent {
+    display: grid;
+    grid-template-rows: 0fr;
+
+    opacity: 0;
+    padding: 0 24px;
+
+    transition:
+        grid-template-rows .45s cubic-bezier(.22, .61, .36, 1),
+        opacity .3s ease,
+        padding .45s cubic-bezier(.22, .61, .36, 1);
 }
 
-/* ---------- expanded content ---------- */
-/* absolute + zero space while collapsed, so it doesn't affect the 80px height */
-.hh__cardContent{
-  position:absolute;
-  left:24px;
-  right:24px;
-  top:24px;
-  opacity:0;
-  transform:translateY(28px);
-  transition:opacity .35s ease, transform .45s cubic-bezier(.22,.61,.36,1);
-}
-
-/* relative when open, so the description pushes the card taller instead of spilling out */
 .hh__card:hover .hh__cardContent,
-.hh__card.is-active .hh__cardContent{
-  position:relative;
-  left:0;
-  right:0;
-  top:0;
-  opacity:1;
-  transform:translateY(0);
-  padding:24px;
+.hh__card.is-active .hh__cardContent {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    padding: 24px;
 }
 
-.hh__cardHeader{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:14px;
-  margin-bottom:16px;
+.hh__cardInner {
+    overflow: hidden;
+    min-height: 0;
 }
 
-.hh__cardDescription{
-  margin:0;
-  color:#fff;
-  font-size:16px;
-  line-height:1.75;
-  font-weight:400;
-  transition:opacity .35s ease;
+.hh__cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 16px;
 }
 
-/* ---------- collapsed footer ---------- */
-.hh__cardFooter{
-  position:absolute;
-  left:24px;
-  right:24px;
-  bottom:22px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:14px;
-  transition:opacity .3s ease, transform .35s ease;
+.hh__cardDescription {
+    margin: 0;
+    color: #fff;
+    font-size: 16px;
+    line-height: 1.75;
+    font-weight: 400;
+}
+
+
+/* ---------- collapsed footer ----------
+
+   FIXED height keeps every collapsed card
+   identical regardless of title length.
+------------------------------------------------ */
+
+.hh__cardFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+
+    padding: 18px 24px;
+
+    height: 88px;
+    min-height: 88px;
+    max-height: 88px;
+
+    overflow: hidden;
+
+    transition:
+        opacity .3s ease,
+        height .45s cubic-bezier(.22, .61, .36, 1),
+        min-height .45s cubic-bezier(.22, .61, .36, 1),
+        max-height .45s cubic-bezier(.22, .61, .36, 1),
+        padding .45s cubic-bezier(.22, .61, .36, 1);
 }
 
 .hh__card:hover .hh__cardFooter,
-.hh__card.is-active .hh__cardFooter{
-  opacity:0;
-  transform:translateY(20px);
-  pointer-events:none;
+.hh__card.is-active .hh__cardFooter {
+    opacity: 0;
+    height: 0;
+    min-height: 0;
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    pointer-events: none;
 }
+
 
 /* ---------- title ---------- */
-.hh__cardTitle{
-  font-size:22px;
-  font-family:"Poppins",sans-serif;
-  line-height:1.35;
-  font-weight:500;
-  color:#fff;
+
+.hh__cardTitle {
+    font-size: 20px;
+    font-family: "Poppins", sans-serif;
+    line-height: 1.3;
+    font-weight: 500;
+    color: #fff;
+    min-width: 0;
 }
 
-.hh__accent{
-  color:#F49A2D;
-  font-weight:600;
+/* collapsed titles clamp to two lines so long
+   labels never break the fixed footer height */
+
+.hh__cardFooter .hh__cardTitle {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
+
+.hh__accent {
+    color: #F49A2D;
+    font-weight: 600;
+}
+
 
 /* ---------- orange circle ---------- */
-.hh__circle{
-  width:34px;
-  height:34px;
-  border-radius:50%;
-  background:#F49A2D;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex:none;
+
+.hh__circle {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #F49A2D;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
 }
-.hh__circle svg{ width:14px; height:14px; }
+
+.hh__circle svg {
+    width: 14px;
+    height: 14px;
+}
 
 
 /* ==========================================================
    RESPONSIVE
 ========================================================== */
 
+
 /* ---- large laptop ---- */
-@media (max-width:1440px){
-  .hh__copy{ left:60px; width:480px; }
-  .hh__cards{ left:60px; right:60px; }
+
+@media (max-width: 1600px) {
+
+    .hh {
+        padding: 80px 60px 40px;
+    }
+
+    .hh__copy {
+        width: 480px;
+    }
 }
+
+
+/* ---- LAPTOP ---- */
+
+@media (max-width: 1440px) {
+
+    .hh {
+        min-height: 750px;
+        padding: 70px 60px 36px;
+    }
+
+    .hh__copy {
+        width: 460px;
+    }
+
+    .hh__headline {
+        font-size: 34px;
+    }
+
+    .hh__cards {
+        gap: 16px;
+        padding-top: 40px;
+    }
+
+    .hh__cardTitle {
+        font-size: 18px;
+    }
+
+    .hh__cardDescription {
+        font-size: 15px;
+        line-height: 1.65;
+    }
+
+    .hh__cardFooter {
+        padding: 16px 20px;
+        height: 82px;
+        min-height: 82px;
+        max-height: 82px;
+    }
+
+    .hh__card:hover .hh__cardContent,
+    .hh__card.is-active .hh__cardContent {
+        padding: 20px;
+    }
+}
+
+
+/* ---- short laptops, 1366x768 and similar ---- */
+
+@media (max-height: 820px) and (min-width: 992px) {
+
+    .hh {
+        /* min-height: 0; */
+        padding-top: 55px;
+        padding-bottom: 32px;
+    }
+
+    .hh__headline {
+        font-size: 30px;
+    }
+
+    .hh__cards {
+        padding-top: 32px;
+    }
+
+    .hh__cardTitle {
+        font-size: 17px;
+    }
+
+    .hh__cardDescription {
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .hh__cardFooter {
+        height: 76px;
+        min-height: 76px;
+        max-height: 76px;
+    }
+}
+
 
 /* ---- small laptop / large tablet ---- */
-@media (max-width:1200px){
-  .hh{ min-height:700px; }
 
-  .hh__copy{ left:50px; top:70px; width:430px; }
-  .hh__headline{ font-size:34px; }
+@media (max-width: 1200px) {
 
-  .hh__cards{ left:50px; right:50px; bottom:35px; gap:14px; }
+    .hh {
+        min-height: 660px;
+        padding: 60px 50px 32px;
+    }
 
-  .hh__cardTitle{ font-size:18px; }
-  .hh__card:hover,
-  .hh__card.is-active{ min-height:320px; }
+    .hh__copy {
+        width: 420px;
+    }
+
+    .hh__headline {
+        font-size: 32px;
+    }
+
+    .hh__cards {
+        gap: 14px;
+        padding-top: 36px;
+    }
+
+    .hh__cardTitle {
+        font-size: 17px;
+    }
+
+    .hh__cardDescription {
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .hh__cardFooter {
+        height: 78px;
+        min-height: 78px;
+        max-height: 78px;
+    }
 }
 
-/* ---- tablet: cards stack under the copy ---- */
-@media (max-width:991px){
-  .hh{ min-height:auto; padding-bottom:40px; }
 
-  .hh__copy{
-    position:relative;
-    left:auto; top:auto; width:100%;
-    padding:50px 25px 10px;
-  }
-  .hh__headline{ font-size:34px; }
+/* ---- tablet: cards stack ----
 
-  .hh__cards{
-    position:relative;
-    left:auto; right:auto; bottom:auto;
-    margin:25px;
-    flex-direction:column;
-    align-items:stretch;
-    gap:12px;
-  }
+   Stacked cards flow naturally, so the
+   fixed heights are released.
+------------------------------------------ */
 
-  .hh__card{ width:100%; height:84px; }
-  .hh__card:hover,
-  .hh__card.is-active{ height:auto; min-height:0; }
+@media (max-width: 991px) {
 
-  /* on stacked cards the content flows naturally, footer hides as before */
-  .hh__cardContent{ padding:22px 22px 24px; }
-  .hh__cardTitle{ font-size:20px; }
-  .hh__cardDescription{ font-size:15px; }
+    .hh {
+        min-height: 0;
+        padding: 50px 25px 40px;
+    }
+
+    .hh__copy {
+        width: 100%;
+    }
+
+    .hh__headline {
+        font-size: 34px;
+    }
+
+    .hh__cards {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        padding-top: 32px;
+        margin-top: 32px;
+        min-height: 0 !important;
+    }
+
+    .hh__cardTitle {
+        font-size: 20px;
+    }
+
+    .hh__cardDescription {
+        font-size: 15px;
+    }
+
+    .hh__cardFooter {
+        height: auto;
+        min-height: 84px;
+        max-height: 200px;
+        padding: 20px 22px;
+    }
+
+    .hh__cardFooter .hh__cardTitle {
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+    }
 }
+
 
 /* ---- phone ---- */
-@media (max-width:768px){
-  .hh__copy{ padding:35px 20px 8px; }
-  .hh__headline{ font-size:28px; }
-  .hh__eyebrow{ font-size:12px; }
 
-  .hh__cards{ margin:20px; gap:10px; }
+@media (max-width: 768px) {
 
-  .hh__card{ height:76px; }
+    .hh {
+        padding: 35px 20px 30px;
+    }
 
-  .hh__cardFooter{ left:18px; right:18px; bottom:18px; }
-  .hh__cardContent{ padding:18px; }
+    .hh__headline {
+        font-size: 28px;
+    }
 
-  .hh__cardTitle{ font-size:17px; }
-  .hh__cardDescription{ font-size:14px; line-height:1.7; }
+    .hh__eyebrow {
+        font-size: 12px;
+    }
 
-  .hh__circle{ width:30px; height:30px; }
+    .hh__cards {
+        gap: 10px;
+        padding-top: 26px;
+        margin-top: 26px;
+    }
+
+    .hh__cardFooter {
+        padding: 18px;
+        min-height: 76px;
+    }
+
+    .hh__card:hover .hh__cardContent,
+    .hh__card.is-active .hh__cardContent {
+        padding: 18px;
+    }
+
+    .hh__cardTitle {
+        font-size: 17px;
+    }
+
+    .hh__cardDescription {
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .hh__circle {
+        width: 30px;
+        height: 30px;
+    }
 }
+
 
 /* ---- small phone ---- */
-@media (max-width:420px){
-  .hh__headline{ font-size:24px; }
-  .hh__copy{ padding:30px 18px 4px; }
-  .hh__cards{ margin:16px; }
-  .hh__cardTitle{ font-size:16px; }
+
+@media (max-width: 420px) {
+
+    .hh {
+        padding: 30px 18px 26px;
+    }
+
+    .hh__headline {
+        font-size: 24px;
+    }
+
+    .hh__cardTitle {
+        font-size: 16px;
+    }
+
+    .hh__cardFooter {
+        min-height: 70px;
+    }
 }
+
 
 /* ==========================================================
    ACCESSIBILITY
 ========================================================== */
-@media (prefers-reduced-motion:reduce){
-  .hh *,
-  .hh *::before,
-  .hh *::after{
-    animation:none !important;
-    transition:none !important;
-  }
+
+@media (prefers-reduced-motion: reduce) {
+
+    .hh *,
+    .hh *::before,
+    .hh *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* ==========================================================
+   UNIFORM OPEN HEIGHT
+
+   The row gets a fixed pixel height from the JS. These
+   rules make every open card fill that exact height,
+   so hovering between a short card and a long one never
+   moves the section.
+========================================================== */
+
+@media (min-width: 992px) {
+
+    .hh__cards {
+        align-items: stretch;
+    }
+
+    .hh__card {
+        align-self: flex-end;
+        height: 88px;
+
+        transition:
+            height .45s cubic-bezier(.22, .61, .36, 1),
+            background .4s ease,
+            border-color .4s ease,
+            box-shadow .4s ease;
+    }
+
+    .hh__card:hover,
+    .hh__card.is-active {
+        height: 100%;
+        align-self: stretch;
+    }
+
+    .hh__card:hover .hh__cardButton,
+    .hh__card.is-active .hh__cardButton {
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .hh__card:hover .hh__cardContent,
+    .hh__card.is-active .hh__cardContent {
+        height: 100%;
+        align-content: start;
+        overflow: hidden;
+    }
+}
+
+@media (max-width: 1440px) and (min-width: 992px) {
+    .hh__card { height: 82px; }
+}
+
+@media (max-height: 820px) and (min-width: 992px) {
+    .hh__card { height: 76px; }
+}
+
+@media (max-width: 1200px) and (min-width: 992px) {
+    .hh__card { height: 78px; }
+}
+
+/* ==========================================================
+   BOTTOM-TO-TOP REVEAL
+
+   The card grows upward from its bottom edge, and the
+   content rises into place rather than just fading.
+========================================================== */
+
+@media (min-width: 992px) {
+
+    /* anchor every card to the bottom line so the
+       height change extends upward, never downward */
+    .hh__card {
+        align-self: flex-end;
+        transform-origin: bottom center;
+    }
+
+    /* content starts low and lifts as the card opens */
+    .hh__cardInner {
+        transform: translateY(30px);
+        transition: transform .5s cubic-bezier(.22, .61, .36, 1);
+    }
+
+    .hh__card:hover .hh__cardInner,
+    .hh__card.is-active .hh__cardInner {
+        transform: translateY(0);
+        transition-delay: .12s;
+    }
+
+    /* title and description stagger up behind it */
+    .hh__cardHeader,
+    .hh__cardDescription {
+        opacity: 0;
+        transform: translateY(18px);
+        transition:
+            opacity .4s ease,
+            transform .5s cubic-bezier(.22, .61, .36, 1);
+    }
+
+    .hh__card:hover .hh__cardHeader,
+    .hh__card.is-active .hh__cardHeader {
+        opacity: 1;
+        transform: translateY(0);
+        transition-delay: .18s;
+    }
+
+    .hh__card:hover .hh__cardDescription,
+    .hh__card.is-active .hh__cardDescription {
+        opacity: 1;
+        transform: translateY(0);
+        transition-delay: .26s;
+    }
 }

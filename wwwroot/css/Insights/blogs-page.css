@@ -647,7 +647,7 @@ RELATED BLOGS
 SCROLLBAR
 ==================================================*/
 
-::-webkit-scrollbar{
+/* ::-webkit-scrollbar{
     width:8px;
 }
 
@@ -658,7 +658,7 @@ SCROLLBAR
 ::-webkit-scrollbar-thumb{
     background:#F58220;
     border-radius:20px;
-}
+} */
 
 /*==================================================
 RESPONSIVE

@@ -122,42 +122,11 @@
 
                     foreach (var item in steps)
                     {
-                        var left = item.Content.Value<string>("positionLeft");
-                        var right = item.Content.Value<string>("positionRight");
-                        var top = item.Content.Value<string>("positionTop");
-                        var bottom = item.Content.Value<string>("positionBottom");
-
-                        var style = "";
-
-                        if (!string.IsNullOrWhiteSpace(left))
-                        {
-                            style += $"left:{left};";
-                        }
-
-                        if (!string.IsNullOrWhiteSpace(right))
-                        {
-                            style += $"right:{right};";
-                        }
-
-                        if (!string.IsNullOrWhiteSpace(top))
-                        {
-                            style += $"top:{top};";
-                        }
-
-                        if (!string.IsNullOrWhiteSpace(bottom))
-                        {
-                            style += $"bottom:{bottom};";
-                        }
-
-                        <div class="mj-node @(index == 1 ? "active" : "")"
-
-                             style="@style"
-
-                             data-step="@item.Content.Value("stepLabel")"
-
-                             data-title="@item.Content.Value("title")"
-
-                             data-description="@item.Content.Value("description")">
+                       
+                             <div class="mj-node @(index == 1 ? "active" : "")"
+     data-step="@item.Content.Value("stepLabel")"
+     data-title="@item.Content.Value("title")"
+     data-description="@item.Content.Value("description")">
 
                             <div class="circle">
 

@@ -149,11 +149,11 @@ CONTENT
 
 .image-content-title{
 
-    font-size:62px;
+    font-size:45px;
 
     line-height:1.08;
 
-    font-weight:700;
+    font-weight:620;
 
     color:#13235B;
 
@@ -179,13 +179,13 @@ CONTENT
 BUTTON
 =========================*/
 
-.image-content-button{
+/* .image-content-button{
 
     display:inline-flex;
 
     align-items:center;
 
-    gap:18px;
+    gap:10px;
 
     text-decoration:none;
 
@@ -201,13 +201,40 @@ BUTTON
 
     transition:.35s;
 
+} */
+.image-content-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 20px;
+
+    width: fit-content;      /* Grow based on content */
+    max-width: 100%;
+   
+
+    background:#F7941D;
+
+    color:#122560;
+
+    padding: 14px 24px;
+    font-weight: 500;
+
+    white-space: nowrap;     /* Keep text on one line */
+    text-decoration: none;
+}
+
+.image-content-button span {
+    white-space: nowrap;
+}
+
+.image-content-button svg {
+    flex-shrink: 0;          /* Prevent the icon from shrinking */
 }
 
 .image-content-button span{
 
-    width:160px;
+    max-width:250px;
 
-    height:44px;
+    height:25px;
 
    
 

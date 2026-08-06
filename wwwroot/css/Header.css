@@ -1,6 +1,14 @@
 /*=========================================================
     Header.css
-    Floating Header - Umbraco
+    Adaptive glass header - Umbraco
+
+    DEFAULT STATE = light text (white), because heroes
+    are dark. The header only switches to dark text when
+    something light is actually behind it:
+
+      .glass      scrolled, white blurred bar
+      .on-light   a section tagged data-header="dark"
+      panel open  mega menu is showing (white panel)
 =========================================================*/
 
 * {
@@ -10,70 +18,117 @@
 }
 
 /*=========================================
-    Header
+    Header shell
 =========================================*/
 
 .site-header {
     position: fixed;
-    /* top: 20px; */
+    top: 0;
     left: 0;
     width: 100%;
     display: flex;
     justify-content: center;
     z-index: 9999;
-     transition:.3s;
+    transition: .35s ease;
 }
 
-.site-header::before{
-
-    content:"";
-
-    position:absolute;
-
-    left:0;
-    top:-20px;
-
-    width:100%;
-    height:520px;
-
-    background:#fff;
-
-    opacity:0;
-
-    visibility:hidden;
-
-    transition:.3s;
-
-    z-index:-1;
-
+/* white panel that fills in behind an open mega menu */
+.site-header::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 520px;
+    background: #fff;
+    opacity: 0;
+    visibility: hidden;
+    transition: .3s;
+    z-index: -1;
 }
-.site-header:has(.has-dropdown:hover)::before{
 
-    opacity:1;
+.site-header:has(.has-dropdown:hover)::before {
+    opacity: 1;
+    visibility: visible;
+}
 
-    visibility:visible;
+/* scrim - keeps white text legible over bright video frames */
+.site-header::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 140px;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, .45),
+        rgba(0, 0, 0, .12),
+        transparent
+    );
+    pointer-events: none;
+    opacity: 1;
+    transition: .35s;
+    z-index: -1;
+}
 
+.site-header.glass::after,
+.site-header.on-light::after,
+.site-header:has(.has-dropdown:hover)::after {
+    opacity: 0;
 }
 
 .header-wrapper {
-    width: 96%;
-    max-width: 1700px;
+    width: 100%;
+    max-width: 100%;
     margin: 0 auto;
-  
 }
 
 .nav-container {
     width: 100%;
     height: 74px;
-    background: #fff;
+    background: transparent;
     display: flex;
     align-items: center;
     padding: 0 40px;
-    /* box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12); */
+    transition: .35s ease;
+        background: rgb(178 187 205 / 36%);
+        backdrop-filter: blur(14px) saturate(150%);
+  
+    
+}
+
+/*=========================================
+    Glass state (applied once scrolled)
+=========================================*/
+
+.site-header.glass .nav-container {
+    background: rgba(255, 255, 255, .72);
+    backdrop-filter: blur(14px) saturate(150%);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+    border-bottom: 1px solid rgba(255, 255, 255, .35);
+}
+
+/* scrolled but still over a dark section - tint the glass dark */
+.site-header.glass:not(.on-light) .nav-container {
+    /* background: rgba(20, 26, 38, .45); */
+    background: rgb(178 187 205 / 36%);
+    border-bottom: 1px solid rgba(255, 255, 255, .12);
+}
+
+/* mega menu open - drop the blur, go solid white */
+.site-header:has(.has-dropdown:hover) .nav-container {
+    background: #fff;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-bottom: 1px solid #f3f3f3;
 }
 
 /*=========================================
     Logo
+
+    Light (white) logo shows by default.
+    Upload it to the logoLight picker on Home.
 =========================================*/
 
 .logo {
@@ -86,8 +141,54 @@
     display: block;
 }
 
+.logo-dark {
+    display: none;
+}
+
+.logo-light {
+    display: block;
+}
+
+/* over a light section, or when the white panel is open */
+.site-header.on-light .logo-dark,
+.site-header:has(.has-dropdown:hover) .logo-dark {
+    display: block;
+}
+
+.site-header.on-light .logo-light,
+.site-header:has(.has-dropdown:hover) .logo-light {
+    display: none;
+}
+
+/* scrolled over a light section = white glass bar */
+.site-header.glass.on-light .logo-dark {
+    display: block;
+}
+
+.site-header.glass.on-light .logo-light {
+    display: none;
+}
+
 /*=========================================
-    Right Section
+    FALLBACK - no white logo uploaded yet
+
+    Uncomment this block if you have not
+    added a logoLight image. It inverts the
+    existing logo to solid white, including
+    the orange, so replace it with a real
+    asset when you can.
+=========================================*/
+
+/*
+.logo-dark { display: block; filter: brightness(0) invert(1); }
+.logo-light { display: none; }
+.site-header.on-light .logo-dark,
+.site-header.glass.on-light .logo-dark,
+.site-header:has(.has-dropdown:hover) .logo-dark { filter: none; }
+*/
+
+/*=========================================
+    Right section
 =========================================*/
 
 .header-right {
@@ -98,12 +199,13 @@
 }
 
 /*=========================================
-    Desktop Navigation
+    Desktop navigation
 =========================================*/
 
 .main-nav {
     display: flex;
     align-items: center;
+    position: static;
 }
 
 .main-nav > ul {
@@ -111,30 +213,48 @@
     align-items: center;
     gap: 36px;
     list-style: none;
+    position: static;
 }
 
 .main-nav > ul > li {
-    position: relative;
+    position: static;
 }
 
+/* DEFAULT - white */
 .main-nav > ul > li > a {
     display: flex;
     align-items: center;
     gap: 5px;
     height: 74px;
     text-decoration: none;
+    color: #fff;
+    /* font: 500 15px/1 sans-serif; */
+        font: semibold 15px/1 sans-serif;
+    transition: .3s;
+}
+
+/* over a light section */
+.site-header.on-light .main-nav > ul > li > a {
     color: #222;
-    font: 500 15px/1 sans-serif;
-    transition: 0.3s;
+}
+
+/* scrolled over a light section = white glass bar */
+.site-header.glass.on-light .main-nav > ul > li > a {
+    color: #222;
+}
+
+/* open panel always wins - keep this after the others */
+.site-header:has(.has-dropdown:hover) .main-nav > ul > li > a {
+    color: #122560;
 }
 
 .main-nav > ul > li:hover > a,
 .main-nav > ul > li.active > a {
-    color: #F7941D;
+    color: #122560;
 }
 
 /*=========================================
-    Dropdown Arrow
+    Dropdown arrow
 =========================================*/
 
 .arrow {
@@ -143,7 +263,7 @@
 }
 
 .arrow svg {
-    transition: 0.3s;
+    transition: .3s;
 }
 
 .has-dropdown:hover .arrow svg {
@@ -151,7 +271,7 @@
 }
 
 /*=========================================
-    Dropdown Menu
+    Simple dropdown
 =========================================*/
 
 .dropdown {
@@ -166,8 +286,8 @@
     opacity: 0;
     visibility: hidden;
     transform: translateY(12px);
-    transition: 0.3s;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+    transition: .3s;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, .12);
     z-index: 100;
 }
 
@@ -187,7 +307,7 @@
     padding: 14px 22px;
     text-decoration: none;
     color: #333;
-    transition: 0.3s;
+    transition: .3s;
 }
 
 .dropdown li a:hover {
@@ -197,7 +317,7 @@
 }
 
 /*=========================================
-    CTA Button
+    CTA button - orange on every state
 =========================================*/
 
 .header-btn {
@@ -209,7 +329,7 @@
     color: #fff;
     background: #F7941D;
     font-weight: 600;
-    transition: 0.3s;
+    transition: .3s;
 }
 
 .header-btn:hover {
@@ -217,15 +337,25 @@
 }
 
 /*=========================================
-    Hamburger Button
+    Hamburger
 =========================================*/
 
 .nav-burger {
     display: none;
 }
 
+.nav-burger span {
+    background: #fff;
+    transition: .3s;
+}
+
+.site-header.on-light .nav-burger span,
+.site-header.glass.on-light .nav-burger span {
+    background: #111;
+}
+
 /*=========================================
-    Mobile Navigation
+    Mobile navigation
 =========================================*/
 
 .mobile-nav {
@@ -236,7 +366,7 @@
     height: 100vh;
     background: #fff;
     overflow: auto;
-    transition: 0.35s;
+    transition: .35s;
     z-index: 9998;
 }
 
@@ -274,17 +404,34 @@
     display: block;
 }
 
+.mobile-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding: 12px 22px;
+    text-decoration: none;
+    color: #fff;
+    background: #F7941D;
+    font-weight: 600;
+    transition: .3s;
+}
+
+.mobile-btn:hover {
+    background: #e57f08;
+}
+
 /*=========================================
-    Mobile Overlay
+    Mobile overlay
 =========================================*/
 
 .mobile-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.45);
+    background: rgba(0, 0, 0, .45);
     opacity: 0;
     visibility: hidden;
-    transition: 0.3s;
+    transition: .3s;
 }
 
 .mobile-overlay.active {
@@ -292,9 +439,348 @@
     visibility: visible;
 }
 
+/*==================================================
+    MEGA MENU
+==================================================*/
+
+.mega-menu {
+    position: absolute;
+    left: 0;
+    top: 74px;
+    width: 100%;
+    background: #fff;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all .35s ease;
+    border-top: 1px solid #f3f3f3;
+    z-index: 999;
+}
+
+.has-dropdown:hover > .mega-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.mega-container {
+    width: 100%;
+    max-width: 1450px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 220px 430px 1fr;
+    gap: 40px;
+    padding: 45px 30px;
+}
+
+/*==============================
+    Left column
+==============================*/
+
+.mega-left {
+    border-right: 1px solid #ececec;
+    padding-right: 35px;
+}
+
+.mega-left h3 {
+    font-size: 34px;
+    line-height: 1.25;
+    font-weight: 600;
+    color: #1B4E9B;
+}
+
+/*==============================
+    Center column
+==============================*/
+
+.mega-center ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px 40px;
+}
+
+.mega-center li {
+    margin-bottom: 22px;
+}
+
+.mega-center li:last-child {
+    margin-bottom: 0;
+}
+
+.mega-center a {
+    display: block;
+    color: #202020;
+    font-size: 18px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: .25s;
+}
+
+.mega-center a:hover {
+    color: #F7941D;
+    transform: translateX(10px);
+}
+
+/*==============================
+    Right column
+==============================*/
+
+.mega-right {
+    position: relative;
+    overflow: hidden;
+    border-radius: 18px;
+}
+
+.mega-right img {
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+    display: block;
+}
+
+.mega-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 35px;
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, .75),
+        rgba(0, 0, 0, .20),
+        transparent
+    );
+}
+
+.mega-overlay h3 {
+    color: #fff;
+    font-size: 36px;
+    font-weight: 600;
+    margin-bottom: 14px;
+}
+
+.mega-overlay p {
+    color: rgba(255, 255, 255, .92);
+    line-height: 1.7;
+    font-size: 16px;
+    margin-bottom: 22px;
+}
+
+/*==============================
+    Arrow button
+==============================*/
+
+.mega-arrow {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid #F7941D;
+    color: #F7941D;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 22px;
+    transition: .3s;
+}
+
+.mega-arrow:hover {
+    background: #F7941D;
+    color: #fff;
+}
+
+/*==============================
+    Stagger animation
+==============================*/
+
+.mega-center li {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: .35s;
+}
+
+.has-dropdown:hover .mega-center li {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.has-dropdown:hover .mega-center li:nth-child(1) { transition-delay: .05s; }
+.has-dropdown:hover .mega-center li:nth-child(2) { transition-delay: .10s; }
+.has-dropdown:hover .mega-center li:nth-child(3) { transition-delay: .15s; }
+.has-dropdown:hover .mega-center li:nth-child(4) { transition-delay: .20s; }
+.has-dropdown:hover .mega-center li:nth-child(5) { transition-delay: .25s; }
+
 /*=========================================
-    Responsive - Tablet
+    Industries mega menu
 =========================================*/
+
+.industry-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    align-content: start;
+}
+
+.stat-card {
+    background: #F7F9FC;
+    border-radius: 12px;
+    padding: 24px;
+    transition: .3s ease;
+    border: 1px solid #ECECEC;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, .08);
+}
+
+.stat-card h2 {
+    font-size: 40px;
+    font-weight: 700;
+    color: #F7941D;
+    margin-bottom: 12px;
+}
+
+.stat-card h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #173F8A;
+    margin-bottom: 10px;
+}
+
+.stat-card p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #666;
+    margin: 0;
+}
+
+/*==================================================
+    INSIGHTS MEGA MENU
+==================================================*/
+
+.insights-menu {
+    display: grid;
+    grid-template-columns: 220px 300px 1fr;
+    gap: 45px;
+    width: 100%;
+}
+
+.insights-links ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.insights-links li {
+    margin-bottom: 18px;
+}
+
+.insights-links li:last-child {
+    margin-bottom: 0;
+}
+
+.insights-links a {
+    display: block;
+    text-decoration: none;
+    color: #222;
+    font-size: 17px;
+    font-weight: 500;
+    transition: .3s;
+}
+
+.insights-links a:hover {
+    color: #F7941D;
+    transform: translateX(8px);
+}
+
+.insights-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 18px;
+}
+
+.insights-card img {
+    width: 100%;
+    height: 360px;
+    object-fit: cover;
+    display: block;
+}
+
+.insights-card-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 35px;
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, .85),
+        rgba(0, 0, 0, .15),
+        transparent
+    );
+}
+
+.insights-card-overlay h3 {
+    color: #fff;
+    font-size: 34px;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.insights-card-overlay p {
+    color: rgba(255, 255, 255, .9);
+    line-height: 1.6;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.insights-arrow {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 2px solid #F7941D;
+    background: #fff;
+    color: #F7941D;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: .3s;
+}
+
+.insights-arrow:hover {
+    background: #F7941D;
+    color: #fff;
+}
+
+/*=========================================
+    Responsive - tablet
+=========================================*/
+
+@media (max-width: 1200px) {
+
+    .mega-container {
+        grid-template-columns: 180px 260px 1fr;
+        gap: 30px;
+    }
+
+    .mega-left h3 {
+        font-size: 28px;
+    }
+
+    .mega-overlay h3 {
+        font-size: 28px;
+    }
+
+    .insights-menu {
+        grid-template-columns: 180px 250px 1fr;
+        gap: 25px;
+    }
+}
 
 @media (max-width: 1100px) {
 
@@ -315,12 +801,23 @@
     .nav-burger span {
         width: 24px;
         height: 2px;
-        background: #111;
+    }
+
+    .mega-menu {
+        display: none;
+    }
+
+    .insights-menu {
+        display: block;
+    }
+
+    .insights-links {
+        margin-bottom: 25px;
     }
 }
 
 /*=========================================
-    Desktop Only
+    Desktop only
 =========================================*/
 
 @media (min-width: 1101px) {
@@ -332,14 +829,10 @@
 }
 
 /*=========================================
-    Responsive - Mobile
+    Responsive - mobile
 =========================================*/
 
 @media (max-width: 768px) {
-
-    .header-wrapper {
-        width: 94%;
-    }
 
     .nav-container {
         height: 68px;
@@ -349,583 +842,20 @@
     .logo img {
         width: 140px;
     }
-}/*==================================================
-MEGA MENU
-==================================================*/
-
-.main-nav {
-    position: static;
-}
-
-.main-nav > ul {
-    position: static;
-}
-
-.main-nav > ul > li {
-    position: static;
-}
-
-/*==============================
-Mega Menu Wrapper
-==============================*/
-
-.mega-menu {
-    position: absolute;
-    left: 0;
-    top: 53px;
-    width: 100%;
-    background: #fff;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(20px);
-    transition: all .35s ease;
-    /* box-shadow: 0 20px 45px rgba(0,0,0,.12); */
-    border-top: 1px solid #f3f3f3;
-    z-index: 999;
-}
-
-.has-dropdown:hover > .mega-menu {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(80);
-}
-
-/*==============================
-Container
-==============================*/
-
-.mega-container {
-
-    width: 100%;
-    max-width: 1450px;
-
-    margin: auto;
-
-    display: grid;
-
-    grid-template-columns: 220px 430px 1fr;
-
-    gap: 40px;
-
-    padding: 45px 30px;
-
-}
-
-/*==============================
-Left Column
-==============================*/
-
-.mega-left {
-
-    border-right: 1px solid #ececec;
-
-    padding-right: 35px;
-
-}
-
-.mega-left h3 {
-
-    font-size: 34px;
-
-    line-height: 1.25;
-
-    font-weight: 600;
-
-    color: #1B4E9B;
-
-}
-
-/*==============================
-Center Column
-==============================*/
-
-/* .mega-center ul {
-
-    list-style: none;
-
-} */
-.mega-center ul{
-    list-style:none;
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:18px 40px;
-}
-
-.mega-center li {
-
-    margin-bottom: 22px;
-
-}
-
-.mega-center li:last-child {
-
-    margin-bottom: 0;
-
-}
-
-.mega-center a {
-
-    display: block;
-
-    color: #202020;
-
-    font-size: 18px;
-
-    font-weight: 500;
-
-    text-decoration: none;
-
-    transition: .25s;
-
-}
-
-.mega-center a:hover {
-
-    color: #F7941D;
-
-    transform: translateX(10px);
-
-}
-
-/*==============================
-Right Column
-==============================*/
-
-.mega-right {
-
-    position: relative;
-
-    overflow: hidden;
-
-    border-radius: 18px;
-
-}
-
-.mega-right img {
-
-    width: 100%;
-
-    height: 380px;
-
-    object-fit: cover;
-
-    display: block;
-
-}
-
-.mega-overlay {
-
-    position: absolute;
-
-    inset: 0;
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: flex-end;
-
-    padding: 35px;
-
-    background: linear-gradient(
-        to top,
-        rgba(0,0,0,.75),
-        rgba(0,0,0,.20),
-        transparent
-    );
-
-}
-
-.mega-overlay h3 {
-
-    color: #fff;
-
-    font-size: 36px;
-
-    font-weight: 600;
-
-    margin-bottom: 14px;
-
-}
-
-.mega-overlay p {
-
-    color: rgba(255,255,255,.92);
-
-    line-height: 1.7;
-
-    font-size: 16px;
-
-    margin-bottom: 22px;
-
-}
-
-/*==============================
-Arrow Button
-==============================*/
-
-.mega-arrow {
-
-    width: 48px;
-
-    height: 48px;
-
-    border-radius: 50%;
-
-    border: 2px solid #F7941D;
-
-    color: #F7941D;
-
-    background: #fff;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    text-decoration: none;
-
-    font-size: 22px;
-
-    transition: .3s;
-
-}
-
-.mega-arrow:hover {
-
-    background: #F7941D;
-
-    color: #fff;
-
-}
-
-/*==============================
-Animation
-==============================*/
-
-.mega-center li {
-
-    opacity: 0;
-
-    transform: translateY(12px);
-
-    transition: .35s;
-
-}
-
-.has-dropdown:hover .mega-center li {
-
-    opacity: 1;
-
-    transform: translateY(0);
-
-}
-
-.has-dropdown:hover .mega-center li:nth-child(1) {
-
-    transition-delay: .05s;
-
-}
-
-.has-dropdown:hover .mega-center li:nth-child(2) {
-
-    transition-delay: .10s;
-
-}
-
-.has-dropdown:hover .mega-center li:nth-child(3) {
-
-    transition-delay: .15s;
-
-}
-
-.has-dropdown:hover .mega-center li:nth-child(4) {
-
-    transition-delay: .20s;
-
-}
-
-.has-dropdown:hover .mega-center li:nth-child(5) {
-
-    transition-delay: .25s;
-
-}
-
-/*==============================
-Responsive
-==============================*/
-
-@media(max-width:1200px){
-
-    .mega-container{
-
-        grid-template-columns:180px 260px 1fr;
-
-        gap:30px;
-
-    }
-
-    .mega-left h3{
-
-        font-size:28px;
-
-    }
-
-    .mega-overlay h3{
-
-        font-size:28px;
-
-    }
-
-}
-
-@media(max-width:1100px){
-
-    .mega-menu{
-
-        display:none;
-
-    }
-
 }
 
 /*=========================================
-    Industries Mega Menu
+    Reduced motion
 =========================================*/
 
-.industry-stats{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:20px;
-    align-content:start;
-}
-.stat-card{
-    background:#F7F9FC;
-    border-radius:12px;
-    padding:24px;
-    transition:.3s ease;
-    border:1px solid #ECECEC;
-}
-
-.stat-card:hover{
-    transform:translateY(-5px);
-    box-shadow:0 12px 25px rgba(0,0,0,.08);
-}
-.stat-card h2{
-    font-size:40px;
-    font-weight:700;
-    color:#F7941D;
-    margin-bottom:12px;
-}
-.stat-card h4{
-    font-size:18px;
-    font-weight:600;
-    color:#173F8A;
-    margin-bottom:10px;
-}
-.stat-card p{
-    font-size:15px;
-    line-height:1.6;
-    color:#666;
-    margin:0;
-}
-
-/*==================================================
-INSIGHTS MEGA MENU
-==================================================*/
-
-.insights-menu {
-
-    display: grid;
-
-    grid-template-columns: 220px 300px 1fr;
-
-    gap: 45px;
-
-    width: 100%;
-
-}
-
-.insights-links ul {
-
-    list-style: none;
-
-    margin: 0;
-
-    padding: 0;
-
-}
-
-.insights-links li {
-
-    margin-bottom: 18px;
-
-}
-
-.insights-links li:last-child {
-
-    margin-bottom: 0;
-
-}
-
-.insights-links a {
-
-    display: block;
-
-    text-decoration: none;
-
-    color: #222;
-
-    font-size: 17px;
-
-    font-weight: 500;
-
-    transition: .3s;
-
-}
-
-.insights-links a:hover {
-
-    color: #F7941D;
-
-    transform: translateX(8px);
-
-}
-
-/*==============================
-RIGHT CARD
-==============================*/
-
-.insights-card {
-
-    position: relative;
-
-    overflow: hidden;
-
-    border-radius: 18px;
-
-}
-
-.insights-card img {
-
-    width: 100%;
-
-    height: 360px;
-
-    object-fit: cover;
-
-    display: block;
-
-}
-
-.insights-card-overlay {
-
-    position: absolute;
-
-    left: 0;
-
-    right: 0;
-
-    bottom: 0;
-
-    padding: 35px;
-
-    background: linear-gradient(
-        to top,
-        rgba(0,0,0,.85),
-        rgba(0,0,0,.15),
-        transparent
-    );
-
-}
-
-.insights-card-overlay h3 {
-
-    color: #fff;
-
-    font-size: 34px;
-
-    margin-bottom: 12px;
-
-    font-weight: 600;
-
-}
-
-.insights-card-overlay p {
-
-    color: rgba(255,255,255,.9);
-
-    line-height: 1.6;
-
-    margin-bottom: 20px;
-
-    font-size: 16px;
-
-}
-
-.insights-arrow {
-
-    width: 46px;
-
-    height: 46px;
-
-    border-radius: 50%;
-
-    border: 2px solid #F7941D;
-
-    background: #fff;
-
-    color: #F7941D;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    text-decoration: none;
-
-    transition: .3s;
-
-}
-
-.insights-arrow:hover {
-
-    background: #F7941D;
-
-    color: #fff;
-
-}
-
-/*==============================
-Responsive
-==============================*/
-
-@media (max-width:1200px){
-
-    .insights-menu{
-
-        grid-template-columns:180px 250px 1fr;
-
-        gap:25px;
-
+@media (prefers-reduced-motion: reduce) {
+
+    .site-header,
+    .site-header::after,
+    .nav-container,
+    .mega-menu,
+    .mega-center li,
+    .dropdown {
+        transition: none;
     }
-
-}
-
-@media (max-width:1100px){
-
-    .insights-menu{
-
-        display:block;
-
-    }
-
-    .insights-links{
-
-        margin-bottom:25px;
-
-    }
-
 }

@@ -1,7 +1,12 @@
+/* ==========================================================
+   INDUSTRY HERO SECTION
+   ========================================================== */
+
 .industryHeroSection {
     position: relative;
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
+    min-height: 100svh;
     overflow: hidden;
 }
 
@@ -16,49 +21,51 @@
 .industryHeroSection__overlay {
     position: absolute;
     inset: 0;
-    /* background: linear-gradient(
+    background: linear-gradient(
         to top,
-        rgba(0,0,0,.65),
-        rgba(0,0,0,.15),
-        rgba(0,0,0,.25)
-    ); */
-background: linear-gradient(
-    to top,
-    rgba(18, 37, 96, 0.65),
-    rgba(18, 37, 96, 0.15),
-    rgba(18, 37, 96, 0.25)
-);
+        rgba(18, 37, 96, 0.65),
+        rgba(18, 37, 96, 0.15),
+        rgba(18, 37, 96, 0.25)
+    );
 }
+
+/* ---------- layout container ---------- */
 
 .industryHeroSection__container {
     position: relative;
     z-index: 2;
+    box-sizing: border-box;
     max-width: 1440px;
-    /* margin: auto; */
-    height: 100%;
-    padding: 0 60px;
+    margin: 0 auto;
+    min-height: 100vh;
+    min-height: 100svh;
+    padding: 140px 60px 80px;
+    display: flex;
+    align-items: flex-end;
 }
 
 .industryHeroSection__content {
-    position: absolute;
-    left:120px;
-    right: -195px;
-    bottom: 80px;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    gap: 100px;
+    gap: 60px;
 }
 
+/* ---------- left / heading (2 lines) ---------- */
+
 .industryHeroSection__left {
-    flex: 1;
+    flex: 0 1 auto;
+    min-width: 0;
 }
 
 .industryHeroSection__left h1 {
+    margin: 0;
     color: #fff;
-    font-size: 64px;
-    line-height: 1.1;
+    font-size: 45px;
+    line-height: 1.15;
     font-weight: 700;
+    white-space: nowrap;
 }
 
 .industryHeroSection__left span {
@@ -66,70 +73,134 @@ background: linear-gradient(
     color: #122560;
 }
 
+/* ---------- right / description (4 lines) ---------- */
+
 .industryHeroSection__right {
-    width: 480px;
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 64ch;
 }
 
 .industryHeroSection__right p {
+    margin: 0;
     color: #fff;
     font-size: 18px;
-    line-height: 1.9;
+    line-height: 1.7;
 }
 
-@media(max-width:1200px){
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
 
-.industryHeroSection__left h1{
-    font-size:54px;
+/* ---------- laptop 1366 ---------- */
+@media (max-width: 1440px) {
+    .industryHeroSection__container {
+        padding: 130px 40px 70px;
+    }
+
+    .industryHeroSection__content {
+        gap: 48px;
+    }
 }
 
+/* ---------- small laptop ---------- */
+@media (max-width: 1280px) {
+    .industryHeroSection__container {
+        padding: 120px 40px 60px;
+    }
+
+    .industryHeroSection__content {
+        gap: 40px;
+    }
+
+    .industryHeroSection__left h1 {
+        font-size: 40px;
+    }
+
+    .industryHeroSection__right {
+        max-width: 52ch;
+    }
+
+    .industryHeroSection__right p {
+        font-size: 17px;
+        line-height: 1.65;
+    }
 }
 
-@media(max-width:992px){
+/* ---------- tablet ---------- */
+@media (max-width: 992px) {
+    .industryHeroSection,
+    .industryHeroSection__container {
+        min-height: 780px;
+    }
 
-.industryHeroSection{
-    height:850px;
+    .industryHeroSection__container {
+        padding: 120px 32px 56px;
+    }
+
+    .industryHeroSection__content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 28px;
+    }
+
+    .industryHeroSection__left h1 {
+        font-size: 42px;
+    }
+
+    .industryHeroSection__right {
+        width: 100%;
+        max-width: 620px;
+    }
+
+    .industryHeroSection__right p {
+        font-size: 17px;
+    }
 }
 
-.industryHeroSection__content{
-    left:40px;
-    right:40px;
-    bottom:50px;
-    flex-direction:column;
-    align-items:flex-start;
-    gap:35px;
+/* ---------- mobile ---------- */
+@media (max-width: 768px) {
+    .industryHeroSection,
+    .industryHeroSection__container {
+        min-height: 640px;
+    }
+
+    .industryHeroSection__container {
+        padding: 100px 20px 48px;
+    }
+
+    .industryHeroSection__content {
+        gap: 24px;
+    }
+
+    .industryHeroSection__left h1 {
+        font-size: 34px;
+        line-height: 1.2;
+        white-space: normal;
+    }
+
+    .industryHeroSection__right p {
+        font-size: 15px;
+        line-height: 1.65;
+    }
 }
 
-.industryHeroSection__container{
-    padding:0 40px;
-}
+/* ---------- small mobile ---------- */
+@media (max-width: 480px) {
+    .industryHeroSection,
+    .industryHeroSection__container {
+        min-height: 560px;
+    }
 
-.industryHeroSection__right{
-    width:100%;
-}
+    .industryHeroSection__container {
+        padding: 90px 16px 40px;
+    }
 
-}
+    .industryHeroSection__left h1 {
+        font-size: 30px;
+    }
 
-@media(max-width:768px){
-
-.industryHeroSection{
-    height:700px;
-}
-
-.industryHeroSection__container{
-    padding:0 25px;
-}
-
-.industryHeroSection__content{
-    left:25px;
-    right:25px;
-}
-
-.industryHeroSection__left h1{
-    font-size:38px;
-}
-
-.industryHeroSection__right p{
-    font-size:16px;
-}
-
+    .industryHeroSection__right p {
+        font-size: 14.5px;
+    }
 }

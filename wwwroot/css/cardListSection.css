@@ -660,12 +660,14 @@
     display: flex;
     align-items: flex-end;
     padding: 24px;
-    background: linear-gradient(
+    /* background: linear-gradient(
         to top,
         rgba(0,0,0,.75) 0%,
         rgba(0,0,0,.35) 45%,
         rgba(0,0,0,0) 100%
-    );
+    ); */
+    background: linear-gradient(96.92deg, rgba(255, 255, 255, 0) 0.04%, rgba(255, 154, 72, 0.8) 99.74%);
+
 }
 
 .about-cards-section.Style3 .products-content {

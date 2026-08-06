@@ -1,0 +1,152 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Extensions
+
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>
+
+@{
+    var content = Model.Content;
+
+    var eyebrow = content.Value<string>("eyebrow");
+    var title = content.Value<string>("title");
+    var highlightText = content.Value<string>("highlightText");
+    var intro = content.Value<string>("intro");
+    var showDots = content.Value<bool>("showDots");
+    var alternateLayout = content.Value<bool>("alternateLayout");
+
+    var products = content.Value<BlockListModel>("products");
+
+    // drop any product block with no image picked
+    <!-- var productList = products?
+        .Where(b => b.Content.Value<MediaWithCrops>("image") != null)
+        .ToList() ?? new List<BlockListItem>(); -->
+            var productList = products?.ToList() ?? new List<BlockListItem>();
+}
+
+@if (productList.Any())
+{
+    <section class="cxb-section">
+        <div class="cxb-container">
+
+            <!-- ============ Section head ============ -->
+
+            @if (showDots)
+            {
+                <div class="cxb-dots">
+                    <span></span>
+                    <span></span>
+                </div>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(eyebrow))
+            {
+                <p class="cxb-eyebrow">@eyebrow</p>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(title) ||
+                 !string.IsNullOrWhiteSpace(highlightText))
+            {
+                <h2 class="cxb-title">
+                    @title
+
+                    @if (!string.IsNullOrWhiteSpace(highlightText))
+                    {
+                        <span>@highlightText</span>
+                    }
+                </h2>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(intro))
+            {
+                <div class="cxb-intro">
+                    @Html.Raw(intro)
+                </div>
+            }
+
+            <!-- ============ Cards ============ -->
+
+            @for (var i = 0; i < productList.Count; i++)
+            {
+                var block = productList[i];
+                var item = block.Content;
+
+                var image = item.Value<MediaWithCrops>("image");
+                var overlayTitle = item.Value<string>("overlayTitle");
+                var overlayTagline = item.Value<string>("overlayTagline");
+                var cardHeading = item.Value<string>("cardHeading");
+                var cardDescription = item.Value<string>("cardDescription");
+                var buttonText = item.Value<string>("buttonText");
+                var buttonLink = item.Value<IEnumerable<Link>>("buttonLink")?.FirstOrDefault();
+
+                var flip = alternateLayout && i % 2 == 1;
+
+                <article class="cxb-card @(flip ? "cxb-card--flip" : "")">
+
+                    <div class="cxb-card-media">
+
+                        <img src="@image.MediaUrl()"
+                             alt="@(overlayTitle ?? image.Name)"
+                             loading="lazy" />
+
+                        @if (!string.IsNullOrWhiteSpace(overlayTitle) ||
+                             !string.IsNullOrWhiteSpace(overlayTagline))
+                        {
+                            <div class="cxb-card-overlay">
+
+                                @if (!string.IsNullOrWhiteSpace(overlayTitle))
+                                {
+                                    <h3>@overlayTitle</h3>
+                                }
+
+                                @if (!string.IsNullOrWhiteSpace(overlayTagline))
+                                {
+                                    <p>@overlayTagline</p>
+                                }
+
+                            </div>
+                        }
+
+                    </div>
+
+                    <div class="cxb-card-body">
+
+                        @if (!string.IsNullOrWhiteSpace(cardHeading))
+                        {
+                            <h2>@cardHeading</h2>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(cardDescription))
+                        {
+                            <div class="cxb-card-text">
+                                @Html.Raw(cardDescription)
+                            </div>
+                        }
+
+                        @if (buttonLink != null)
+                        {
+                            <a href="@buttonLink.Url"
+                               class="cxb-btn"
+                               target="@(string.IsNullOrWhiteSpace(buttonLink.Target) ? "_self" : buttonLink.Target)">
+
+                                @(string.IsNullOrWhiteSpace(buttonText) ? buttonLink.Name : buttonText)
+
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                    <path d="M5 12H19M19 12L13 6M19 12L13 18"
+                                          stroke="currentColor"
+                                          stroke-width="2"
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round" />
+                                </svg>
+
+                            </a>
+                        }
+
+                    </div>
+
+                </article>
+            }
+
+        </div>
+    </section>
+}

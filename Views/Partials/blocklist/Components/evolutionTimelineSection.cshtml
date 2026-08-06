@@ -168,4 +168,49 @@
 
     </section>
 }
-<script src="/scripts/About Us/evolutionTimelineSection.js"></script>
+<!-- <script src="/scripts/About Us/evolutionTimelineSection.js"></script> -->
+<script>
+(function () {
+    var section = document.getElementById("@sectionId");
+    if (!section) return;
+
+    var buttons = section.querySelectorAll(".year-btn");
+    var img = section.querySelector(".evolution-image");
+    var yearEl = section.querySelector(".display-year");
+    var pctEl = section.querySelector(".percentage");
+    var descEl = section.querySelector(".stats-description");
+
+    function activate(btn) {
+        buttons.forEach(function (b) { b.classList.remove("active"); });
+        btn.classList.add("active");
+
+        if (yearEl) yearEl.textContent = btn.dataset.year || "";
+        if (pctEl) pctEl.textContent = btn.dataset.percentage || "";
+        if (descEl) descEl.textContent = btn.dataset.description || "";
+
+        if (img && btn.dataset.image) {
+            img.src = btn.dataset.image;
+            img.alt = btn.dataset.year || "";
+        }
+    }
+
+    buttons.forEach(function (btn) {
+        btn.addEventListener("click", function () { activate(btn); });
+    });
+
+    var prev = section.querySelector(".timeline-prev");
+    var next = section.querySelector(".timeline-next");
+
+    function step(dir) {
+        var list = Array.prototype.slice.call(buttons);
+        var current = list.findIndex(function (b) {
+            return b.classList.contains("active");
+        });
+        var target = current + dir;
+        if (target >= 0 && target < list.length) activate(list[target]);
+    }
+
+    if (prev) prev.addEventListener("click", function () { step(-1); });
+    if (next) next.addEventListener("click", function () { step(1); });
+})();
+</script>

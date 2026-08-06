@@ -7,5 +7,8 @@ public interface ICareerService
     Task<CareerResponse> SubmitApplicationAsync(CareerApplicationModel model);
 
     Task<List<CareerApplicationDto>> GetApplicationsAsync(int page = 1, int pageSize = 10);
+
     Task<int> GetTotalApplicationsAsync();
+
+    Task UpdateStatusAsync(int id, string status);
 }

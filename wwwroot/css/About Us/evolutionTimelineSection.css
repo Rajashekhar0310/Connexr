@@ -243,7 +243,7 @@
 .percentage {
     margin: 0 0 12px;
 
-    font-size: clamp(34px, 3vw, 48px);
+    font-size:18px;
     line-height: 1;
     font-weight: 700;
 
@@ -260,7 +260,7 @@
 
   margin-left: 0;
 
-    font-size: 23px;
+    font-size: 14px;
     line-height: 1.55;
 
     color: #000000;
@@ -282,6 +282,9 @@
 .evolution-right.is-changing .percentage {
     transform: translateY(10px);
 }
+
+
+
 
 
 /* ==========================================
@@ -390,5 +393,210 @@
 
     .display-year {
         margin-bottom: 100px;
+    }
+}
+
+/* ==========================================
+   EVOLUTION TIMELINE — ANIMATION ADDITIONS
+
+   Append this to your existing
+   evolutionTimelineSection.css.
+
+   Replace the two rules marked REPLACE.
+   Everything else is new.
+
+   FAIL-SAFE: nothing here hides content
+   unless the JS has run and added
+   .reveal-ready, so a broken or missing
+   script leaves the section fully visible.
+========================================== */
+
+
+/* ==========================================
+   REPLACE your .evolution-image rule
+========================================== */
+
+.evolution-image {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+    object-position: center;
+
+    opacity: 1;
+    transform: scale(1) translateX(0);
+
+    transition:
+        opacity .35s ease,
+        transform .55s cubic-bezier(.22, .61, .36, 1);
+}
+
+/* slide in from the right when moving forward */
+.evolution-image-wrapper.from-right .evolution-image.is-changing {
+    opacity: 0;
+    transform: scale(1.04) translateX(40px);
+}
+
+/* slide in from the left when moving back */
+.evolution-image-wrapper.from-left .evolution-image.is-changing {
+    opacity: 0;
+    transform: scale(1.04) translateX(-40px);
+}
+
+/* fallback when no direction class is set */
+.evolution-image.is-changing {
+    opacity: 0;
+    transform: scale(1.04);
+}
+
+.evolution-image-wrapper:hover .evolution-image {
+    transform: scale(1.05);
+}
+
+
+/* ==========================================
+   REPLACE your content-change rule
+   (staggered fade for the three lines)
+========================================== */
+
+.evolution-right .display-year,
+.evolution-right .percentage,
+.evolution-right .stats-description {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+        opacity .4s ease,
+        transform .5s cubic-bezier(.22, .61, .36, 1);
+}
+
+.evolution-right .display-year      { transition-delay: .05s; }
+.evolution-right .percentage        { transition-delay: .12s; }
+.evolution-right .stats-description { transition-delay: .19s; }
+
+.evolution-right.is-changing .display-year,
+.evolution-right.is-changing .percentage,
+.evolution-right.is-changing .stats-description {
+    opacity: 0;
+    transform: translateY(14px);
+    transition-delay: 0s;
+}
+
+
+/* ==========================================
+   NEW — progress bar under the active year
+========================================== */
+
+.year-btn.active::before {
+    content: "";
+
+    position: absolute;
+    left: 0;
+    bottom: -18px;
+
+    width: 100%;
+    height: 2px;
+
+    background: rgba(255, 103, 29, .25);
+
+    transform: scaleX(0);
+    transform-origin: left center;
+}
+
+.evolution-section.is-playing .year-btn.active::before {
+    animation: evo-progress 4s linear forwards;
+}
+
+@keyframes evo-progress {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+}
+
+
+/* ==========================================
+   NEW — arrow feedback
+========================================== */
+
+.timeline-arrow {
+    transition:
+        background .3s ease,
+        color .3s ease,
+        transform .3s ease;
+}
+
+.timeline-arrow:hover {
+    transform: scale(1.12);
+}
+
+.timeline-arrow:active {
+    transform: scale(.94);
+}
+
+.year-btn:not(.active):hover {
+    transform: translateY(-2px);
+}
+
+
+/* ==========================================
+   NEW — scroll reveal
+
+   IMPORTANT: the hiding only applies once
+   JS adds .reveal-ready to the section.
+   Without JS the content stays visible.
+========================================== */
+
+.evolution-section.reveal-ready .evolution-left,
+.evolution-section.reveal-ready .evolution-image-wrapper,
+.evolution-section.reveal-ready .evolution-right {
+    opacity: 0;
+    transform: translateY(26px);
+    transition:
+        opacity .7s ease,
+        transform .8s cubic-bezier(.22, .61, .36, 1);
+}
+
+.evolution-section.reveal-ready.is-revealed .evolution-left {
+    opacity: 1;
+    transform: none;
+    transition-delay: .05s;
+}
+
+.evolution-section.reveal-ready.is-revealed .evolution-image-wrapper {
+    opacity: 1;
+    transform: none;
+    transition-delay: .18s;
+}
+
+.evolution-section.reveal-ready.is-revealed .evolution-right {
+    opacity: 1;
+    transform: none;
+    transition-delay: .30s;
+}
+
+
+/* ==========================================
+   REDUCED MOTION
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .evolution-image,
+    .evolution-right .display-year,
+    .evolution-right .percentage,
+    .evolution-right .stats-description,
+    .evolution-section .evolution-left,
+    .evolution-section .evolution-image-wrapper,
+    .evolution-section .evolution-right,
+    .timeline-arrow,
+    .year-btn {
+        transition: none !important;
+        animation: none !important;
+        transform: none !important;
+        opacity: 1 !important;
+    }
+
+    .evolution-section.is-playing .year-btn.active::before {
+        animation: none;
     }
 }

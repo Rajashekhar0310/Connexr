@@ -128,7 +128,7 @@
 
 .about-hero-heading {
     position: absolute;
-    top: 190px;
+    top: 160px;
     left: 70px;
     max-width: 600px;
     margin: 0;
@@ -161,13 +161,13 @@
 
 .about-hero-description {
     position: absolute;
-    top: 360px;
+    top: 275px;
     left: 70px;
     max-width: 440px;
     margin: 0;
     color: #06245c;
     font-family: sans-serif;
-    font-size: 17px;
+    font-size: 18px;
     font-weight: 400;
     line-height: 1.45;
     z-index: 5;
@@ -203,7 +203,7 @@
 .about-active-name {
     margin: 0 0 28px;
     color: #102d70;
-    font-size: 26px;
+    font-size: 28px;
     font-weight: 600;
     line-height: 1.2;
     transition: opacity 0.35s ease, transform 0.45s ease;
@@ -251,7 +251,7 @@
     font-family: Poppins, sans-serif;
     margin: 0 0 10px;
     color: #122560;
-    font-size: 28px;
+    font-size: 18px;
     font-weight: 600;
     line-height: 1.4;
     transition: opacity 0.35s ease, transform 0.45s ease;

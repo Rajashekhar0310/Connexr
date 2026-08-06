@@ -22,12 +22,32 @@
     display:flex;
     width:100%;
     height:720px;
-
+ overflow: hidden;
     background-size:cover;
     background-position:center;
     background-repeat:no-repeat;
     background-color:#1a1310;
 }
+.svc-panels__bg-image,
+.svc-panels__bg-video{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.svc-panels__bg-image{
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.svc-panels__bg-video{
+    object-fit: cover;
+    object-position: center;
+}
+
 
 .svc-panels::before{
     content:"";

@@ -69,6 +69,24 @@ document.addEventListener(
 
 
                 /* ===============================
+                   AUTOPLAY STATE
+                =============================== */
+
+
+                let autoplayTimer = null;
+
+
+                const AUTOPLAY_DELAY = 5000;
+
+
+                const prefersReducedMotion =
+                    window.matchMedia(
+                        "(prefers-reduced-motion: reduce)"
+                    ).matches;
+
+
+
+                /* ===============================
                    ELEMENTS
                 =============================== */
 
@@ -378,6 +396,86 @@ document.addEventListener(
 
 
                 /* ===============================
+                   AUTOPLAY
+                =============================== */
+
+
+                function startAutoplay() {
+
+
+                    /*
+                    Do not autoplay if the user has
+                    asked for reduced motion, or if
+                    there is nothing to rotate to.
+                    */
+
+
+                    if (
+                        prefersReducedMotion ||
+                        slides.length < 2
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    stopAutoplay();
+
+
+                    autoplayTimer =
+                        setInterval(
+                            function () {
+
+
+                                const nextIndex =
+                                    (activeIndex + 1) %
+                                    slides.length;
+
+
+                                changeSlide(
+                                    nextIndex
+                                );
+
+                            },
+                            AUTOPLAY_DELAY
+                        );
+
+                }
+
+
+
+                function stopAutoplay() {
+
+
+                    if (autoplayTimer) {
+
+
+                        clearInterval(
+                            autoplayTimer
+                        );
+
+
+                        autoplayTimer = null;
+
+                    }
+
+                }
+
+
+
+                function restartAutoplay() {
+
+
+                    stopAutoplay();
+
+                    startAutoplay();
+
+                }
+
+
+
+                /* ===============================
                    CHANGE SLIDE
                 =============================== */
 
@@ -396,6 +494,17 @@ document.addEventListener(
 
 
                     isAnimating = true;
+
+
+
+                    /*
+                    Reset the countdown so a manual
+                    click gets a full interval before
+                    autoplay moves on again.
+                    */
+
+
+                    restartAutoplay();
 
 
 
@@ -612,6 +721,55 @@ document.addEventListener(
                 createDots();
 
                 renderCards();
+
+                startAutoplay();
+
+
+
+                /* ===============================
+                   PAUSE ON HOVER
+                =============================== */
+
+
+                hero.addEventListener(
+                    "mouseenter",
+                    stopAutoplay
+                );
+
+
+                hero.addEventListener(
+                    "mouseleave",
+                    startAutoplay
+                );
+
+
+
+                /* ===============================
+                   PAUSE WHEN TAB IS HIDDEN
+
+                   Stops timers piling up while the
+                   user is on another tab.
+                =============================== */
+
+
+                document.addEventListener(
+                    "visibilitychange",
+                    function () {
+
+
+                        if (document.hidden) {
+
+                            stopAutoplay();
+
+                        }
+                        else {
+
+                            startAutoplay();
+
+                        }
+
+                    }
+                );
 
 
             }

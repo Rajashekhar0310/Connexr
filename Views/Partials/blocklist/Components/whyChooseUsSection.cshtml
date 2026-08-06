@@ -78,8 +78,8 @@
                     var description = card.Value<string>("description");
 
                     var buttonText = card.Value<string>("buttonText");
-
-                    var buttonLink = card.Value<Link>("buttonLink");
+var buttonLink = card.Value<IEnumerable<Link>>("buttonLink")?.FirstOrDefault();
+                    <!-- var buttonLink = card.Value<Link>("buttonLink"); -->
 
                     string cssClass = "custom-ai-why-glass";
 
@@ -105,32 +105,29 @@
 
                            @if (cssClass == "custom-ai-why-cta")
                             {
-                                <a href="@(buttonLink?.Url ?? "#")"
-                                target="@buttonLink?.Target"
-                                class="custom-ai-why-btn">
+                                <a href="@buttonLink?.Url"
+   target="@buttonLink?.Target"
+   class="custom-ai-why-btn">
 
-                                    <span>@buttonText</span>
+    <span>@buttonText</span>
 
-                                    <svg width="18"
-                                        height="18"
-                                        viewBox="0 0 24 24"
-                                        fill="none">
+    <svg width="18"
+         height="18"
+         viewBox="0 0 24 24"
+         fill="none">
+        <path d="M7 17L17 7"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round" />
+        <path d="M8 7H17V16"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round" />
+    </svg>
 
-                                        <path d="M7 17L17 7"
-                                            stroke="currentColor"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"/>
-
-                                        <path d="M8 7H17V16"
-                                            stroke="currentColor"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"/>
-
-                                    </svg>
-
-                                </a>
+</a>
                             }
 
                         </div>

@@ -1,1014 +1,697 @@
 /*==================================================
 MOUNTAIN JOURNEY SECTION
+
+RESPONSIVE APPROACH
+
+The mountain and route are authored ONCE at full
+size. Node positions are PERCENTAGES of .mj-right,
+so they track the route at every screen size.
+
+Smaller screens scale the whole right column as a
+single unit via --mj-scale. Nothing is resized or
+repositioned per breakpoint, which is what caused
+the pieces to drift apart before.
 ==================================================*/
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap');
 
-.mj-section{
-    position:relative;
-    width:100%;
-    /* height: 850px; */
-    overflow:hidden;
-    min-height:900px;
-    background:linear-gradient(180deg,#214892 0%,#1B3F87 45%,#173979 100%);
-    padding:120px ;
+.mj-section {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    min-height: 900px;
+    background: linear-gradient(180deg, #214892 0%, #1B3F87 45%, #173979 100%);
+    padding: 120px;
 }
+
 
 /*==================================================
 BACKGROUND
 ==================================================*/
 
-.mj-background{
-    position:absolute;
-    inset:0;
-    overflow:hidden;
-    pointer-events:none;
+.mj-background {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
 }
 
-.mj-overlay{
-    position:absolute;
-    inset:0;
-    /* background:
-    radial-gradient(circle at right top,
-        rgba(255,255,255,.12),
-        transparent 40%),
-    radial-gradient(circle at left bottom,
-        rgba(255,255,255,.08),
-        transparent 50%); */
-        background: #122560;
+.mj-overlay {
+    position: absolute;
+    inset: 0;
+    background: #122560;
 }
 
-.mj-stars{
-    position:absolute;
-    inset:0;
-    opacity:.15;
-    background-image:
-    radial-gradient(circle,#ffffff 1px,transparent 1px);
-    background-size:170px 170px;
+.mj-stars {
+    position: absolute;
+    inset: 0;
+    opacity: .15;
+    background-image: radial-gradient(circle, #ffffff 1px, transparent 1px);
+    background-size: 170px 170px;
 }
+
 
 /*==================================================
 CONTAINER
 ==================================================*/
 
-.mj-container{
-    position:relative;
-    z-index:10;
-    display:grid;
-    grid-template-columns:420px 1fr;
-    align-items:center;
-    gap:90px;
+.mj-container {
+    position: relative;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    align-items: center;
+    gap: 90px;
 }
+
 
 /*==================================================
 LEFT CONTENT
 ==================================================*/
 
-.mj-left{
-    position:relative;
-    z-index:30;
-
+.mj-left {
+    position: relative;
+    z-index: 30;
 }
 
-.mj-small-title{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    margin-bottom:18px;
-    color:#D6E4FF;
-    text-transform:uppercase;
-    letter-spacing:2px;
-    font-size:12px;
-    font-weight:600;
+.mj-small-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px;
+    color: #D6E4FF;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 12px;
+    font-weight: 600;
 }
 
-.mj-small-title span{
-    width:6px;
-    height:6px;
-    border-radius:50%;
-    background:#FF922F;
+.mj-small-title span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #FF922F;
 }
 
-.mj-left h1{
-    font-family:'Poppins',sans-serif;
-    font-size:58px;
-    line-height:1.08;
-    font-weight:700;
-    margin-bottom:90px;
-    color:#fff;
+.mj-left h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 58px;
+    line-height: 1.08;
+    font-weight: 700;
+    margin-bottom: 90px;
+    color: #fff;
 }
 
-.mj-left h1 span{
-    color:#FF922F;
+.mj-left h1 span {
+    color: #FF922F;
 }
 
-.mj-content{
-    transition:.35s ease;
+.mj-step {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #AFC5FF;
+    margin-bottom: 18px;
 }
 
-.mj-step{
-    font-size:12px;
-    text-transform:uppercase;
-    letter-spacing:2px;
-    color:#AFC5FF;
-    margin-bottom:18px;
+.mj-content h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 38px;
+    color: #fff;
+    margin-bottom: 18px;
 }
 
-.mj-content h2{
-    font-family:'Poppins',sans-serif;
-    font-size:38px;
-    color:#fff;
-    margin-bottom:18px;
+.mj-content p {
+    max-width: 360px;
+    color: #E8F1FF;
+    font-size: 16px;
+    line-height: 1.9;
 }
 
-.mj-content p{
-    max-width:360px;
-    color:#E8F1FF;
-    font-size:16px;
-    line-height:1.9;
-}
 
 /*==================================================
 RIGHT SIDE
+
+--mj-scale shrinks the whole composition as one
+unit. Only this variable and the height change
+between breakpoints.
 ==================================================*/
 
-.mj-right{
-    position:relative;
-    height:850px;
+.mj-right {
+    position: relative;
+    height: 850px;
+
+    --mj-scale: 1;
+
+    transform: scale(var(--mj-scale));
+    transform-origin: center center;
 }
+
 
 /*==================================================
 MOUNTAIN IMAGE
 ==================================================*/
 
-.mj-mountain{
-    position:absolute;
-    left:68%;
-    bottom:0;
-    transform:translateX(-50%);
-    width:2500px;
-    height:798px;
-    object-fit:contain;
-    object-position:center bottom;
-    z-index:1;
-    user-select:none;
-    pointer-events:none;
+.mj-mountain {
+    position: absolute;
+    left: 68%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 2500px;
+    height: 798px;
+    object-fit: contain;
+    object-position: center bottom;
+    z-index: 1;
+    user-select: none;
+    pointer-events: none;
+
+    filter: drop-shadow(0 25px 45px rgba(0, 0, 0, .35));
+    animation: mountainFloat 12s ease-in-out infinite;
 }
+
+@keyframes mountainFloat {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50%      { transform: translateX(-50%) translateY(-8px); }
+}
+
 
 /*==================================================
 ROUTE SVG
+
+TUNE `left` until the dashed path sits on the
+mountain's flank as in the approved design.
 ==================================================*/
 
-.mj-route{
-    position:absolute;
-    left:46%;
-    bottom:0;
-    transform:translateX(-50%);
-    width:530px;
-    max-width:none;
-    z-index:5;
-    pointer-events:none;
+.mj-route {
+    position: absolute;
+    left: 36%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 530px;
+    max-width: none;
+    z-index: 5;
+    pointer-events: none;
+
+    filter:
+        drop-shadow(0 0 6px rgba(255, 255, 255, .45))
+        drop-shadow(0 0 20px rgba(255, 255, 255, .18));
+
+    animation: routeFloat 8s ease-in-out infinite;
 }
+
+@keyframes routeFloat {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50%      { transform: translateX(-50%) translateY(-5px); }
+}
+
 
 /*==================================================
 CHECKPOINTS
 ==================================================*/
 
-.mj-node{
-    position:absolute;
-    display:flex;
-    align-items:center;
-    gap:16px;
-    cursor:pointer;
-    transition:.35s ease;
-    z-index:20;
+.mj-node {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    transition: .35s ease;
+    z-index: 20;
 }
 
-.mj-node .circle{
-    position:relative;
-    width:46px;
-    height:46px;
-    border-radius:50%;
-    background:#FF922F;
-    border:3px solid #fff;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#fff;
-    font-weight:700;
-    font-size:13px;
-    transition:.35s ease;
+.mj-node .circle {
+    position: relative;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: #FF922F;
+    border: 3px solid #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 700;
+    font-size: 13px;
+    transition: .35s ease;
+    flex: none;
 }
 
-.mj-node span{
-    color:#fff;
-    font-size:15px;
-    font-weight:500;
-    white-space:nowrap;
+.mj-node span {
+    color: #fff;
+    font-size: 15px;
+    font-weight: 500;
+    white-space: nowrap;
 }
+
 
 /*==================================================
 STEP POSITIONS
+
+Percentages of .mj-right so they scale with the
+column. Tune these at FULL DESKTOP WIDTH only.
+
+Method: select a node in DevTools, click the left
+or top value, then use arrow keys to nudge it onto
+the route. Copy the final numbers back here.
 ==================================================*/
 
-.mj-node:nth-child(1){
-    left:35px;
-    bottom:35px;
-}
+.mj-node:nth-of-type(1) { left: 2%; top: 86%; }   /* Discover */
+.mj-node:nth-of-type(2) { left: 6%; top: 55%; }   /* Design   */
+.mj-node:nth-of-type(3) { left: 50%; top: 45%; }   /* Deliver  */
+.mj-node:nth-of-type(4) { left: 55%; top: 7%; }   /* Optimize */
+.mj-node:nth-of-type(5) { left: 61%; top: -34%;  }   /* Scale    */
 
-.mj-node:nth-child(2){
-    left:120px;
-    bottom:240px;
-}
 
-.mj-node:nth-child(3){
-    left:240px;
-    bottom:430px;
-}
-
-.mj-node:nth-child(4){
-    right:130px;
-    top:210px;
-}
-
-.mj-node:nth-child(5){
-    right:106px;
-    top:20px;
-}
 /*==================================================
 ACTIVE CHECKPOINT
 ==================================================*/
 
-.mj-node.active .circle{
-
-    background:#ff8a1f;
-
-    transform:scale(1.18);
+.mj-node.active .circle {
+    background: #ff8a1f;
+    transform: scale(1.18);
 
     box-shadow:
-        0 0 18px rgba(255,145,50,.75),
-        0 0 45px rgba(255,145,50,.45);
+        0 0 18px rgba(255, 145, 50, .75),
+        0 0 45px rgba(255, 145, 50, .45);
 
+    animation: mjGlow 2s ease-in-out infinite;
 }
 
-.mj-node.active span{
-
-    color:#ffb062;
-
-    font-weight:600;
-
+.mj-node.active span {
+    color: #ffb062;
+    font-weight: 600;
 }
+
+@keyframes mjGlow {
+
+    0% {
+        box-shadow:
+            0 0 0 rgba(255, 146, 53, .2),
+            0 0 0 rgba(255, 146, 53, .1);
+    }
+
+    50% {
+        box-shadow:
+            0 0 25px rgba(255, 146, 53, .8),
+            0 0 55px rgba(255, 146, 53, .45);
+    }
+
+    100% {
+        box-shadow:
+            0 0 0 rgba(255, 146, 53, .2),
+            0 0 0 rgba(255, 146, 53, .1);
+    }
+}
+
 
 /*==================================================
 CHECKPOINT PULSE
 ==================================================*/
 
-.mj-node .circle::after{
-
-    content:"";
-
-    position:absolute;
-
-    left:50%;
-    top:50%;
-
-    width:100%;
-    height:100%;
-
-    border-radius:50%;
-
-    border:2px solid rgba(255,150,60,.45);
-
-    transform:translate(-50%,-50%);
-
-    animation:mjPulse 2.5s infinite;
-
+.mj-node .circle::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 150, 60, .45);
+    transform: translate(-50%, -50%);
+    animation: mjPulse 2.5s infinite;
 }
 
-@keyframes mjPulse{
+@keyframes mjPulse {
 
-    0%{
-
-        transform:translate(-50%,-50%) scale(1);
-
-        opacity:1;
-
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
     }
 
-    100%{
-
-        transform:translate(-50%,-50%) scale(2.4);
-
-        opacity:0;
-
+    100% {
+        transform: translate(-50%, -50%) scale(2.4);
+        opacity: 0;
     }
-
 }
+
 
 /*==================================================
 NODE HOVER
 ==================================================*/
 
-.mj-node:hover{
-
-    transform:translateY(-6px);
-
+.mj-node:hover {
+    transform: translateY(-6px);
 }
 
-.mj-node:hover .circle{
-
-    transform:scale(1.12);
-
-    background:#ff8a1f;
-
+.mj-node:hover .circle {
+    transform: scale(1.12);
+    background: #ff8a1f;
 }
 
-.mj-node:hover span{
-
-    color:#ffb062;
-
+.mj-node:hover span {
+    color: #ffb062;
 }
 
-/*==================================================
-ROUTE SVG
-==================================================*/
-
-.mj-route{
-
-    filter:
-        drop-shadow(0 0 6px rgba(255,255,255,.45))
-        drop-shadow(0 0 20px rgba(255,255,255,.18));
-
-    animation:routeFloat 8s ease-in-out infinite;
-
-}
-
-@keyframes routeFloat{
-
-    0%,
-    100%{
-
-        transform:translateX(-50%) translateY(0);
-
-    }
-
-    50%{
-
-        transform:translateX(-50%) translateY(-5px);
-
-    }
-
-}
-
-/*==================================================
-MOUNTAIN IMAGE
-==================================================*/
-
-.mj-mountain{
-
-    filter:
-        drop-shadow(0 25px 45px rgba(0,0,0,.35));
-
-    animation:mountainFloat 12s ease-in-out infinite;
-
-}
-
-@keyframes mountainFloat{
-
-    0%,
-    100%{
-
-        transform:translateX(-50%) translateY(0);
-
-    }
-
-    50%{
-
-        transform:translateX(-50%) translateY(-8px);
-
-    }
-
-}
 
 /*==================================================
 CLIMBER
 ==================================================*/
 
-.mj-climber{
+.mj-climber {
+    position: absolute;
+    width: 42px;
+    height: 42px;
+    left: 0;
+    top: 0;
+    z-index: 40;
 
-    position:absolute;
-
-    width:42px;
-
-    height:42px;
-
-    left:0;
-
-    top:0;
-
-    z-index:40;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     transition:
-        left .8s cubic-bezier(.22,.61,.36,1),
-        top .8s cubic-bezier(.22,.61,.36,1);
-
+        left .8s cubic-bezier(.22, .61, .36, 1),
+        top .8s cubic-bezier(.22, .61, .36, 1);
 }
 
-.mj-climber img{
-
-    width:100%;
-
-    height:auto;
-
-    display:block;
-
+.mj-climber img {
+    width: 100%;
+    height: auto;
+    display: block;
 }
+
 
 /*==================================================
 CONTENT ANIMATION
 ==================================================*/
 
-.mj-content{
-
+.mj-content {
     transition:
         opacity .4s ease,
         transform .4s ease;
-
 }
 
-.mj-content.fade{
-
-    opacity:0;
-
-    transform:translateY(18px);
-
+.mj-content.fade {
+    opacity: 0;
+    transform: translateY(18px);
 }
+
 
 /*==================================================
 BACKGROUND LIGHT EFFECTS
 ==================================================*/
 
-.mj-section::before{
-
-    content:"";
-
-    position:absolute;
-
-    width:700px;
-
-    height:700px;
-
-    right:-220px;
-
-    top:-180px;
-
-    border-radius:50%;
-
-    background:
-        radial-gradient(circle,
-        rgba(255,255,255,.10),
-        transparent 70%);
-
+.mj-section::before {
+    content: "";
+    position: absolute;
+    width: 700px;
+    height: 700px;
+    right: -220px;
+    top: -180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, .10), transparent 70%);
 }
 
-.mj-section::after{
-
-    content:"";
-
-    position:absolute;
-
-    width:520px;
-
-    height:520px;
-
-    left:-180px;
-
-    bottom:-180px;
-
-    border-radius:50%;
-
-    background:
-        radial-gradient(circle,
-        rgba(255,255,255,.05),
-        transparent 70%);
-
+.mj-section::after {
+    content: "";
+    position: absolute;
+    width: 520px;
+    height: 520px;
+    left: -180px;
+    bottom: -180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, .05), transparent 70%);
 }
+
 
 /*==================================================
 SECTION REVEAL
+
+.mj-right animates OPACITY ONLY. Animating its
+transform would overwrite the scale() above.
 ==================================================*/
 
-.mj-left{
-
-    animation:mjLeftReveal .9s ease forwards;
-
+.mj-left {
+    animation: mjLeftReveal .9s ease forwards;
 }
 
-.mj-right{
-
-    animation:mjRightReveal .9s ease forwards;
-
+@keyframes mjLeftReveal {
+    from { opacity: 0; transform: translateX(-60px); }
+    to   { opacity: 1; transform: translateX(0); }
 }
 
-@keyframes mjLeftReveal{
-
-    from{
-
-        opacity:0;
-
-        transform:translateX(-60px);
-
-    }
-
-    to{
-
-        opacity:1;
-
-        transform:translateX(0);
-
-    }
-
+.mj-right {
+    animation: mjRightReveal .9s ease forwards;
 }
 
-@keyframes mjRightReveal{
-
-    from{
-
-        opacity:0;
-
-        transform:translateX(60px);
-
-    }
-
-    to{
-
-        opacity:1;
-
-        transform:translateX(0);
-
-    }
-
+@keyframes mjRightReveal {
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
+
 
 /*==================================================
-OPTIONAL HOVER DEPTH
+HOVER DEPTH
 ==================================================*/
 
-.mj-right:hover .mj-mountain{
+.mj-right:hover .mj-mountain {
+    filter: drop-shadow(0 35px 60px rgba(0, 0, 0, .45));
+}
 
+.mj-right:hover .mj-route {
     filter:
-        drop-shadow(0 35px 60px rgba(0,0,0,.45));
-
+        drop-shadow(0 0 10px rgba(255, 255, 255, .65))
+        drop-shadow(0 0 30px rgba(255, 255, 255, .22));
 }
 
-.mj-right:hover .mj-route{
-
-    filter:
-        drop-shadow(0 0 10px rgba(255,255,255,.65))
-        drop-shadow(0 0 30px rgba(255,255,255,.22));
-
-}
-/*==================================================
-LARGE DESKTOP
-==================================================*/
-
-@media (max-width:1600px){
-
-    .mj-container{
-        gap:70px;
-    }
-
-    .mj-left h1{
-        font-size:52px;
-    }
-
-    .mj-right{
-        height:800px;
-    }
-
-    .mj-mountain{
-        width:2200px;
-        height:720px;
-    }
-
-    .mj-route{
-        width:760px;
-    }
-
-}
 
 /*==================================================
-LAPTOP
+RESPONSIVE
+
+ONLY --mj-scale, height and the left column type
+change. Never resize the mountain, the route or
+the node positions here.
 ==================================================*/
 
-@media (max-width:1400px){
 
-    .mj-container{
+/*---------- large desktop ----------*/
 
-        grid-template-columns:380px 1fr;
+@media (max-width: 1600px) {
 
-        gap:50px;
-
+    .mj-section {
+        padding: 100px 80px;
     }
 
-    .mj-left h1{
-
-        font-size:44px;
-
-        margin-bottom:70px;
-
+    .mj-container {
+        gap: 70px;
+        grid-template-columns: 400px 1fr;
     }
 
-    .mj-content h2{
-
-        font-size:32px;
-
+    .mj-left h1 {
+        font-size: 52px;
+        margin-bottom: 70px;
     }
 
-    .mj-content p{
-
-        font-size:15px;
-
-        line-height:1.8;
-
+    .mj-right {
+        --mj-scale: .86;
+        height: 730px;
     }
-
-    .mj-right{
-
-        transform:scale(.90);
-
-        transform-origin:center;
-
-        height:720px;
-
-    }
-
-    .mj-mountain{
-
-        width:2000px;
-
-        height:660px;
-
-    }
-
-    .mj-route{
-
-        width:690px;
-
-    }
-
 }
+
+
+/*---------- laptop ----------*/
+
+@media (max-width: 1400px) {
+
+    .mj-section {
+        padding: 90px 60px;
+        min-height: 800px;
+    }
+
+    .mj-container {
+        grid-template-columns: 360px 1fr;
+        gap: 40px;
+    }
+
+    .mj-left h1 {
+        font-size: 44px;
+        margin-bottom: 55px;
+    }
+
+    .mj-content h2 {
+        font-size: 32px;
+    }
+
+    .mj-content p {
+        font-size: 15px;
+        line-height: 1.8;
+    }
+
+    .mj-right {
+        --mj-scale: .72;
+        height: 610px;
+    }
+}
+
+
+/*---------- small laptop ----------*/
+
+@media (max-width: 1200px) {
+
+    .mj-section {
+        padding: 80px 45px;
+        min-height: 720px;
+    }
+
+    .mj-container {
+        grid-template-columns: 320px 1fr;
+        gap: 30px;
+    }
+
+    .mj-left h1 {
+        font-size: 40px;
+        margin-bottom: 45px;
+    }
+
+    .mj-content h2 {
+        font-size: 28px;
+    }
+
+    .mj-right {
+        --mj-scale: .60;
+        height: 510px;
+    }
+}
+
+
+/*---------- tablet ----------*/
+
+@media (max-width: 991px) {
+
+    .mj-section {
+        padding: 80px 30px;
+        min-height: 0;
+    }
+
+    .mj-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .mj-left {
+        text-align: center;
+    }
+
+    .mj-small-title {
+        justify-content: center;
+    }
+
+    .mj-left h1 {
+        font-size: 40px;
+        margin-bottom: 40px;
+    }
+
+    .mj-content p {
+        margin: auto;
+        max-width: 600px;
+    }
+
+    .mj-right {
+        --mj-scale: .55;
+        height: 470px;
+        transform-origin: top center;
+    }
+}
+
+
+/*---------- mobile ----------*/
+
+@media (max-width: 768px) {
+
+    .mj-section {
+        padding: 60px 20px;
+    }
+
+    .mj-left h1 {
+        font-size: 34px;
+    }
+
+    .mj-content h2 {
+        font-size: 28px;
+    }
+
+    .mj-content p {
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    .mj-right {
+        --mj-scale: .42;
+        height: 360px;
+        transform-origin: top center;
+    }
+}
+
+
+/*---------- small mobile ----------*/
+
+@media (max-width: 576px) {
+
+    .mj-section {
+        padding: 50px 16px;
+    }
+
+    .mj-container {
+        gap: 30px;
+    }
+
+    .mj-left h1 {
+        font-size: 28px;
+    }
+
+    .mj-small-title {
+        font-size: 11px;
+    }
+
+    .mj-step {
+        font-size: 11px;
+    }
+
+    .mj-content h2 {
+        font-size: 24px;
+    }
+
+    .mj-content p {
+        font-size: 14px;
+    }
+
+    .mj-right {
+        --mj-scale: .32;
+        height: 275px;
+        transform-origin: top center;
+    }
+}
+
 
 /*==================================================
-TABLET
+REDUCED MOTION
 ==================================================*/
 
-@media (max-width:991px){
+@media (prefers-reduced-motion: reduce) {
 
-    .mj-section{
-
-        padding:80px 0;
-
+    .mj-mountain,
+    .mj-route,
+    .mj-node .circle::after,
+    .mj-node.active .circle,
+    .mj-left,
+    .mj-right {
+        animation: none !important;
     }
 
-    .mj-container{
-
-        grid-template-columns:1fr;
-
-        gap:70px;
-
+    .mj-node,
+    .mj-node .circle,
+    .mj-content,
+    .mj-climber {
+        transition: none !important;
     }
-
-    .mj-left{
-
-        text-align:center;
-
-    }
-
-    .mj-small-title{
-
-        justify-content:center;
-
-    }
-
-    .mj-content p{
-
-        margin:auto;
-
-        max-width:600px;
-
-    }
-
-    .mj-right{
-
-        width:100%;
-
-        height:700px;
-
-        transform:scale(.82);
-
-        transform-origin:top center;
-
-    }
-
-    .mj-mountain{
-
-        width:1800px;
-
-    }
-
-    .mj-route{
-
-        width:620px;
-
-    }
-
 }
-
-/*==================================================
-MOBILE
-==================================================*/
-
-@media (max-width:768px){
-
-    .mj-section{
-
-        padding:60px 0;
-
-    }
-
-    .mj-left h1{
-
-        font-size:34px;
-
-    }
-
-    .mj-content h2{
-
-        font-size:28px;
-
-    }
-
-    .mj-content p{
-
-        font-size:15px;
-
-        line-height:1.7;
-
-    }
-
-    .mj-right{
-
-        height:520px;
-
-        transform:scale(.62);
-
-        transform-origin:top center;
-
-        margin-top:-40px;
-
-    }
-
-    .mj-mountain{
-
-        width:1550px;
-
-    }
-
-    .mj-route{
-
-        width:520px;
-
-    }
-
-    .mj-node{
-
-        gap:10px;
-
-    }
-
-    .mj-node .circle{
-
-        width:40px;
-
-        height:40px;
-
-        font-size:12px;
-
-    }
-
-    .mj-node span{
-
-        font-size:12px;
-
-    }
-
-    .mj-climber{
-
-        width:34px;
-
-        height:34px;
-
-    }
-
-}
-
-/*==================================================
-SMALL MOBILE
-==================================================*/
-
-@media (max-width:576px){
-
-    .mj-container{
-
-        gap:40px;
-
-    }
-
-    .mj-left h1{
-
-        font-size:28px;
-
-    }
-
-    .mj-small-title{
-
-        font-size:11px;
-
-    }
-
-    .mj-step{
-
-        font-size:11px;
-
-    }
-
-    .mj-content h2{
-
-        font-size:24px;
-
-    }
-
-    .mj-content p{
-
-        font-size:14px;
-
-    }
-
-    .mj-right{
-
-        transform:scale(.48);
-
-        transform-origin:top center;
-
-        height:360px;
-
-    }
-
-    .mj-mountain{
-
-        width:1350px;
-
-    }
-
-    .mj-route{
-
-        width:430px;
-
-    }
-
-    .mj-node{
-
-        gap:8px;
-
-    }
-
-    .mj-node .circle{
-
-        width:34px;
-
-        height:34px;
-
-        font-size:10px;
-
-        border-width:2px;
-
-    }
-
-    .mj-node span{
-
-        font-size:11px;
-
-    }
-
-    .mj-climber{
-
-        width:28px;
-
-        height:28px;
-
-    }
-
-}
-
-/*==================================================
-GLOBAL TRANSITIONS
-==================================================*/
-
-.mj-node,
-.mj-node .circle,
-.mj-node span,
-.mj-route,
-.mj-mountain,
-.mj-content,
-.mj-climber{
-
-    transition:all .35s ease;
-
-}
-
-/*==================================================
-PREMIUM ACTIVE GLOW
-==================================================*/
-
-.mj-node.active .circle{
-
-    animation:mjGlow 2s ease-in-out infinite;
-
-}
-
-@keyframes mjGlow{
-
-    0%{
-
-        box-shadow:
-        0 0 0 rgba(255,146,53,.2),
-        0 0 0 rgba(255,146,53,.1);
-
-    }
-
-    50%{
-
-        box-shadow:
-        0 0 25px rgba(255,146,53,.8),
-        0 0 55px rgba(255,146,53,.45);
-
-    }
-
-    100%{
-
-        box-shadow:
-        0 0 0 rgba(255,146,53,.2),
-        0 0 0 rgba(255,146,53,.1);
-
-    }
-
-}
-
-/*==================================================
-SCROLLBAR
-==================================================*/
-/* 
-::-webkit-scrollbar{
-
-    width:10px;
-
-}
-
-::-webkit-scrollbar-track{
-
-    background:#173979;
-
-}
-
-::-webkit-scrollbar-thumb{
-
-    background:#ff922f;
-
-    border-radius:50px;
-
-}
-
-::-webkit-scrollbar-thumb:hover{
-
-    background:#ff7d12;
-
-} */
-
-/*==================================================
-TEXT SELECTION
-==================================================*/
-/* 
-::selection{
-
-    background:#ff922f;
-
-    color:#ffffff;
-
-} */

@@ -1,0 +1,282 @@
+/* =====================================================
+   PRODUCTS SECTION  ("What We've Built")
+   All classes prefixed cxb- and scoped under .cxb-section
+   so nothing collides with other components.
+===================================================== */
+
+.cxb-section {
+    padding: 90px 0;
+    background: #fff;
+}
+
+.cxb-section *,
+.cxb-section *::before,
+.cxb-section *::after {
+    box-sizing: border-box;
+}
+
+.cxb-container {
+    width: calc(100% - 110px);
+    max-width: 1450px;
+    margin: 0 auto;
+}
+
+/*==========================
+    Section head
+==========================*/
+
+.cxb-section .cxb-dots {
+    display: flex;
+    gap: 7px;
+    margin-bottom: 22px;
+}
+
+.cxb-section .cxb-dots span {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #F7941D;
+}
+
+.cxb-section .cxb-eyebrow {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #173F8A;
+    margin: 0 0 14px;
+}
+
+.cxb-section .cxb-title {
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1.15;
+    color: #173F8A;
+    margin: 0 0 18px;
+}
+
+.cxb-section .cxb-title span {
+    color: #F7941D;
+}
+
+.cxb-section .cxb-intro {
+    font-size: 16px;
+    line-height: 1.75;
+    color: #5A6478;
+    max-width: 620px;
+    margin: 0 0 46px;
+}
+
+.cxb-section .cxb-intro p {
+    margin: 0;
+}
+
+/*==========================
+    Card
+==========================*/
+
+.cxb-section .cxb-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 350px;
+    overflow: hidden;
+    margin-bottom: 34px;
+}
+
+.cxb-section .cxb-card:last-child {
+    margin-bottom: 0;
+}
+
+/* alternating layout - image moves to the right */
+.cxb-section .cxb-card--flip .cxb-card-media { order: 2; }
+.cxb-section .cxb-card--flip .cxb-card-body  { order: 1; }
+
+/*==========================
+    Media side
+==========================*/
+
+.cxb-section .cxb-card-media {
+    position: relative;
+    overflow: hidden;
+    background: #12224A;
+}
+
+.cxb-section .cxb-card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform .6s ease;
+}
+
+.cxb-section .cxb-card:hover .cxb-card-media img {
+    transform: scale(1.04);
+}
+
+.cxb-section .cxb-card-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 40px;
+    background: linear-gradient(
+        to top,
+        rgba(8, 16, 40, .85),
+        rgba(8, 16, 40, .25),
+        transparent
+    );
+}
+
+.cxb-section .cxb-card-overlay h3 {
+    color: #fff;
+    font-size: 30px;
+    font-weight: 700;
+    margin: 0 0 8px;
+}
+
+.cxb-section .cxb-card-overlay p {
+    color: rgba(255, 255, 255, .88);
+    font-size: 15px;
+    margin: 0;
+}
+
+/*==========================
+    Body side
+==========================*/
+
+.cxb-section .cxb-card-body {
+    background: linear-gradient(to right, #FDEBDA, #F7B071);
+    padding: 55px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.cxb-section .cxb-card-body h2 {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.25;
+    color: #173F8A;
+    margin: 0 0 22px;
+}
+
+.cxb-section .cxb-card-text {
+    font-size: 16px;
+    line-height: 1.75;
+    color: #2E3A52;
+    margin: 0 0 32px;
+    max-width: 520px;
+}
+
+.cxb-section .cxb-card-text p {
+    margin: 0;
+}
+
+/*==========================
+    Button
+==========================*/
+
+.cxb-section .cxb-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    align-self: flex-start;
+    padding: 11px 20px;
+    background: #F7941D;
+    color: #12224A;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: .3s;
+}
+
+.cxb-section .cxb-btn:hover {
+    background: #e57f08;
+    color: #fff;
+}
+
+.cxb-section .cxb-btn svg {
+    transition: transform .3s;
+}
+
+.cxb-section .cxb-btn:hover svg {
+    transform: translateX(4px);
+}
+
+/*==========================
+    Responsive
+==========================*/
+
+@media (max-width: 1100px) {
+
+    .cxb-container {
+        width: calc(100% - 60px);
+    }
+
+    .cxb-section .cxb-title {
+        font-size: 34px;
+    }
+
+    .cxb-section .cxb-card-body {
+        padding: 40px;
+    }
+
+    .cxb-section .cxb-card-body h2 {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 860px) {
+
+    .cxb-section {
+        padding: 60px 0;
+    }
+
+    .cxb-section .cxb-card {
+        grid-template-columns: 1fr;
+    }
+
+    .cxb-section .cxb-card-media {
+        min-height: 280px;
+    }
+
+    /* image always on top when stacked, flipped or not */
+    .cxb-section .cxb-card--flip .cxb-card-media { order: 1; }
+    .cxb-section .cxb-card--flip .cxb-card-body  { order: 2; }
+}
+
+@media (max-width: 560px) {
+
+    .cxb-container {
+        width: calc(100% - 36px);
+    }
+
+    .cxb-section .cxb-title {
+        font-size: 28px;
+    }
+
+    .cxb-section .cxb-card-overlay {
+        padding: 26px;
+    }
+
+    .cxb-section .cxb-card-overlay h3 {
+        font-size: 24px;
+    }
+
+    .cxb-section .cxb-card-body {
+        padding: 32px 26px;
+    }
+
+    .cxb-section .cxb-card-body h2 {
+        font-size: 24px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .cxb-section .cxb-card-media img,
+    .cxb-section .cxb-btn,
+    .cxb-section .cxb-btn svg {
+        transition: none;
+    }
+}
